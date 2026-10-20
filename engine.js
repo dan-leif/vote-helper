@@ -228,6 +228,45 @@
     });
   }
 
+  // ---------- blind comparison ----------
+  // A blind reply is another model's own mapping of an item, made without seeing Claude's.
+  // blind: { tags: [{dim, yes, w}], stances: [{candidate, dim, stance}], quality: [{type, detail}] }
+  // Returns a record in the same shape as a critique audit, so auditStatus() can compare both kinds.
+  function compareBlind(contest, blind) {
+    var issues = [], tags = [];
+    var theirs = {};
+    (blind.tags || []).forEach(function (t) { if (t && t.dim) theirs[t.dim] = t; });
+    (contest.tags || []).forEach(function (t) {
+      var o = theirs[t.dim];
+      if (!o) {
+        if (t.w >= 2) issues.push({ area: 'tags', severity: 'minor', detail: 'Did not connect this item to "' + t.dim + '" (Claude: direction ' + t.yes + ', weight ' + t.w + ').' });
+        return;
+      }
+      var dir = o.yes > 0 ? 1 : o.yes < 0 ? -1 : 0;
+      if (dir && dir !== t.yes) tags.push({ dim: t.dim, agree: false, direction: dir, weight: o.w, note: 'Blind mapping points the opposite way.' });
+      else if (typeof o.w === 'number' && Math.abs(o.w - t.w) >= 2) issues.push({ area: 'tags', severity: 'minor', detail: '"' + t.dim + '" weight ' + o.w + ' vs Claude\'s ' + t.w + '.' });
+      else tags.push({ dim: t.dim, agree: true });
+    });
+    Object.keys(theirs).forEach(function (dim) {
+      var o = theirs[dim];
+      var mine = (contest.tags || []).some(function (t) { return t.dim === dim; });
+      if (!mine && (o.w || 0) >= 2) tags.push({ dim: dim, agree: false, direction: o.yes, weight: o.w, note: 'Blind mapping uses a belief Claude left out.' });
+    });
+    (blind.stances || []).forEach(function (st) {
+      var cand = (contest.candidates || []).filter(function (k) { return k.id === st.candidate; })[0];
+      if (!cand) return;
+      var p = (cand.positions || []).filter(function (x) { return x.dim === st.dim; })[0];
+      if (p && p.stance && st.stance && Math.sign(p.stance) !== Math.sign(st.stance)) {
+        tags.push({ dim: st.dim, agree: false, direction: Math.sign(st.stance), note: cand.name + ': blind stance is on the other side.' });
+      }
+    });
+    (blind.quality || []).forEach(function (q) {
+      if (q && q.detail) issues.push({ area: 'quality', severity: 'minor', detail: 'Blind review raised: ' + q.detail });
+    });
+    var disputes = tags.filter(function (t) { return t.agree === false; }).length;
+    return { verdict: disputes ? 'major' : issues.length ? 'minor' : 'agree', lean: 'none', issues: issues, tags: tags, mode: 'blind' };
+  }
+
   // ---------- cross-model audits ----------
   // audits: { modelKey: { verdict: 'agree'|'minor'|'major'|'unparsed', lean, issues: [{severity}], tags: [{dim, agree}] } }
   // Returns how other models' reviews compare with the data file's (Claude's) judgments and with each other.
@@ -272,7 +311,7 @@
 
   var api = {
     IMPORTANCE: IMPORTANCE, score: score, swing: swing, specificFor: specificFor,
-    conflicts: conflicts, applies: applies, auditStatus: auditStatus, dimsTouched: dimsTouched, labelFor: labelFor
+    conflicts: conflicts, applies: applies, auditStatus: auditStatus, compareBlind: compareBlind, dimsTouched: dimsTouched, labelFor: labelFor
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.VHEngine = api;

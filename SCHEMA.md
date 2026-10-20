@@ -92,12 +92,17 @@ A **claim** is `{ "t": "text", "s": ["sourceId", ...], "c": "h|m|l" }`.
 
 ## Bias-check replies (browser only, exportable; no personal views)
 ```jsonc
-{ "app": "vote-helper-audits", "audits": { "ca/san-luis-obispo/2026-11-03": { "p1": {
-  "grok": { "date": "...", "verdict": "agree|minor|major|unparsed", "lean": "none|left|right|yes|no|unclear",
-            "issues": [ { "area": "...", "severity": "minor|major", "detail": "...", "fix": "..." } ],
-            "tags": [ { "dim": "housing", "agree": false, "direction": 1, "weight": 1, "note": "..." } ], "raw": "..." } } } } }
+{ "app": "vote-helper-audits", "audits": { "ca/san-luis-obispo/2026-11-03": {
+  "p1": {
+    "grok":       { "mode": "critique", "date": "...", "verdict": "agree|minor|major|unparsed", "lean": "none|left|right|yes|no|unclear",
+                    "issues": [ { "area": "...", "severity": "minor|major", "detail": "...", "fix": "..." } ],
+                    "tags": [ { "dim": "housing", "agree": false, "direction": 1, "weight": 1, "note": "..." } ] },
+    "grok~blind": { "mode": "blind", "verdict": "...", "issues": [], "tags": [], "blindRaw": { "tags": [ { "dim": "debt", "yes": -1, "w": 3 } ] } } },
+  "_app": { "chatgpt": { "beliefQuestions": [ { "id": "housing", "verdict": "minor", "issue": "...", "fix": "..." } ], "missingBeliefs": [ { "label": "...", "why": "..." } ] } }
+} } }
 ```
-"Models disagree" shows when any model reports a major problem, sees a lean, disputes a belief mapping, or flags a major issue.
+A blind reply is converted to the critique shape by `compareBlind()` in `engine.js`: an opposite direction, an opposite candidate stance, or a weight-2+ belief Claude left out counts as a dispute; a missed mapping or a weight off by 2 is a minor note.
+"Models disagree" shows when any model reports a major problem, sees a lean, or disputes a mapping.
 
 ## Beliefs file (private; never commit publicly)
 ```jsonc

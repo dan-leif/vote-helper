@@ -57,6 +57,19 @@ ok(dis.status === 'disagree' && dis.disputes[0] === 'debt', 'disputed tag -> mod
 ok(E.auditStatus({ grok: { verdict: 'agree', lean: 'left' } }).status === 'disagree', 'model sees a lean -> disagree');
 ok(E.auditStatus({ a: { verdict: 'agree', lean: 'none' }, b: { verdict: 'minor', lean: 'none', issues: [{ severity: 'minor' }] } }).status === 'split-minor', 'split between models');
 
+// Blind comparison: another model's own mapping vs Claude's.
+const p1 = byId('p1');
+const same = E.compareBlind(p1, { tags: [{ dim: 'debt', yes: -1, w: 3 }, { dim: 'housing', yes: 1, w: 2 }, { dim: 'tax_level', yes: -1, w: 1 }] });
+ok(E.auditStatus({ grok: same }).status === 'agree', 'blind: same mapping -> agree');
+const flipped = E.compareBlind(p1, { tags: [{ dim: 'debt', yes: 1, w: 3 }, { dim: 'housing', yes: 1, w: 2 }] });
+ok(E.auditStatus({ grok: flipped }).status === 'disagree' && E.auditStatus({ grok: flipped }).disputes.includes('debt'), 'blind: opposite direction -> models disagree');
+const extra = E.compareBlind(p1, { tags: [{ dim: 'debt', yes: -1, w: 3 }, { dim: 'housing', yes: 1, w: 2 }, { dim: 'savings', yes: -1, w: 3 }] });
+ok(extra.tags.some(t => t.dim === 'savings' && t.agree === false), 'blind: belief Claude left out is reported');
+const missed = E.compareBlind(p1, { tags: [{ dim: 'housing', yes: 1, w: 2 }] });
+ok(E.auditStatus({ grok: missed }).status === 'minor', 'blind: missing a mapping is a minor note');
+const stance = E.compareBlind(byId('gov'), { stances: [{ candidate: 'hilton', dim: 'climate', stance: -1 }] });
+ok(E.auditStatus({ grok: stance }).status === 'disagree', 'blind: candidate stance on the other side -> disagree');
+
 // No place-specific logic in code.
 const code = readFileSync(new URL('../app.js', import.meta.url), 'utf8') + readFileSync(new URL('../engine.js', import.meta.url), 'utf8');
 const banned = ['slo-council', "'slo'", 'cadem', 'cagop', 'lwvc', 'Proposition ', "'Prop '", 'California', 'San Luis'];

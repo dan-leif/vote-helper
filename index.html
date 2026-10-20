@@ -191,10 +191,11 @@ label.field { display: grid; gap: 4px; font-size: var(--step--1); font-weight: 6
 
 /* Cheat sheet */
 .sheet { background: var(--card); border: 1.5px solid var(--ink); padding: 0; }
-.sheet .sh-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 7px 14px; border-top: 1px solid var(--rule); align-items: baseline; }
-.sheet .sh-office { font-weight: 600; min-width: 0; }
-.sheet .sh-pick { font-weight: 700; text-align: right; display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
-.sheet .sh-note { grid-column: 1 / -1; font-size: var(--step--1); color: var(--muted); }
+.sh-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 7px 14px; border-top: 1px solid var(--rule); align-items: baseline; }
+.sh-office { font-weight: 600; min-width: 0; }
+.sh-pick { font-weight: 700; text-align: right; display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
+.sh-note { grid-column: 1 / -1; font-size: var(--step--1); color: var(--muted); }
+.panel > .sh-row:first-of-type, .band + .sh-row { border-top: 0; }
 .sheet .unreviewed { font-weight: 400; font-style: italic; color: var(--muted); }
 .judge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 4px 16px; font-size: var(--step--1); }
 
