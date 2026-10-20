@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "about": "Belief questions used by Vote Helper. Part 1 (general) carries across elections. Part 2 (specific) is asked only when a ballot item doesn't map cleanly onto general beliefs. Answers are never stored here; they live in each person's browser or private beliefs file.",
+  "scale": {
+    "position": "-2 = strongly agree with side A, 0 = in between or no view, +2 = strongly agree with side B",
+    "importance": "0 = doesn't matter to me, 1 = a little, 2 = matters (default), 3 = one of my top issues"
+  },
+  "general": [
+    {
+      "id": "tax_level",
+      "label": "Taxes and public services",
+      "q": "When the state or your city wants more money for services, where do you lean?",
+      "a": "Pay more in taxes to fund more or better services",
+      "b": "Keep taxes and spending lower, even if services shrink"
+    },
+    {
+      "id": "tax_wealthy",
+      "label": "Taxing high earners and the very wealthy",
+      "q": "How should California treat its highest earners and wealthiest residents?",
+      "a": "They should pay a larger share, including new or higher taxes",
+      "b": "Don't single them out; high taxes on them drive people and jobs away"
+    },
+    {
+      "id": "debt",
+      "label": "State borrowing (bonds)",
+      "q": "How do you feel about the state borrowing money through bonds?",
+      "a": "Borrowing is fine for long-term investments like housing or research",
+      "b": "Avoid new debt; pay as we go or don't do it"
+    },
+    {
+      "id": "savings",
+      "label": "Saving for downturns",
+      "q": "When the state has extra money in good years, what should it do?",
+      "a": "Spend it on current needs and programs",
+      "b": "Put more into reserves for recessions"
+    },
+    {
+      "id": "tax_votes",
+      "label": "Vote needed to pass taxes",
+      "q": "What share of voters should it take to pass a local special tax?",
+      "a": "A simple majority should be enough",
+      "b": "Taxes should need a two-thirds supermajority"
+    },
+    {
+      "id": "direct_dem",
+      "label": "Voter power vs. elected officials",
+      "q": "How much should voters decide directly (initiatives, recalls) versus elected officials?",
+      "a": "Keep voters' direct powers strong",
+      "b": "Rely more on elected officials and set processes"
+    },
+    {
+      "id": "housing",
+      "label": "Housing growth",
+      "q": "How should California and San Luis Obispo handle housing?",
+      "a": "Protect neighborhood scale and local control, even if fewer homes get built",
+      "b": "Build much more housing, faster, including denser buildings"
+    },
+    {
+      "id": "environment",
+      "label": "Environmental review vs. speed",
+      "q": "When big projects (housing, water, energy, transit) are proposed, what matters more?",
+      "a": "Thorough environmental review and the public's right to challenge it",
+      "b": "Faster, cheaper approvals, even with less review"
+    },
+    {
+      "id": "climate",
+      "label": "Climate and energy",
+      "q": "What should come first in energy policy?",
+      "a": "Aggressive climate action: cut emissions, no new offshore oil",
+      "b": "Lower gas and power bills first; fewer climate mandates"
+    },
+    {
+      "id": "voting",
+      "label": "Voting rules",
+      "q": "How should California balance easy voting and verification?",
+      "a": "Make voting as easy as possible, including mail ballots for everyone",
+      "b": "Require ID and stricter verification, even if it adds steps"
+    },
+    {
+      "id": "campaign_money",
+      "label": "Money in campaigns",
+      "q": "Should public money ever go to candidates' campaigns?",
+      "a": "Yes, public financing can reduce big-donor influence",
+      "b": "No, taxpayer money shouldn't fund campaigns"
+    },
+    {
+      "id": "regulation",
+      "label": "Government oversight of organizations",
+      "q": "How much should government regulate how businesses, insurers and nonprofits operate?",
+      "a": "Lighter rules; let organizations decide how to run themselves",
+      "b": "Stronger rules and oversight to protect the public"
+    },
+    {
+      "id": "public_safety",
+      "label": "Crime and justice",
+      "q": "What's the better approach to public safety?",
+      "a": "Prevention, treatment and criminal-justice reform",
+      "b": "More enforcement and tougher penalties"
+    },
+    {
+      "id": "social",
+      "label": "Gender identity and parental notification in schools",
+      "q": "On school policies about gender identity, where do you lean?",
+      "a": "Protect students' privacy and current state LGBTQ+ protections",
+      "b": "Notify parents; restrict girls' sports to students born female"
+    },
+    {
+      "id": "school_choice",
+      "label": "School choice",
+      "q": "How should California approach charter schools and school choice?",
+      "a": "Focus on traditional public schools",
+      "b": "Expand charters and family choice"
+    },
+    {
+      "id": "federal",
+      "label": "California and the federal government",
+      "q": "How should California's state officials deal with the current federal administration?",
+      "a": "Challenge federal policies in court when they hurt California",
+      "b": "Cooperate more and sue less"
+    },
+    {
+      "id": "party",
+      "label": "Party lean",
+      "q": "In partisan races, which party's approach do you generally prefer? (Pick the middle if you don't lean.)",
+      "a": "Democratic",
+      "b": "Republican"
+    },
+    {
+      "id": "outsider",
+      "label": "Experience vs. fresh faces",
+      "q": "All else equal, who do you prefer in office?",
+      "a": "Experienced officeholders and incumbents",
+      "b": "Newcomers and outsiders",
+      "tiebreaker": true,
+      "weight": 0.5
+    }
+  ],
+  "specific": [
+    {
+      "id": "q_recall",
+      "for": [
+        "p5"
+      ],
+      "q": "If voters recall a governor, how should the replacement be chosen?",
+      "options": [
+        {
+          "v": "same_ballot",
+          "l": "Voters pick a replacement on the same ballot (current system)",
+          "fx": {
+            "p5": -2
+          }
+        },
+        {
+          "v": "later",
+          "l": "The lieutenant governor serves, or a later election fills the seat (Prop 5's approach)",
+          "fx": {
+            "p5": 2
+          }
+        },
+        {
+          "v": "unsure",
+          "l": "No preference",
+          "fx": {}
+        }
+      ]
+    },
+    {
+      "id": "q_research_institute",
+      "for": [
+        "p38"
+      ],
+      "q": "Prop 38 would send half of an $8.4B research bond to one institute chosen by the measure's criteria. Is that OK with you?",
+      "options": [
+        {
+          "v": "ok",
+          "l": "Fine, if the research is good",
+          "fx": {
+            "p38": 1
+          }
+        },
+        {
+          "v": "competitive",
+          "l": "No, all of it should be open to competitive grants",
+          "fx": {
+            "p38": -2
+          }
+        },
+        {
+          "v": "unsure",
+          "l": "Not sure",
+          "fx": {}
+        }
+      ]
+    },
+    {
+      "id": "q_wealth_tax_form",
+      "for": [
+        "p40",
+        "p41",
+        "p42"
+      ],
+      "q": "Prop 40 is a one-time 5% tax on billionaires' total net worth (assets, not income). How do you feel about taxing wealth this way?",
+      "options": [
+        {
+          "v": "support",
+          "l": "Support it",
+          "fx": {
+            "p40": 2,
+            "p41": -1,
+            "p42": -2
+          }
+        },
+        {
+          "v": "income_only",
+          "l": "I'd rather tax income, not wealth",
+          "fx": {
+            "p40": -1,
+            "p42": 1
+          }
+        },
+        {
+          "v": "oppose",
+          "l": "Oppose wealth taxes",
+          "fx": {
+            "p40": -2,
+            "p41": 1,
+            "p42": 2
+          }
+        },
+        {
+          "v": "unsure",
+          "l": "Not sure",
+          "fx": {}
+        }
+      ]
+    },
+    {
+      "id": "q_clinic_mandate",
+      "for": [
+        "p44"
+      ],
+      "q": "Should the state require nonprofit community clinics to spend at least 90% of their revenue on care, with penalties if they don't?",
+      "options": [
+        {
+          "v": "yes",
+          "l": "Yes, overhead should be capped",
+          "fx": {
+            "p44": 2
+          }
+        },
+        {
+          "v": "no",
+          "l": "No, let clinics decide how to spend",
+          "fx": {
+            "p44": -2
+          }
+        },
+        {
+          "v": "unsure",
+          "l": "Not sure",
+          "fx": {}
+        }
+      ]
+    },
+    {
+      "id": "q_boe_abolish",
+      "for": [
+        "boe2"
+      ],
+      "q": "Should the elected Board of Equalization be phased out and its remaining duties moved to other state tax agencies?",
+      "options": [
+        {
+          "v": "yes",
+          "l": "Yes, phase it out",
+          "fx": {
+            "boe2": {
+              "pimentel": 2
+            }
+          }
+        },
+        {
+          "v": "no",
+          "l": "No, keep it",
+          "fx": {
+            "boe2": {
+              "lieber": 1
+            }
+          }
+        },
+        {
+          "v": "unsure",
+          "l": "No view",
+          "fx": {}
+        }
+      ]
+    },
+    {
+      "id": "q_public_insurance",
+      "for": [
+        "ins"
+      ],
+      "q": "Should California create a public disaster (home) insurance program instead of relying mainly on private insurers?",
+      "options": [
+        {
+          "v": "yes",
+          "l": "Yes, a public program",
+          "fx": {
+            "ins": {
+              "kim": 2
+            }
+          }
+        },
+        {
+          "v": "no",
+          "l": "No, stabilize the private market",
+          "fx": {
+            "ins": {
+              "allen": 2
+            }
+          }
+        },
+        {
+          "v": "unsure",
+          "l": "Not sure",
+          "fx": {}
+        }
+      ]
+    },
+    {
+      "id": "q_judicial",
+      "for": [
+        "judges-sc",
+        "judges-coa"
+      ],
+      "q": "Judges on retention ballots run unopposed and can't campaign. When no problem with a judge has been found, what's your default?",
+      "options": [
+        {
+          "v": "yes",
+          "l": "Vote Yes to keep them",
+          "fx": {
+            "judges-sc": 2,
+            "judges-coa": 2
+          }
+        },
+        {
+          "v": "no",
+          "l": "Vote No",
+          "fx": {
+            "judges-sc": -2,
+            "judges-coa": -2
+          }
+        },
+        {
+          "v": "skip",
+          "l": "Leave them blank",
+          "fx": {
+            "judges-sc": "skip",
+            "judges-coa": "skip"
+          }
+        }
+      ]
+    }
+  ]
+}

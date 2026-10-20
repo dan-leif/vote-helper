@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "elections": [
+    {
+      "id": "2026-11-ca-slo",
+      "name": "November 3, 2026 General Election",
+      "area": "San Luis Obispo County, California",
+      "date": "2026-11-03",
+      "researched": "2026-10-20",
+      "files": ["elections/2026-11/ca.json", "elections/2026-11/ca-slo.json"],
+      "lookup": {"label": "Check your registration and districts", "url": "https://voterstatus.sos.ca.gov/"},
+      "districts": [
+        {"id": "city", "label": "City", "default": "slo", "options": [
+          {"v": "slo", "l": "City of San Luis Obispo"},
+          {"v": "other", "l": "Another city, or unincorporated SLO County"}
+        ]},
+        {"id": "cd", "label": "U.S. House district", "default": "24", "options": [
+          {"v": "24", "l": "District 24"},
+          {"v": "19", "l": "District 19"}
+        ]},
+        {"id": "ad", "label": "State Assembly district", "default": "30", "options": [
+          {"v": "30", "l": "District 30"},
+          {"v": "37", "l": "District 37"}
+        ]}
+      ],
+      "coverageNote": "Covered: every statewide contest, Board of Equalization District 2, Court of Appeal (Second District), U.S. House District 24, Assembly District 30, and City of San Luis Obispo races. Not yet covered: House District 19, Assembly District 37, State Senate, county supervisor, and other cities' or school districts' races and measures. Always check your own sample ballot."
+    }
+  ]
+}

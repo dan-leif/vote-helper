@@ -1,0 +1,767 @@
+{
+ "schema": 1,
+ "id": "2026-11/ca-slo",
+ "scope": "San Luis Obispo County (districts on Ballot Type 26: CA-24, AD-30, City of San Luis Obispo)",
+ "election": "2026-11-03",
+ "researched": "2026-10-20",
+ "method": "Same as ca.json. Candidate names and ballot designations are transcribed from the official ballot.",
+ "sources": {
+  "ballot": {
+   "title": "Official Ballot, Nov 3 2026, San Luis Obispo County (Ballot Type 26)",
+   "pub": "SLO County Clerk-Recorder",
+   "url": "https://slocounty.ca.gov/departments/clerk-recorder/all-services/elections-and-voting/elections-conducted-by-county-of-san-luis-obispo/november-3,-2026,-general-election",
+   "type": "official",
+   "short": "Ballot"
+  },
+  "growsf_boe": {
+   "title": "California Board of Equalization, District 2",
+   "pub": "GrowSF voter guide",
+   "url": "https://growsf.org/voter-guide/san-francisco-voter-guide-november-2026-election/contests/board-of-equalization/",
+   "type": "advocacy",
+   "short": "GrowSF"
+  },
+  "sos_boe": {
+   "title": "Board of Equalization District 2 primary results",
+   "pub": "CA Secretary of State",
+   "url": "https://dp.electionresults.sos.ca.gov/returns/board-of-equalization/district/2/county/san-luis-obispo",
+   "type": "official",
+   "short": "CA SOS"
+  },
+  "ksby_ca24": {
+   "title": "Carbajal and Smith outline competing priorities in race for California's 24th District",
+   "pub": "KSBY",
+   "url": "https://www.ksby.com/news/local-news/carbajal-and-smith-outline-competing-priorities-in-race-for-californias-24th-congressional-district",
+   "type": "news",
+   "short": "KSBY"
+  },
+  "keyt_ca24": {
+   "title": "24th District race has three candidates trying to unseat Carbajal",
+   "pub": "KEYT",
+   "url": "https://keyt.com/news/2026/06/02/24th-district-race-has-three-candidates-trying-to-unseat-carbajal/",
+   "type": "news",
+   "short": "KEYT"
+  },
+  "wiki_addis": {
+   "title": "Dawn Addis",
+   "pub": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Dawn_Addis",
+   "type": "reference",
+   "short": "Wiki"
+  },
+  "lookout_ad30": {
+   "title": "Assembly District 30 candidate statement (Shannon Kessler)",
+   "pub": "Lookout Santa Cruz",
+   "url": "https://lookout.co/?p=338758",
+   "type": "campaign",
+   "short": "Lookout"
+  },
+  "ksby_ad30": {
+   "title": "Meet the candidates for CA State Assembly District 30",
+   "pub": "KSBY",
+   "url": "https://www.ksby.com/news/national-politics/america-votes/meet-the-candidates-for-ca-state-assembly-district-30",
+   "type": "news",
+   "short": "KSBY"
+  },
+  "sierra": {
+   "title": "2026 Endorsements",
+   "pub": "Sierra Club California",
+   "url": "https://www.sierraclub.org/california/2026-endorsements-scc-political-committee",
+   "type": "endorser",
+   "short": "Sierra Club"
+  },
+  "labor": {
+   "title": "2026 Endorsements",
+   "pub": "Central Coast Labor Council, AFL-CIO",
+   "url": "https://www.centralcoastlabor.org/2026-endorsements",
+   "type": "endorser",
+   "short": "Labor Council"
+  },
+  "ksby_council": {
+   "title": "Meet the San Luis Obispo City Council candidates",
+   "pub": "KSBY",
+   "url": "https://www.ksby.com/san-luis-obispo/meet-the-san-luis-obispo-city-council-candidates-who-will-appear-on-the-ballot-this-november",
+   "type": "news",
+   "short": "KSBY"
+  },
+  "ksby_rules": {
+   "title": "San Luis Obispo City Council seats up for election, and voting rules are changing this November",
+   "pub": "KSBY",
+   "url": "https://www.ksby.com/san-luis-obispo/san-luis-obispo-city-council-seats-up-for-election-and-voting-rules-are-changing-this-november",
+   "type": "news",
+   "short": "KSBY"
+  },
+  "mustang": {
+   "title": "2026 San Luis Obispo voter guide",
+   "pub": "Mustang News",
+   "url": "https://mustangnews.net/california-midterm-ballot-guide/",
+   "type": "news",
+   "short": "Mustang"
+  },
+  "ksby_mayor": {
+   "title": "San Luis Obispo mayor is seeking reelection",
+   "pub": "KSBY",
+   "url": "https://ksby.com/news/local-news/san-luis-obispo-mayor-is-seeking-reelection",
+   "type": "news",
+   "short": "KSBY"
+  },
+  "laist_coa": {
+   "title": "Courts of Appeal justices on your ballot",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-courts-appeal-justice-la-orange-county",
+   "type": "news",
+   "short": "LAist"
+  },
+  "dj_cody": {
+   "title": "Cody confirmed to lead 2nd District's Division 6",
+   "pub": "Daily Journal",
+   "url": "https://dailyjournal.com/article/393507-cody-confirmed-to-lead-2nd-district-s-division-6-3-other-judges-elevated-to-court-of-appeal",
+   "type": "news",
+   "short": "DailyJournal"
+  },
+  "courts_yegan": {
+   "title": "Justice Kenneth R. Yegan",
+   "pub": "California Courts of Appeal",
+   "url": "https://appellate.courts.ca.gov/node/3460",
+   "type": "official",
+   "short": "Courts.ca"
+  },
+  "palipost": {
+   "title": "Palisadian justices seek 'yes' in retention election",
+   "pub": "Palisadian-Post",
+   "url": "https://palipost.com/palisadian-justices-seek-yes-in-retention-election/",
+   "type": "news",
+   "short": "PaliPost"
+  }
+ },
+ "contests": [
+  {
+   "id": "boe2",
+   "kind": "race",
+   "order": 17,
+   "level": "State",
+   "office": "Board of Equalization, District 2",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Elected board that sets taxable values for railroad and utility property, oversees consistency of county property assessments, and hears some tax appeals. Most of its old duties moved to other agencies.",
+     "s": [
+      "growsf_boe"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_boe_abolish"
+   ],
+   "candidates": [
+    {
+     "id": "pimentel",
+     "name": "John Pimentel",
+     "party": "D",
+     "designation": "Member, Board of Trustees, San Mateo County Community College District",
+     "positions": [
+      {
+       "dim": "outsider",
+       "stance": 0.5,
+       "t": "Says the office shouldn't exist and campaigns on folding its remaining work into other tax agencies.",
+       "s": [
+        "growsf_boe"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "GrowSF (San Francisco voter guide)",
+       "s": [
+        "growsf_boe"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "lieber",
+     "name": "Sally J. Lieber",
+     "party": "D",
+     "designation": "Incumbent",
+     "positions": [
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent; took 56.9% in the June primary.",
+       "s": [
+        "sos_boe"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Both candidates are Democrats.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "conf": "l",
+   "flags": [
+    {
+     "t": "Little information on Lieber's platform was found.",
+     "c": "l"
+    }
+   ]
+  },
+  {
+   "id": "ca24",
+   "kind": "race",
+   "order": 20,
+   "level": "Federal",
+   "office": "U.S. Representative, District 24",
+   "voteFor": 1,
+   "appliesTo": {
+    "cd": [
+     "24"
+    ]
+   },
+   "candidates": [
+    {
+     "id": "carbajal",
+     "name": "Salud Carbajal",
+     "party": "D",
+     "designation": "Member of Congress",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "climate",
+       "stance": -1,
+       "t": "Leads opposition to new offshore oil drilling off the Gaviota coast.",
+       "s": [
+        "ksby_ca24"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "In Congress since 2017, seeking a sixth term.",
+       "s": [
+        "keyt_ca24"
+       ],
+       "c": "h"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Fighting federal funding cuts to nonprofits serving children in poverty; backed federal money for widening Highway 101.",
+       "s": [
+        "ksby_ca24"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "smith",
+     "name": "Bob Smith",
+     "party": "R",
+     "designation": "Defense Systems Engineer",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Retired Navy officer and political newcomer running on \"common sense\" and bipartisanship.",
+       "s": [
+        "ksby_ca24",
+        "keyt_ca24"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Coverage found few specific policy proposals.",
+       "s": [
+        "ksby_ca24"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "June primary: Carbajal 53.9%, Smith 38.4%.",
+     "s": [
+      "keyt_ca24"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "ad30",
+   "kind": "race",
+   "order": 21,
+   "level": "Legislature",
+   "office": "State Assembly, District 30",
+   "voteFor": 1,
+   "appliesTo": {
+    "ad": [
+     "30"
+    ]
+   },
+   "candidates": [
+    {
+     "id": "kessler",
+     "name": "Shannon Kessler",
+     "party": "R",
+     "designation": "Children's Advocate/Businesswoman",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "social",
+       "stance": 1,
+       "t": "Runs on girls' sports, parental rights and child safety; founded Save Girls' Sports Central Coast.",
+       "s": [
+        "lookout_ad30"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "First run for state office.",
+       "s": [
+        "ksby_ad30"
+       ],
+       "c": "l"
+      }
+     ]
+    },
+    {
+     "id": "addis",
+     "name": "Dawn Addis",
+     "party": "D",
+     "designation": "State Assemblymember/Teacher",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat; incumbent.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "climate",
+       "stance": -0.5,
+       "t": "Points to work on offshore wind research and utility accountability.",
+       "s": [
+        "ksby_ad30"
+       ],
+       "c": "l"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent; co-founded the legislature's Central Coast caucus.",
+       "s": [
+        "ksby_ad30"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "Sierra Club California",
+       "s": [
+        "sierra"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "June primary: Addis 54.8%, Kessler 35.9%.",
+     "s": [
+      "wiki_addis"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "judges-coa",
+   "kind": "retention",
+   "order": 31,
+   "level": "Judicial",
+   "office": "Court of Appeal, Second District",
+   "about": [
+    {
+     "t": "Same yes/no retention rules as the Supreme Court. San Luis Obispo County votes on all Second District justices on the ballot.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "No California appellate justice has lost a retention election since the system began in the 1930s.",
+     "s": [
+      "laist_coa"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "No organized opposition to these justices was found.",
+     "s": [
+      "laist_coa",
+      "palipost"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_judicial"
+   ],
+   "judges": [
+    {
+     "id": "kim",
+     "name": "Michelle C. Kim",
+     "role": "Associate Justice, Division One"
+    },
+    {
+     "id": "weingart",
+     "name": "Gregory J. Weingart",
+     "role": "Associate Justice, Division One"
+    },
+    {
+     "id": "richardson",
+     "name": "Anne Richardson",
+     "role": "Associate Justice, Division Two"
+    },
+    {
+     "id": "goorvitch",
+     "name": "Steve Goorvitch",
+     "role": "Associate Justice, Division Two"
+    },
+    {
+     "id": "adams",
+     "name": "Rashida A. Adams",
+     "role": "Presiding Justice, Division Three"
+    },
+    {
+     "id": "hanasono",
+     "name": "Mark Hanasono",
+     "role": "Associate Justice, Division Three"
+    },
+    {
+     "id": "zukin",
+     "name": "Helen Zukin",
+     "role": "Presiding Justice, Division Four"
+    },
+    {
+     "id": "daum",
+     "name": "Nicholas Daum",
+     "role": "Associate Justice, Division Four"
+    },
+    {
+     "id": "mori",
+     "name": "Audra M. Mori",
+     "role": "Associate Justice, Division Four"
+    },
+    {
+     "id": "tamzarian",
+     "name": "Armen Tamzarian",
+     "role": "Associate Justice, Division Four"
+    },
+    {
+     "id": "hoffstadt",
+     "name": "Brian M. Hoffstadt",
+     "role": "Presiding Justice, Division Five"
+    },
+    {
+     "id": "cody",
+     "name": "Tari L. Cody",
+     "role": "Presiding Justice, Division Six (Ventura)",
+     "notes": [
+      {
+       "t": "Confirmed as presiding justice in August 2026; associate justice since 2023; Ventura Superior Court judge from 2000.",
+       "s": [
+        "dj_cody"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "yegan",
+     "name": "Kenneth R. Yegan",
+     "role": "Associate Justice, Division Six (Ventura)",
+     "notes": [
+      {
+       "t": "On the court since 1990; former Ventura County deputy public defender and municipal judge.",
+       "s": [
+        "courts_yegan"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "martinez",
+     "name": "Gonzalo C. Martinez",
+     "role": "Presiding Justice, Division Seven"
+    },
+    {
+     "id": "stone",
+     "name": "Natalie Stone",
+     "role": "Associate Justice, Division Seven"
+    },
+    {
+     "id": "wiley",
+     "name": "John Wiley",
+     "role": "Associate Justice, Division Eight"
+    },
+    {
+     "id": "scherb",
+     "name": "Matthew A. Scherb",
+     "role": "Associate Justice, Division Eight"
+    },
+    {
+     "id": "viramontes",
+     "name": "Victor G. Viramontes",
+     "role": "Associate Justice, Division Eight"
+    }
+   ],
+   "conf": "l",
+   "flags": [
+    {
+     "t": "Individual records for most of these justices weren't researched.",
+     "c": "l"
+    }
+   ]
+  },
+  {
+   "id": "slo-mayor",
+   "kind": "race",
+   "order": 50,
+   "level": "City",
+   "office": "Mayor, City of San Luis Obispo",
+   "voteFor": 1,
+   "nonpartisan": true,
+   "appliesTo": {
+    "city": [
+     "slo"
+    ]
+   },
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "stewart",
+     "name": "Erica A. Stewart",
+     "designation": "Incumbent",
+     "positions": [
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Mayor since 2021 (appointed), elected 2022 and 2024.",
+       "s": [
+        "ksby_mayor"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "Central Coast Labor Council",
+       "s": [
+        "labor"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for her, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "slo-council",
+   "kind": "race",
+   "order": 51,
+   "level": "City",
+   "office": "City Council, City of San Luis Obispo",
+   "voteFor": 1,
+   "nonpartisan": true,
+   "appliesTo": {
+    "city": [
+     "slo"
+    ]
+   },
+   "about": [
+    {
+     "t": "Two seats are open, but under a new rule each voter picks ONE candidate. The top two vote-getters win.",
+     "s": [
+      "ksby_rules",
+      "ballot"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Recent council actions include moving ahead with a rental registry (Feb 2026) and approving bonds for a 60-unit affordable apartment project.",
+     "s": [
+      "ksby_council"
+     ],
+     "c": "m"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "cross",
+     "name": "Brett Cross",
+     "designation": "Neighborhood Advocate",
+     "positions": [
+      {
+       "dim": "housing",
+       "stance": -1,
+       "t": "Wants development that's appropriate in scale; says new housing doesn't fit the city's heritage. Wants to curb disruptive Greek life near Cal Poly.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": 0.5,
+       "t": "Not on the council now; served on the planning commission in the 1990s.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "shoresman",
+     "name": "Michelle Shoresman",
+     "designation": "Incumbent",
+     "positions": [
+      {
+       "dim": "housing",
+       "stance": 0.5,
+       "t": "Wants to expand affordable housing.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "climate",
+       "stance": -0.5,
+       "t": "Lists climate action and road safety among priorities.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent seeking a second term; public health background.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "Central Coast Labor Council",
+       "s": [
+        "labor"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "francis",
+     "name": "Emily Francis",
+     "designation": "Incumbent",
+     "positions": [
+      {
+       "dim": "housing",
+       "stance": 0.5,
+       "t": "Vice mayor; says housing affordability and homelessness have been her focus.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent, four years on the council.",
+       "s": [
+        "ksby_council"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "Central Coast Labor Council",
+       "s": [
+        "labor"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  }
+ ]
+}
