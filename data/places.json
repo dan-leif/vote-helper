@@ -1,0 +1,23 @@
+{
+ "schema": 2,
+ "about": "Registry of places with data. Each election lives at data/<state>/<locality>/<date>.json.",
+ "places": [
+  {
+   "state": "ca",
+   "locality": "san-luis-obispo",
+   "name": "San Luis Obispo County",
+   "elections": [
+    {
+     "date": "2026-11-03",
+     "name": "General Election"
+    }
+   ]
+  }
+ ],
+ "stateNames": {
+  "ca": "California",
+  "in": "Indiana",
+  "il": "Illinois",
+  "wi": "Wisconsin"
+ }
+}

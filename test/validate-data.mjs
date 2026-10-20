@@ -1,30 +1,59 @@
-// Run: node test/validate-data.mjs  (checks every claim cites a known source and tags use known beliefs)
-import { readFileSync } from 'fs';
-const read = p => JSON.parse(readFileSync(new URL('../' + p, import.meta.url)));
+// Run: node test/validate-data.mjs
+// Checks every place's data: files exist where places.json says, claims cite known sources,
+// tags use known beliefs, questions and endorsers resolve.
+import { readFileSync, existsSync } from 'fs';
+const root = new URL('../data/', import.meta.url);
+const read = p => JSON.parse(readFileSync(new URL(p, root)));
 const values = read('values.json');
 const dims = new Set(values.general.map(d => d.id));
-const specs = new Set(values.specific.map(q => q.id));
-const index = read('elections/index.json');
+const places = read('places.json');
 let errors = 0;
 const err = m => { errors++; console.error('ERROR', m); };
-for (const el of index.elections) for (const f of el.files) {
-  const d = read(f); const S = new Set(Object.keys(d.sources));
-  const walk = (o, path) => {
-    if (Array.isArray(o)) return o.forEach((v, i) => walk(v, path + '[' + i + ']'));
-    if (o && typeof o === 'object') {
-      if ('t' in o && !('s' in o) && !path.endsWith('flags') && !/flags\[\d+\]$/.test(path)) err(f + ' ' + path + ' claim has no source');
-      if (o.s) o.s.forEach(s => S.has(s) || err(f + ' ' + path + ' unknown source ' + s));
-      if (o.c && !['h', 'm', 'l'].includes(o.c)) err(f + ' ' + path + ' bad confidence ' + o.c);
-      for (const [k, v] of Object.entries(o)) if (k !== 's') walk(v, path + '.' + k);
+
+for (const p of places.places) {
+  const statePath = p.state + '/state.json';
+  if (!existsSync(new URL(statePath, root))) { err('missing ' + statePath); continue; }
+  const state = read(statePath);
+  const stateSrc = new Set(Object.keys(state.sources || {}));
+  const endorserIds = new Set((state.endorsers || []).map(e => e.id));
+  (state.endorsers || []).forEach(e => stateSrc.has(e.src) || err(statePath + ' endorser ' + e.id + ' has unknown source'));
+  for (const e of p.elections) {
+    const path = `${p.state}/${p.locality}/${e.date}.json`;
+    if (!existsSync(new URL(path, root))) { err('missing ' + path); continue; }
+    const main = read(path);
+    const files = [[path, main], ...(main.include || []).map(inc => {
+      const ip = `${p.state}/${typeof inc === 'string' ? inc : inc.locality}/${typeof inc === 'string' ? e.date : inc.date}.json`;
+      if (!existsSync(new URL(ip, root))) { err(path + ' includes missing ' + ip); return null; }
+      return [ip, read(ip)];
+    }).filter(Boolean)];
+    const questions = new Set([...(state.questions || []), ...files.flatMap(([, f]) => f.questions || [])].map(q => q.id));
+    const ids = new Set();
+    for (const [f, d] of files) {
+      const S = new Set(Object.keys(d.sources || {}));
+      const known = s => S.has(s) || stateSrc.has(s);
+      const walk = (o, at) => {
+        if (Array.isArray(o)) return o.forEach((v, i) => walk(v, at + '[' + i + ']'));
+        if (o && typeof o === 'object') {
+          if ('t' in o && !('s' in o) && !/flags\[\d+\]$/.test(at)) err(f + ' ' + at + ' claim has no source');
+          if (o.s) o.s.forEach(s => known(s) || err(f + ' ' + at + ' unknown source ' + s));
+          if (o.c && !['h', 'm', 'l'].includes(o.c)) err(f + ' ' + at + ' bad confidence ' + o.c);
+          for (const [k, v] of Object.entries(o)) if (k !== 's') walk(v, at + '.' + k);
+        }
+      };
+      for (const c of d.contests || []) {
+        if (ids.has(c.id)) err(f + ' duplicate contest id ' + c.id);
+        ids.add(c.id);
+        walk(c, c.id);
+        (c.tags || []).forEach(t => { dims.has(t.dim) || err(c.id + ' tag dim ' + t.dim); (t.s && t.s.length) || err(c.id + ' tag without source'); });
+        (c.candidates || []).forEach(k => (k.positions || []).forEach(x => dims.has(x.dim) || err(c.id + ' position dim ' + x.dim)));
+        (c.specific || []).forEach(q => questions.has(q) || err(c.id + ' unknown question ' + q));
+        (c.quality || []).forEach(q => (q.s && q.s.length) || err(c.id + ' quality flag without source'));
+        Object.keys((c.endorse && c.endorse.positions) || {}).forEach(k => endorserIds.has(k) || err(c.id + ' endorser ' + k + ' not in ' + statePath));
+        if (c.kind === 'retention' && !(state.retention && state.retention.has)) err(c.id + ': ' + state.name + ' has no retention elections');
+        if (c.kind === 'measure' && !(state.measures && state.measures.has)) err(c.id + ': ' + state.name + ' has no ballot measures');
+      }
     }
-  };
-  for (const c of d.contests) {
-    walk(c, c.id);
-    (c.tags || []).forEach(t => { dims.has(t.dim) || err(c.id + ' tag dim ' + t.dim); (t.s && t.s.length) || err(c.id + ' tag without source'); });
-    (c.candidates || []).forEach(k => (k.positions || []).forEach(p => dims.has(p.dim) || err(c.id + ' position dim ' + p.dim)));
-    (c.specific || []).forEach(q => specs.has(q) || err(c.id + ' unknown specific ' + q));
-    (c.quality || []).forEach(q => (q.s && q.s.length) || err(c.id + ' quality flag without source'));
   }
 }
 if (errors) { console.error(errors + ' errors'); process.exit(1); }
-console.log('data valid');
+console.log('data valid (' + places.places.length + ' place(s))');

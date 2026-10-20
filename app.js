@@ -1,15 +1,21 @@
-/* Vote Helper app. Plain JS, no build step. Reads values.json and elections/*.json,
-   keeps the person's beliefs in localStorage, and never sends them anywhere. */
+/* Vote Helper app. Plain JS, no build step. Reads data/places.json, the chosen state's
+   data/<state>/state.json and its data/<state>/<locality>/<date>.json election file.
+   Keeps the person's beliefs in localStorage and never sends them anywhere.
+   All judgments about ballot items live in the data files; this file only displays and does arithmetic. */
 (function () {
   'use strict';
   var E = window.VHEngine;
   var STORE_KEY = 'voteHelper.v1';
+  var AUDIT_KEY = 'voteHelper.audits.v1';
+  var DATA = 'data/';
   var IN_FRAME = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  // Old election ids from before data was organized by place.
+  var LEGACY_IDS = { '2026-11-ca-slo': 'ca/san-luis-obispo/2026-11-03' };
 
   var S = {
-    values: null, index: null, election: null, contests: [], sources: {},
-    results: {}, beliefs: null, view: 'home', itemId: null,
-    queue: [], queuePos: 0, walk: [], walkPos: 0, editing: null, disagree: null, aiScope: null
+    values: null, baseValues: null, places: null, place: null, state: null, election: null, contests: [], sources: {},
+    results: {}, beliefs: null, audits: {}, view: 'home', itemId: null,
+    queue: [], queuePos: 0, walk: [], walkPos: 0, disagree: null, aiScope: null
   };
 
   // ---------- helpers ----------
@@ -26,7 +32,7 @@
 
   // ---------- storage ----------
   function blankBeliefs() {
-    return { schema: 1, app: 'vote-helper', created: today(), updated: today(), general: {}, specific: {}, elections: {}, decisions: [], history: [] };
+    return { schema: 2, app: 'vote-helper', created: today(), updated: today(), general: {}, specific: {}, elections: {}, decisions: [], history: [] };
   }
   function load() {
     try { var raw = localStorage.getItem(STORE_KEY); if (raw) return normalize(JSON.parse(raw)); } catch (e) {}
@@ -35,17 +41,29 @@
   function normalize(b) {
     var base = blankBeliefs();
     Object.keys(base).forEach(function (k) { if (b[k] == null) b[k] = base[k]; });
+    // Migrate election ids from the first version.
+    Object.keys(LEGACY_IDS).forEach(function (old) {
+      var nu = LEGACY_IDS[old];
+      if (b.elections[old] && !b.elections[nu]) { b.elections[nu] = b.elections[old]; }
+      delete b.elections[old];
+      b.decisions.forEach(function (d) { if (d.election === old) d.election = nu; });
+      Object.keys(b.specific).forEach(function (k) { if (b.specific[k].election === old) b.specific[k].election = nu; });
+    });
+    b.schema = 2;
     return b;
   }
   function save() {
     S.beliefs.updated = today();
     try { localStorage.setItem(STORE_KEY, JSON.stringify(S.beliefs)); } catch (e) {}
   }
+  function loadAudits() { try { return JSON.parse(localStorage.getItem(AUDIT_KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function saveAudits() { try { localStorage.setItem(AUDIT_KEY, JSON.stringify(S.audits)); } catch (e) {} }
+  function itemAudits(id) { var a = S.audits[S.election.key] || {}; return a[id] || {}; }
   function eState() {
-    var id = S.election.id;
-    if (!S.beliefs.elections[id]) S.beliefs.elections[id] = { districts: {}, effort: 'quick', choices: {}, judges: {}, ai: {} };
+    var id = S.election.key;
+    if (!S.beliefs.elections[id]) S.beliefs.elections[id] = { districts: {}, effort: 'quick', choices: {}, ai: {} };
     var st = S.beliefs.elections[id];
-    st.choices = st.choices || {}; st.judges = st.judges || {}; st.ai = st.ai || {}; st.districts = st.districts || {};
+    st.choices = st.choices || {}; st.ai = st.ai || {}; st.districts = st.districts || {};
     return st;
   }
 
@@ -56,16 +74,36 @@
       return r.json();
     });
   }
-  function loadElection(meta) {
-    return Promise.all(meta.files.map(fetchJSON)).then(function (files) {
-      var contests = [], sources = {};
-      files.forEach(function (f) {
-        Object.keys(f.sources || {}).forEach(function (k) { sources[f.id + ':' + k] = f.sources[k]; });
-        (f.contests || []).forEach(function (c) { c._file = f.id; contests.push(c); });
+  function placeKey(p) { return p.state + '/' + p.locality; }
+  function electionPath(state, locality, date) { return DATA + state + '/' + locality + '/' + date + '.json'; }
+  // Load a place's election: the state config, the locality file, and any files it includes (e.g. statewide).
+  function loadElection(place, date) {
+    var stateP = fetchJSON(DATA + place.state + '/state.json');
+    var mainP = fetchJSON(electionPath(place.state, place.locality, date));
+    return Promise.all([stateP, mainP]).then(function (res) {
+      var state = res[0], main = res[1];
+      var incs = (main.include || []).map(function (inc) {
+        var loc = typeof inc === 'string' ? inc : inc.locality, d = typeof inc === 'string' ? date : inc.date;
+        return fetchJSON(electionPath(place.state, loc, d)).then(function (f) { f._key = place.state + '/' + loc + '/' + d; return f; });
       });
-      contests.sort(function (a, b) { return a.order - b.order; });
-      S.election = meta; S.allContests = contests; S.sources = sources;
-      applyDistricts();
+      main._key = placeKey(place) + '/' + date;
+      return Promise.all(incs).then(function (files) {
+        files.push(main);
+        var contests = [], sources = {}, questions = [].concat(state.questions || []);
+        Object.keys(state.sources || {}).forEach(function (k) { sources['state:' + k] = state.sources[k]; });
+        files.forEach(function (f) {
+          Object.keys(f.sources || {}).forEach(function (k) { sources[f._key + ':' + k] = f.sources[k]; });
+          (f.contests || []).forEach(function (c) { c._file = f._key; contests.push(c); });
+          (f.questions || []).forEach(function (q) { questions.push(q); });
+        });
+        contests.sort(function (a, b) { return a.order - b.order; });
+        S.state = state; S.place = place;
+        S.election = main; S.election.key = main._key;
+        S.allContests = contests; S.sources = sources;
+        S.values = { general: S.baseValues.general, specific: questions };
+        S.beliefs.place = { key: placeKey(place), date: date }; save();
+        applyDistricts();
+      });
     });
   }
   function applyDistricts() {
@@ -78,18 +116,22 @@
     S.results = {};
     S.contests.forEach(function (c) { S.results[c.id] = E.score(c, S.beliefs, S.values); });
   }
+  // District choices the data marks as not researched yet.
   function uncovered() {
     var st = eState(), miss = [];
-    var d = st.districts;
-    if (d.cd && d.cd !== '24') miss.push('U.S. House District ' + d.cd);
-    if (d.ad && d.ad !== '30') miss.push('Assembly District ' + d.ad);
-    if (d.city && d.city !== 'slo') miss.push('your city\'s races and measures');
+    (S.election.districts || []).forEach(function (d) {
+      var o = d.options.filter(function (x) { return x.v === st.districts[d.id]; })[0];
+      if (o && o.covered === false) miss.push(o.missing || (d.label + ' ' + o.l));
+    });
     return miss;
   }
+  function partyName(code) { return (S.state.parties && S.state.parties[code]) || code; }
+  function measureShort() { return (S.state.measures && S.state.measures.short) || 'Measure'; }
+  function measureName() { return (S.state.measures && S.state.measures.name) || 'Measure'; }
 
   // ---------- rendering pieces ----------
   function srcChip(c, id) {
-    var s = S.sources[c._file + ':' + id];
+    var s = S.sources[(c ? c._file : 'state') + ':' + id] || S.sources['state:' + id];
     if (!s) return '';
     var short = s.short || s.pub.split(/[\s,(]/)[0];
     return '<a class="src" href="' + esc(s.url) + '" target="_blank" rel="noopener" title="' + esc(s.title + ' · ' + s.pub) + '">' + esc(short) + '</a>';
@@ -118,15 +160,16 @@
       var m2 = { yes: ['v-yes', 'Yes on all'], no: ['v-no', 'No on all'], skip: ['v-skip', 'Leave blank'], none: ['v-none', 'Your call'] };
       cls = m2[lab][0]; text = m2[lab][1]; lean = lab === 'none';
     } else {
-      if (lab === 'strong' || lab === 'unopposed') { cls = 'v-cand'; text = candName(c, r.pick); }
-      else if (lab === 'lean') { cls = 'v-cand'; text = 'Lean ' + candName(c, r.pick).split(' ').slice(-1)[0]; lean = true; }
+      var lastNames = function (ids) { return [].concat(ids).map(function (id) { return candName(c, id).split(' ').slice(-1)[0]; }).join(', '); };
+      if (lab === 'strong' || lab === 'unopposed') { cls = 'v-cand'; text = Array.isArray(r.pick) ? lastNames(r.pick) : candName(c, r.pick); }
+      else if (lab === 'lean') { cls = 'v-cand'; text = 'Lean ' + lastNames(r.pick); lean = true; }
       else if (lab === 'none') { cls = 'v-none'; text = 'Not enough info'; lean = true; }
       else { cls = 'v-call'; text = 'Your call'; lean = true; }
     }
     return '<span class="verdict ' + cls + (lean ? ' lean' : '') + '"><span class="dot"></span>' + esc(text) + '</span>';
   }
   function contestTitle(c) {
-    if (c.kind === 'measure') return 'Prop ' + c.num + ': ' + c.title;
+    if (c.kind === 'measure') return (c.numLabel || measureShort()) + ' ' + c.num + ': ' + c.title;
     return c.office;
   }
   function worstQuality(c) {
@@ -142,6 +185,10 @@
     if (wq >= 2) out.push('<span class="flag quality">⚠ ' + (wq === 3 ? 'Serious' : 'Some') + ' drafting concerns</span>');
     if (c.conf === 'l') out.push('<span class="flag low">Thin information</span>');
     if (st.ai[c.id]) out.push('<span class="flag low">AI note</span>');
+    var au = E.auditStatus(itemAudits(c.id));
+    if (au.status === 'disagree') out.push('<span class="flag quality">≠ Models disagree</span>');
+    else if (au.status === 'split-minor' || au.status === 'minor') out.push('<span class="flag low">Audit notes</span>');
+    else if (au.status === 'agree') out.push('<span class="flag decided">Audited</span>');
     return out.join('');
   }
   function choiceFor(c) {
@@ -152,6 +199,7 @@
     return { v: r.pick, mine: false };
   }
   function choiceText(c, v) {
+    if (Array.isArray(v)) return v.length ? v.map(function (x) { return choiceText(c, x); }).join(', ') : '';
     if (!v) return '';
     if (v === 'skip') return 'Leave blank';
     if (c.kind === 'measure' || c.kind === 'retention') return v === 'yes' ? 'Yes' : 'No';
@@ -159,8 +207,10 @@
     return candName(c, v);
   }
   function sectionName(c) {
-    if (c.kind === 'measure') return 'State propositions';
-    return { State: 'State offices', Federal: 'Federal', Legislature: 'State Legislature', Judicial: 'Judicial', School: 'School', City: 'City of San Luis Obispo' }[c.level] || c.level;
+    var key = c.kind === 'measure' ? 'measure' : c.level;
+    var hit = (S.election.sections || []).filter(function (x) { return x[0] === key; })[0];
+    if (hit) return hit[1];
+    return c.kind === 'measure' ? measureName() + 's' : c.level;
   }
 
   // ---------- nav ----------
@@ -205,11 +255,21 @@
       ['standard', 'Standard', 'About 8–12 questions, then a walk through the close calls and conflicts, one at a time.'],
       ['deep', 'Deep', 'Every relevant question, then every contest one at a time.']
     ];
+    var lookup = S.election.lookup || S.state.lookup;
+    var placeOpts = S.places.places.map(function (p) {
+      var st = S.stateNames[p.state] || p.state.toUpperCase();
+      return '<option value="' + esc(placeKey(p)) + '"' + (placeKey(p) === placeKey(S.place) ? ' selected' : '') + '>' + esc(p.name + ', ' + st) + '</option>';
+    }).join('');
+    var dateOpts = S.place.elections.map(function (e) {
+      return '<option value="' + esc(e.date) + '"' + (e.date === S.election.date ? ' selected' : '') + '>' + esc(e.date + ' · ' + e.name) + '</option>';
+    }).join('');
     return '' +
       '<section class="panel"><div class="band"><h2>Your ballot</h2><span class="votefor">' + esc(S.election.date) + '</span></div><div class="panel-body">' +
         '<p>Vote Helper explains each item on your ballot, shows how your beliefs map onto it, and lets you agree or disagree. It learns from your disagreements. Everything you enter stays in this browser.</p>' +
-        '<div class="split">' + dHTML + '</div>' +
-        '<p class="small muted">Not sure? <a href="' + esc(S.election.lookup.url) + '" target="_blank" rel="noopener">' + esc(S.election.lookup.label) + '</a>, or look at the header of your sample ballot (for example "24th Congressional … 30th Assembly").</p>' +
+        '<div class="split"><label class="field" for="pick-place">Where you vote<select id="pick-place" data-pick="place">' + placeOpts + '</select></label>' +
+        '<label class="field" for="pick-date">Election<select id="pick-date" data-pick="date">' + dateOpts + '</select></label></div>' +
+        (dHTML ? '<div class="split">' + dHTML + '</div>' : '') +
+        (lookup ? '<p class="small muted">Not sure? <a href="' + esc(lookup.url) + '" target="_blank" rel="noopener">' + esc(lookup.label) + '</a>' + (S.election.districtHint ? '. ' + esc(S.election.districtHint) : '.') + '</p>' : '') +
         (miss.length ? '<div class="callout warn"><p><b>Not covered yet:</b> ' + esc(miss.join(', ')) + '. Those contests won\'t appear here; check your sample ballot.</p></div>' : '') +
         '<p class="small muted">' + esc(S.election.coverageNote) + '</p>' +
       '</div></section>' +
@@ -313,7 +373,7 @@
       body = '<section class="panel" data-q="general" data-id="' + d.id + '"><div class="band"><h2>Part 1 · Your values</h2><span class="votefor">Question ' + pos + ' of ' + total + '</span></div>' + generalQuestionHTML(d, cur) + '</section>';
     } else {
       var q = specById(item.id), a = S.draft || S.beliefs.specific[item.id];
-      var forTitles = q.for.map(contestById).filter(Boolean).map(contestTitle);
+      var forTitles = (q.for || []).map(contestById).filter(Boolean).concat(S.contests.filter(function (c) { return q.appliesToKind && c.kind === q.appliesToKind; })).map(contestTitle);
       body = '<section class="panel" data-q="specific" data-id="' + q.id + '"><div class="band"><h2>Part 2 · A specific question</h2><span class="votefor">Question ' + pos + ' of ' + total + '</span></div><div class="panel-body">' +
         '<p class="small muted">Your general values don\'t settle ' + esc(forTitles.join(' / ')) + ', so here\'s a direct question.</p>' +
         '<p style="font-size:var(--step-1);font-weight:600">' + esc(q.q) + '</p>' +
@@ -340,7 +400,7 @@
         date: today(), note: noteEl ? noteEl.value : prev.note
       };
     } else {
-      S.beliefs.specific[item.id] = { v: S.draft.v, date: today(), election: S.election.id };
+      S.beliefs.specific[item.id] = { v: S.draft.v, date: today(), election: S.election.key };
     }
     S.draft = null; save();
   }
@@ -411,18 +471,20 @@
       var side = b.pos < 0 ? d.a : b.pos > 0 ? d.b : 'in between';
       var strength = Math.abs(b.pos) === 2 ? 'strongly' : 'lean';
       var imp = ['doesn\'t matter', 'a little', 'matters', 'top issue'][typeof b.imp === 'number' ? b.imp : 2];
-      return '<li><b>' + esc(d.label) + '</b> (you ' + strength + ': "' + esc(side) + '"; ' + imp + '). ' + esc(x.why) + ' → ' + dir + '</li>';
+      var disputed = E.auditStatus(itemAudits(c.id)).disputes.indexOf(x.dim) >= 0 ? ' <span class="flag quality">≠ a model disputes this mapping</span>' : '';
+      return '<li><b>' + esc(d.label) + '</b>' + disputed + ' (you ' + strength + ': "' + esc(side) + '"; ' + imp + '). ' + esc(x.why) + ' → ' + dir + '</li>';
     }).join('') + '</ul>';
   }
   function endorseHTML(c) {
     var e = c.endorse; if (!e) return '';
-    var name = { cadem: ['CA Democratic Party', 'cadem'], cagop: ['CA Republican Party', 'cagop'], lwvc: ['League of Women Voters CA', 'lwvc'] };
-    var rows = Object.keys(name).filter(function (k) { return e[k]; }).map(function (k) {
-      var v = e[k]; var cls = v === 'yes' ? 'v-yes' : v === 'no' ? 'v-no' : 'v-call';
-      return '<tr><th>' + name[k][0] + srcChip(c, name[k][1]) + '</th><td class="' + cls + '" style="font-weight:700;text-transform:uppercase">' + esc(v) + '</td></tr>';
+    var pos = e.positions || {};
+    var rows = (S.state.endorsers || []).filter(function (x) { return pos[x.id]; }).map(function (x) {
+      var v = pos[x.id]; var cls = v === 'yes' ? 'v-yes' : v === 'no' ? 'v-no' : 'v-call';
+      return '<tr><th>' + esc(x.name) + srcChip(null, x.src) + '</th><td class="' + cls + '" style="font-weight:700;text-transform:uppercase">' + esc(v) + '</td></tr>';
     }).join('');
     var other = (e.other || []).map(function (o) { return '<tr><th colspan="2">' + esc(o.who) + (o.s || []).map(function (s) { return srcChip(c, s); }).join('') + '</th></tr>'; }).join('');
-    return '<div class="stack"><h4>Endorsements</h4><div style="overflow-x:auto"><table class="endorse">' + rows + other + '</table></div><p class="small muted">Party and League positions come from search summaries of their published lists; CA GOP positions were read from a summary, so confirm on their site.</p></div>';
+    if (!rows && !other) return '';
+    return '<div class="stack"><h4>Endorsements</h4><div style="overflow-x:auto"><table class="endorse">' + rows + other + '</table></div>' + (S.state.endorserNote ? '<p class="small muted">' + esc(S.state.endorserNote) + '</p>' : '') + '</div>';
   }
   function qualityHTML(c, r) {
     var qs = c.quality || [];
@@ -430,8 +492,9 @@
     var lines = qs.map(function (q) {
       return '<div class="q-flag"><span class="sev">' + esc(sevName[q.sev] || q.sev) + ' · ' + esc(q.type.replace(/-/g, ' ')) + '</span><span>' + claim(c, q) + '</span></div>';
     }).join('');
-    if (c.constitutional) lines += '<div class="q-flag"><span class="sev">Note · constitutional</span><span>This amends the state constitution, so changing it later takes another statewide vote.</span></div>';
-    if (!lines) lines = '<p class="small muted">' + esc(c.qualityNote || 'No specific drafting problems found in the sources searched.') + '</p>';
+    if (c.constitutional && S.state.constitutionalNote) lines += '<div class="q-flag"><span class="sev">Note · constitutional</span><span>' + esc(S.state.constitutionalNote) + '</span></div>';
+    if (c.qualityNote) lines += '<p class="small muted">' + esc(c.qualityNote) + '</p>';
+    if (!lines) lines = '<p class="small muted">No quality review recorded for this item.</p>';
     var mismatch = '';
     if (r.pick === 'yes' && worstQuality(c) >= 2) mismatch = '<p><b>Matches your values, but has drafting concerns.</b> Read these before deciding.</p>';
     return '<div class="callout warn"><h4>Drafting and policy quality</h4><p class="small">Separate from your values match. Each concern names a specific problem and its source.</p>' + mismatch + lines + '</div>';
@@ -447,16 +510,19 @@
     if (c.kind === 'measure') opts = [['yes', 'Yes', ''], ['no', 'No', ''], ['skip', 'Leave blank', '']];
     else if (c.kind === 'retention') opts = [['yes', 'Yes on all', 'Keep every justice listed'], ['no', 'No on all', ''], ['skip', 'Leave blank', '']];
     else {
-      opts = c.candidates.map(function (k) { return [k.id, k.name, k.party ? 'Party Preference: ' + ({ D: 'Democratic', R: 'Republican' }[k.party] || k.party) + ' · ' + k.designation : k.designation]; });
+      opts = c.candidates.map(function (k) { return [k.id, k.name, k.party ? (S.state.partyLabel || 'Party') + ': ' + partyName(k.party) + ' · ' + k.designation : k.designation]; });
       if (c.unopposed) opts.push(['writein', 'Write-in', 'Someone not on the ballot']);
       opts.push(['skip', 'Leave blank', '']);
     }
     var sug = c.kind === 'retention' ? (r.label === 'skip' ? 'skip' : r.pick) : r.pick;
     return '<section class="panel"><div class="band"><h3>Your vote</h3><span class="votefor">' + (c.voteFor ? 'Vote for ' + (c.voteFor === 1 ? 'One' : c.voteFor) : 'Yes or No') + '</span></div><div class="panel-body">' +
-      (c.id === 'slo-council' ? '<p class="small"><b>Pick only one.</b> The two candidates with the most votes win.</p>' : '') +
+      (c.instructions ? '<p class="small"><b>' + esc(c.instructions) + '</b></p>' : '') +
+      (r.multi ? '<p class="small">Vote for up to ' + r.seats + '. Tap to select or unselect.</p>' : '') +
       '<div class="choices">' + opts.map(function (o) {
-        var tag = o[0] === sug ? '<span class="flag conflict">Your match</span>' : '';
-        return '<button type="button" class="choice" data-choose="' + esc(o[0]) + '" aria-pressed="' + (cur === o[0]) + '"><span class="oval"></span><span class="c-main"><span class="c-name">' + esc(o[1]) + '</span>' + (o[2] ? '<span class="c-sub">' + esc(o[2]) + '</span>' : '') + '</span>' + tag + '</button>';
+        var isSug = Array.isArray(sug) ? sug.indexOf(o[0]) >= 0 : o[0] === sug;
+        var isCur = Array.isArray(cur) ? cur.indexOf(o[0]) >= 0 : cur === o[0];
+        var tag = isSug ? '<span class="flag conflict">Your match</span>' : '';
+        return '<button type="button" class="choice" data-choose="' + esc(o[0]) + '" aria-pressed="' + isCur + '"><span class="oval"></span><span class="c-main"><span class="c-name">' + esc(o[1]) + '</span>' + (o[2] ? '<span class="c-sub">' + esc(o[2]) + '</span>' : '') + '</span>' + tag + '</button>';
       }).join('') + '</div>' +
       (ch ? '<p class="small muted">Saved ' + esc(ch.date) + (ch.agreed === false ? ' · you chose differently from your match' : '') + '. <button type="button" class="linkish" data-act="clear-choice">Clear</button></p>' : '') +
       (S.disagree && S.disagree.id === c.id ? disagreeHTML(c, r) : '') +
@@ -481,7 +547,7 @@
         var res = r.candidates.filter(function (x) { return x.id === k.id; })[0];
         var w = Math.min(50, Math.abs(res.score) / maxAbs * 50);
         var meter = c.unopposed ? '' : '<div class="meter" title="How well this candidate fits your answers"><i style="' + (res.score >= 0 ? 'left:50%;width:' + w + '%' : 'left:' + (50 - w) + '%;width:' + w + '%') + '"></i></div>';
-        return '<div class="cand"><div class="cand-head"><span class="cand-name">' + esc(k.name) + '</span><span class="small muted">' + esc(k.party ? ({ D: 'Democratic', R: 'Republican' }[k.party] || k.party) + ' · ' : '') + esc(k.designation) + '</span></div>' + meter +
+        return '<div class="cand"><div class="cand-head"><span class="cand-name">' + esc(k.name) + '</span><span class="small muted">' + esc(k.party ? partyName(k.party) + ' · ' : '') + esc(k.designation) + '</span></div>' + meter +
           claimList(c, (k.positions || []).concat(k.notes || [])) +
           (k.endorse ? '<p class="small"><b>Endorsed by:</b> ' + k.endorse.map(function (e) { return claim(c, { t: e.who, s: e.s, c: e.c }); }).join('; ') + '</p>' : '') +
           '</div>';
@@ -489,7 +555,9 @@
       (c.flags ? c.flags.map(function (f) { return '<p class="small"><span class="flag low">Thin information</span> ' + esc(f.t) + '</p>'; }).join('') : '');
   }
   function retentionBody(c) {
+    var ret = S.state.retention || {};
     return claimList(c, c.about) +
+      (ret.threshold && ret.threshold !== 0.5 ? '<p class="small"><b>' + Math.round(ret.threshold * 100) + '% Yes is needed to keep a judge in ' + esc(S.state.name) + '.</b></p>' : '') +
       '<div class="judge-grid">' + c.judges.map(function (j) {
         return '<div><b>' + esc(j.name) + '</b><br><span class="muted">' + esc(j.role) + '</span>' + (j.notes ? '<br>' + j.notes.map(function (n) { return claim(c, n); }).join(' ') : '') + '</div>';
       }).join('') + '</div>' +
@@ -499,7 +567,7 @@
     var c = contestById(S.itemId); if (!c) return viewSlate();
     var r = S.results[c.id];
     var inWalk = S.walk.indexOf(c.id);
-    var head = c.kind === 'measure' ? 'Proposition ' + c.num : c.office;
+    var head = c.kind === 'measure' ? measureName() + ' ' + c.num : c.office;
     var sub = c.kind === 'measure' ? c.type : (c.voteFor ? 'Vote for ' + (c.voteFor === 1 ? 'One' : c.voteFor) : 'Yes / No');
     var conflictBox = r.conflict ? '<div class="callout"><h4>Your beliefs conflict here</h4><p class="small">Some of your answers point one way and some the other, so this is a close call. Look at the reasons below and decide which matters more to you.</p></div>' : '';
     var body = c.kind === 'measure' ? measureBody(c) : c.kind === 'retention' ? retentionBody(c) : raceBody(c, r);
@@ -511,7 +579,9 @@
         conflictBox +
         (c.kind === 'measure' ? qualityHTML(c, r) : '') +
         aiNoteHTML(c) +
+        (E.auditStatus(itemAudits(c.id)).status === 'disagree' ? '<div class="callout warn"><p class="small"><b>≠ Models disagree.</b> Another AI model disputes parts of this entry. See "Bias check by other AI models" below.</p></div>' : '') +
         body +
+        auditHTML(c) +
         '<div class="row no-print"><button type="button" class="btn ghost small" data-act="ai-one">Ask your AI about this</button></div>' +
       '</div></section>' +
       decisionHTML(c, r) + walkNav;
@@ -602,26 +672,155 @@
       S.beliefs.general[parts[1]] = nb;
     } else if (parts[0] === 'respec' && D.draft) {
       change = { q: parts[1], field: 'specific', from: S.beliefs.specific[parts[1]] || null, to: D.draft.v };
-      S.beliefs.specific[parts[1]] = { v: D.draft.v, date: today(), election: S.election.id };
+      S.beliefs.specific[parts[1]] = { v: D.draft.v, date: today(), election: S.election.key };
     }
-    var dec = S.beliefs.decisions.filter(function (d) { return d.election === S.election.id && d.contest === c.id; }).slice(-1)[0];
+    var dec = S.beliefs.decisions.filter(function (d) { return d.election === S.election.key && d.contest === c.id; }).slice(-1)[0];
     if (dec) { dec.reasonType = parts[0]; dec.reasonKey = key; dec.note = note; dec.change = change; }
     if (change) S.beliefs.history.push({ date: today(), change: change, because: contestTitle(c), note: note });
     S.disagree = null; save(); rescore();
     toast(change ? 'Saved. Your profile was updated.' : 'Saved your reason.');
     render();
   }
+  function sameChoice(a, b) {
+    if (Array.isArray(a) || Array.isArray(b)) return [].concat(a || []).slice().sort().join(',') === [].concat(b || []).slice().sort().join(',');
+    return a === b;
+  }
   function choose(c, v) {
     var r = S.results[c.id];
+    if (r.multi && v !== 'skip') {
+      // Toggle a candidate in a multi-seat race, up to the number of seats.
+      var prev = eState().choices[c.id], cur = prev && Array.isArray(prev.v) ? prev.v.slice() : [];
+      var i = cur.indexOf(v);
+      if (i >= 0) cur.splice(i, 1); else if (cur.length < r.seats) cur.push(v); else { toast('You can pick up to ' + r.seats); return; }
+      v = cur;
+    }
     var sug = c.kind === 'retention' ? (r.label === 'skip' ? 'skip' : r.pick) : r.pick;
-    var agreed = sug ? sug === v : null;
+    var agreed = sug ? sameChoice(sug, v) : null;
     eState().choices[c.id] = { v: v, date: today(), suggested: sug || null, agreed: agreed };
-    S.beliefs.decisions.push({ date: today(), election: S.election.id, contest: c.id, suggested: sug || null, chose: v, agreed: agreed });
+    S.beliefs.decisions.push({ date: today(), election: S.election.key, contest: c.id, suggested: sug || null, chose: v, agreed: agreed });
     save();
-    if (agreed === false && v !== 'skip' && c.kind !== 'retention') S.disagree = { id: c.id, chosen: v, key: null, draft: null };
+    if (agreed === false && v !== 'skip' && c.kind !== 'retention' && !r.multi) S.disagree = { id: c.id, chosen: v, key: null, draft: null };
     else S.disagree = null;
     render();
     if (S.disagree) { var el = $('#disagree'); if (el) el.scrollIntoView({ block: 'nearest' }); }
+  }
+
+  // ---------- cross-model bias audit ----------
+  var AUDIT_MODELS = [['chatgpt', 'ChatGPT', 'https://chatgpt.com/'], ['grok', 'Grok', 'https://grok.com/'], ['gemini', 'Gemini', 'https://gemini.google.com/'], ['other', 'Other model', '']];
+  function modelLabel(k) { var m = AUDIT_MODELS.filter(function (x) { return x[0] === k; })[0]; return m ? m[1] : k; }
+  function auditPayload(c) {
+    var srcIds = {};
+    JSON.stringify(c, function (k, v) { if (k === 's' && Array.isArray(v)) v.forEach(function (x) { srcIds[x] = 1; }); return v; });
+    var item = JSON.parse(JSON.stringify(c, function (k, v) { return k === '_file' || k === 'order' ? undefined : v; }));
+    var dims = Object.keys(E.dimsTouched([c])).map(dimById).filter(Boolean).map(function (d) { return { id: d.id, label: d.label, sideA: d.a, sideB: d.b }; });
+    var qs = E.specificFor([c], S.values).map(function (q) {
+      return { id: q.id, question: q.q, options: q.options.map(function (o) {
+        var fx = o.fx && (o.fx[c.id] != null ? o.fx[c.id] : o.fx['*' + c.kind]);
+        return { answer: o.l, effectOnThisItem: fx == null ? 'none' : fx };
+      }) };
+    });
+    var sources = {};
+    Object.keys(srcIds).forEach(function (k) { var x = S.sources[c._file + ':' + k] || S.sources['state:' + k]; if (x) sources[k] = x.pub + ': ' + x.title + ' <' + x.url + '>'; });
+    return { item: item, beliefDefinitions: dims, followUpQuestions: qs, sources: sources };
+  }
+  function buildAuditPrompt(c) {
+    return [
+      'You are reviewing a nonpartisan voter-guide entry written by another AI model (Claude) for Vote Helper, a ballot advisor. Your job is to find bias, errors and gaps. Don\'t say how to vote.',
+      '',
+      'Ballot: ' + S.election.name + ', ' + S.election.area + '. Item: ' + contestTitle(c) + '.',
+      '',
+      'Check each of these:',
+      '1. Framing: is any wording in the summary, Yes/No meaning, fiscal text, pros or cons slanted toward one side? Quote the words.',
+      '2. Arguments: are the strongest arguments on both sides present and fairly stated? Name any major missing argument and who makes it.',
+      '3. Facts: flag anything you believe is wrong or outdated. Only flag what you can support, say when you\'re unsure, and cite a source if you can.',
+      '4. Belief mappings: each "tag" says which belief a Yes vote moves ("yes": +1 toward side B, -1 toward side A) and how strongly ("w": 1-3). For candidates, each position has a "stance" from -1 (side A) to +1 (side B). Follow-up questions show how each answer moves this item (positive = toward Yes or toward that candidate). Are any directions wrong, weights off, or mappings missing?',
+      '5. Quality flags: are any unsupported, one-sided, or held to a different standard than you would apply to a similar measure favored by the other side? Are real drafting problems missing?',
+      '6. Overall lean: does the entry as a whole lean left, right, toward Yes, or toward No?',
+      'Be specific and brief. If the entry is fair and accurate, say so.',
+      '',
+      'ENTRY (JSON):',
+      JSON.stringify(auditPayload(c), null, 1),
+      '',
+      'End your reply with exactly one JSON block in this format:',
+      '```json',
+      '{"voteHelperAudit": 1, "item": "' + c.id + '", "verdict": "agree | minor | major", "lean": "none | left | right | yes | no | unclear", "issues": [{"area": "framing | arguments | facts | tags | quality | candidates", "severity": "minor | major", "detail": "...", "fix": "..."}], "tags": [{"dim": "<belief id>", "agree": true, "direction": -1, "weight": 3, "note": ""}]}',
+      '```',
+      'verdict: agree = fair and accurate; minor = small fixes only; major = biased, wrong, or missing something important. In "tags", list every belief mapping you reviewed, with agree: false where you think it\'s wrong.'
+    ].join('\n');
+  }
+  // Pull the JSON object containing a marker key out of a pasted reply.
+  function extractJSON(text, marker) {
+    try { var whole = JSON.parse(text); if (whole && whole[marker] != null) return whole; } catch (e) {}
+    var i = text.indexOf('"' + marker + '"'); if (i < 0) return null;
+    var start = text.lastIndexOf('{', i); if (start < 0) return null;
+    var depth = 0, inStr = false, escNext = false;
+    for (var j = start; j < text.length; j++) {
+      var ch = text[j];
+      if (inStr) { if (escNext) escNext = false; else if (ch === '\\') escNext = true; else if (ch === '"') inStr = false; continue; }
+      if (ch === '"') inStr = true; else if (ch === '{') depth++; else if (ch === '}') { depth--; if (depth === 0) { try { return JSON.parse(text.slice(start, j + 1)); } catch (e) { return null; } } }
+    }
+    return null;
+  }
+  function saveAudit(c, model, text) {
+    var data = extractJSON(text, 'voteHelperAudit');
+    var rec = { model: model, date: today(), raw: text.slice(0, 6000) };
+    if (data) {
+      rec.verdict = ['agree', 'minor', 'major'].indexOf(data.verdict) >= 0 ? data.verdict : 'minor';
+      rec.lean = data.lean || 'unclear';
+      rec.issues = Array.isArray(data.issues) ? data.issues.slice(0, 20) : [];
+      rec.tags = Array.isArray(data.tags) ? data.tags.slice(0, 30) : [];
+      if (data.item && data.item !== c.id) rec.itemMismatch = data.item;
+    } else {
+      rec.verdict = 'unparsed'; rec.issues = []; rec.tags = [];
+    }
+    var ek = S.election.key;
+    S.audits[ek] = S.audits[ek] || {};
+    S.audits[ek][c.id] = S.audits[ek][c.id] || {};
+    S.audits[ek][c.id][model] = rec;
+    saveAudits();
+    return rec;
+  }
+  function auditHTML(c) {
+    var audits = itemAudits(c.id), st = E.auditStatus(audits);
+    var headline = {
+      none: 'Not checked by another model yet.',
+      agree: 'Other models found this entry fair.',
+      minor: 'Other models suggested small fixes.',
+      'split-minor': 'Models differ slightly: one found it fair, another suggested small fixes.',
+      disagree: 'Models disagree with parts of this entry. Read their objections before relying on it.',
+      unparsed: 'A reply was saved but had no JSON block; read it below.'
+    }[st.status];
+    var verdictName = { agree: 'Fair', minor: 'Small fixes', major: 'Major problems', unparsed: 'Unparsed' };
+    var blocks = Object.keys(audits).map(function (k) {
+      var a = audits[k], m = st.byModel[k] || {};
+      var issues = (a.issues || []).map(function (i) {
+        return '<li><span class="sev">' + esc((i.severity || '') + ' · ' + (i.area || '')) + '</span> ' + esc(i.detail || '') + (i.fix ? ' <span class="muted">Suggested fix: ' + esc(i.fix) + '</span>' : '') + '</li>';
+      }).join('');
+      var tagLines = (a.tags || []).filter(function (t) { return t && t.agree === false; }).map(function (t) {
+        var d = dimById(t.dim);
+        return '<li><b>' + esc(d ? d.label : t.dim) + '</b>: disputes the mapping' + (t.direction != null ? ' (thinks direction ' + esc(t.direction) + ')' : '') + (t.weight != null ? ', weight ' + esc(t.weight) : '') + (t.note ? '. ' + esc(t.note) : '') + '</li>';
+      }).join('');
+      return '<div class="stack" style="border-top:1px solid var(--rule);padding-top:8px">' +
+        '<div class="row"><b>' + esc(modelLabel(k)) + '</b><span class="flag ' + (m.level === 'disagree' ? 'quality' : m.level === 'agree' ? 'decided' : 'low') + '">' + esc(a.verdict !== 'major' && m.tagDisputes && m.tagDisputes.length ? 'Disputes a mapping' : (verdictName[a.verdict] || a.verdict)) + '</span>' +
+        (m.leaning ? '<span class="flag quality">Sees a lean: ' + esc(m.leaning) + '</span>' : '') + '<span class="small muted">' + esc(a.date) + '</span>' +
+        '<button type="button" class="linkish small" data-audit-del="' + esc(k) + '">Remove</button></div>' +
+        (a.itemMismatch ? '<p class="small">Note: the reply was about item "' + esc(a.itemMismatch) + '".</p>' : '') +
+        (issues ? '<ul class="claims small">' + issues + '</ul>' : '') +
+        (tagLines ? '<ul class="claims small">' + tagLines + '</ul>' : '') +
+        (a.verdict === 'unparsed' ? '<details><summary class="small">Show reply</summary><p class="small" style="white-space:pre-wrap">' + esc(a.raw) + '</p></details>' : '') +
+        '</div>';
+    }).join('');
+    var open = st.status === 'disagree' || (S.auditOpen === c.id);
+    return '<details class="callout' + (st.status === 'disagree' ? ' warn' : '') + '"' + (open ? ' open' : '') + ' id="audit-box"><summary><h4 style="display:inline">Bias check by other AI models' + (st.count ? ' (' + st.count + ')' : '') + '</h4></summary>' +
+      '<p class="small">' + esc(headline) + ' Claude wrote this entry; asking a different model helps catch slant, missing arguments and wrong belief mappings. The prompt contains only the ballot entry, not your beliefs.</p>' +
+      blocks +
+      '<div class="stack no-print"><div class="row"><button type="button" class="btn small" data-act="copy-audit">1. Copy audit prompt</button>' +
+      AUDIT_MODELS.filter(function (m) { return m[2]; }).map(function (m) { return '<a class="small" href="' + m[2] + '" target="_blank" rel="noopener">Open ' + m[1] + '</a>'; }).join(' · ') + '</div>' +
+      '<textarea id="audit-prompt" readonly hidden>' + esc(buildAuditPrompt(c)) + '</textarea>' +
+      '<label class="field" for="audit-model">2. Which model answered?<select id="audit-model">' + AUDIT_MODELS.map(function (m) { return '<option value="' + m[0] + '">' + m[1] + '</option>'; }).join('') + '</select></label>' +
+      '<label class="field" for="audit-reply">3. Paste its whole reply<textarea id="audit-reply" placeholder="Paste here"></textarea></label>' +
+      '<div class="row"><button type="button" class="btn small" data-act="save-audit">Save reply</button></div></div>' +
+      '</details>';
   }
 
   // ---------- cheat sheet ----------
@@ -642,7 +841,7 @@
       var pick = x.v ? '<span class="oval filled"></span>' + esc(choiceText(x.c, x.v)) : '<span class="oval"></span><span class="unreviewed">Undecided</span>';
       var note = '';
       if (!x.mine && x.v) note = '<span class="sh-note">Your match; not reviewed yet</span>';
-      if (x.c.id === 'slo-council') note += '<span class="sh-note">Mark only ONE.</span>';
+      if (x.c.sheetNote) note += '<span class="sh-note">' + esc(x.c.sheetNote) + '</span>';
       if (x.c.kind === 'retention' && x.v && x.v !== 'skip') note += '<span class="sh-note">' + esc(x.c.judges.map(function (j) { return j.name; }).join(', ')) + '</span>';
       html += '<div class="sh-row"><span class="sh-office">' + esc(contestTitle(x.c)) + '</span><span class="sh-pick">' + pick + '</span>' + note + '</div>';
     });
@@ -658,7 +857,7 @@
     sheetRows().forEach(function (x) {
       var sec = sectionName(x.c);
       if (sec !== lastSec) { lines.push('', sec.toUpperCase()); lastSec = sec; }
-      lines.push(contestTitle(x.c) + ': ' + (x.v ? choiceText(x.c, x.v) : 'undecided') + (x.mine || !x.v ? '' : ' (suggested)') + (x.c.id === 'slo-council' ? ' [mark only one]' : ''));
+      lines.push(contestTitle(x.c) + ': ' + (x.v ? choiceText(x.c, x.v) : 'undecided') + (x.mine || !x.v ? '' : ' (suggested)') + (x.c.sheetNote ? ' [' + x.c.sheetNote + ']' : ''));
     });
     return lines.join('\n');
   }
@@ -702,6 +901,11 @@
       '<textarea id="export-json" readonly>' + esc(json) + '</textarea>' +
       '<div class="row"><button type="button" class="btn" data-act="copy-export">Copy</button>' + (IN_FRAME ? '' : '<button type="button" class="btn ghost" data-act="download">Download beliefs.json</button>') + '</div>' +
       '</div></section>' +
+      '<section class="panel"><div class="band"><h2>Bias-check replies</h2></div><div class="panel-body">' +
+      '<p class="small">Replies you saved from other AI models, per item and model. These hold no personal views; share them with whoever maintains the data so the entries can be fixed.</p>' +
+      '<textarea id="export-audits" readonly>' + esc(JSON.stringify({ app: 'vote-helper-audits', schema: 1, exported: today(), audits: S.audits }, null, 2)) + '</textarea>' +
+      '<div class="row"><button type="button" class="btn ghost" data-act="copy-audits">Copy</button></div>' +
+      '</div></section>' +
       '<section class="panel"><div class="band"><h2>Import beliefs</h2></div><div class="panel-body">' +
       '<p class="small">Paste a beliefs file, or an AI reply that ends with a <code>voteHelperReply</code> JSON block.</p>' +
       '<textarea id="import-json" placeholder="Paste here"></textarea>' +
@@ -735,6 +939,13 @@
       save(); rescore();
       S.importMsg = 'Added AI notes to ' + n + ' items.' + (S.aiProfile.length ? ' Review the suggested profile changes below.' : '');
       render(); return;
+    }
+    if (data.app === 'vote-helper-audits' && data.audits) {
+      Object.keys(data.audits).forEach(function (ek) {
+        S.audits[ek] = S.audits[ek] || {};
+        Object.keys(data.audits[ek]).forEach(function (cid) { S.audits[ek][cid] = Object.assign(S.audits[ek][cid] || {}, data.audits[ek][cid]); });
+      });
+      saveAudits(); S.importMsg = 'Imported bias-check replies.'; render(); return;
     }
     if (data.app !== 'vote-helper' || !data.general) { S.importMsg = 'This doesn\'t look like a Vote Helper beliefs file.'; render(); return; }
     S.beliefs = normalize(data); save(); applyDistricts();
@@ -816,7 +1027,10 @@
       '<div class="stack"><h4>3. Matching</h4><p>The page adds up your answers against each item\'s tags: your position (−2 to +2) × the direction a Yes vote moves × how strongly the item touches that belief × how much it matters to you. No AI runs and nothing is sent anywhere. When answers point both ways with similar weight, the item is flagged as a conflict.</p></div>' +
       '<div class="stack"><h4>4. Learning</h4><p>When you pick differently from your match, you can say why. Choosing a reason updates your profile (with your OK), and the history is kept with dates.</p></div>' +
       '<div class="stack"><h4>Optional: your own AI</h4><p>"Ask your AI" builds a prompt with your beliefs and the sourced data that you can paste into your own assistant. Its reply can be pasted back as notes.</p></div>' +
-      '<div class="stack"><h4>Research method for this election</h4><p class="small">Official ballot labels, fiscal summaries and supporter lists were transcribed from a San Luis Obispo County ballot. Other facts came from web search results summarizing the named source; the source pages weren\'t opened in full, so verify anything important. Researched ' + esc(S.election.researched) + '.</p></div>' +
+      '<div class="stack"><h4>Research method for this election</h4><p class="small">' + esc(S.election.method || '') + ' Researched ' + esc(S.election.researched || '') + '.</p></div>' +
+      (S.state.measures && S.state.measures.note ? '<div class="stack"><h4>Ballot measures in ' + esc(S.state.name) + '</h4><p class="small">' + esc(S.state.measures.note) + '</p></div>' : '') +
+      (S.state.retention && S.state.retention.note ? '<div class="stack"><h4>Judges in ' + esc(S.state.name) + '</h4><p class="small">' + esc(S.state.retention.note) + '</p></div>' : '') +
+      '<div class="stack"><h4>Bias check with other AI models</h4><p class="small">The summaries, arguments, belief tags and quality flags were written by Claude. On each item you can copy an audit prompt into ChatGPT, Grok or another model, then paste its reply back. Replies are saved per item and per model, and items where a model objects are flagged "Models disagree."</p></div>' +
       '</div></section>';
   }
 
@@ -862,6 +1076,7 @@
       return;
     }
     if (ds.choose) { var c = contestById(S.itemId); return choose(c, ds.choose); }
+    if (ds.auditDel) { var ek = S.election.key; delete (S.audits[ek] || {})[S.itemId][ds.auditDel]; saveAudits(); S.auditOpen = S.itemId; return render(); }
     switch (ds.act) {
       case 'start': S.returnTo = null; return startFlow();
       case 'q-next': commitDraft(); S.queuePos++; if (S.returnTo && S.queuePos >= S.queue.length) { var rt = S.returnTo; S.returnTo = null; rescore(); return setView(rt); } return advanceQueue();
@@ -884,6 +1099,17 @@
       case 'copy-ai': return copyText($('#ai-prompt').value, $('#ai-prompt'));
       case 'copy-export': return copyText($('#export-json').value, $('#export-json'));
       case 'copy-sheet': return copyText(sheetText(), null);
+      case 'copy-audits': return copyText($('#export-audits').value, $('#export-audits'));
+      case 'copy-audit': { var ap = $('#audit-prompt'); ap.hidden = false; return copyText(ap.value, ap); }
+      case 'save-audit': {
+        var txt = ($('#audit-reply') || {}).value || '';
+        if (!txt.trim()) { toast('Paste the model\'s reply first'); return; }
+        var rec = saveAudit(contestById(S.itemId), $('#audit-model').value, txt);
+        S.auditOpen = S.itemId; render();
+        toast(rec.verdict === 'unparsed' ? 'Saved, but no JSON block was found' : 'Saved ' + modelLabel(rec.model) + '\'s review');
+        var box = $('#audit-box'); if (box) box.scrollIntoView({ block: 'nearest' });
+        return;
+      }
       case 'print': return window.print();
       case 'download': {
         var blob = new Blob([JSON.stringify(S.beliefs, null, 2)], { type: 'application/json' });
@@ -901,6 +1127,13 @@
   });
   document.addEventListener('change', function (ev) {
     var t = ev.target;
+    if (t.dataset && t.dataset.pick) {
+      var pk = t.dataset.pick === 'place' ? t.value : placeKey(S.place);
+      var place = S.places.places.filter(function (p) { return placeKey(p) === pk; })[0];
+      var date = t.dataset.pick === 'date' ? t.value : place.elections[place.elections.length - 1].date;
+      $('#app').innerHTML = '<div class="loading">Loading…</div>';
+      return loadElection(place, date).then(function () { setView('home'); }).catch(showLoadError);
+    }
     if (t.dataset && t.dataset.district) { eState().districts[t.dataset.district] = t.value; save(); applyDistricts(); return render(); }
     if (t.name === 'dg' && S.disagree) { S.disagree.key = t.value; S.disagree.draft = null; var n = $('#dg-note'); S.disagree.note = n ? n.value : ''; return render(); }
   });
@@ -909,17 +1142,35 @@
   });
 
   // ---------- boot ----------
+  function showLoadError(err) {
+    $('#app').innerHTML = '<div class="callout warn"><p><b>Couldn\'t load the ballot data.</b> ' + esc(err.message) + '. If you opened this file directly from your computer, serve the folder instead (for example <code>python3 -m http.server</code>) or use the hosted page.</p></div>';
+  }
+  function pickInitial() {
+    var saved = S.beliefs.place, list = S.places.places;
+    var place = saved && list.filter(function (p) { return placeKey(p) === saved.key; })[0];
+    // No saved place (e.g. beliefs from the first version): use a place this person already has answers for.
+    if (!place) place = list.filter(function (p) { return Object.keys(S.beliefs.elections).some(function (k) { return k.indexOf(placeKey(p) + '/') === 0; }); })[0];
+    place = place || list[0];
+    var date = saved && saved.key === placeKey(place) && place.elections.some(function (e) { return e.date === saved.date; }) ? saved.date : null;
+    if (!date) {
+      // Default to the next upcoming election, else the latest.
+      var t = today(), up = place.elections.filter(function (e) { return e.date >= t; });
+      date = (up[0] || place.elections[place.elections.length - 1]).date;
+    }
+    return { place: place, date: date };
+  }
   S.beliefs = load();
-  Promise.all([fetchJSON('values.json'), fetchJSON('elections/index.json')]).then(function (res) {
-    S.values = res[0]; S.index = res[1];
-    return loadElection(S.index.elections[0]);
+  S.audits = loadAudits();
+  Promise.all([fetchJSON(DATA + 'values.json'), fetchJSON(DATA + 'places.json')]).then(function (res) {
+    S.baseValues = res[0]; S.places = res[1];
+    S.stateNames = S.places.stateNames || {};
+    var init = pickInitial();
+    return loadElection(init.place, init.date);
   }).then(function () {
     var hasAny = Object.keys(S.beliefs.general).length > 0;
     setView(hasAny ? 'slate' : 'home');
-  }).catch(function (err) {
-    $('#app').innerHTML = '<div class="callout warn"><p><b>Couldn\'t load the ballot data.</b> ' + esc(err.message) + '. If you opened this file directly from your computer, serve the folder instead (for example <code>python3 -m http.server</code>) or use the hosted page.</p></div>';
-  });
+  }).catch(showLoadError);
 
   // Exposed for tests and the console.
-  window.VoteHelper = { state: S, buildPrompt: function (s) { return buildPrompt(s || 'all'); } };
+  window.VoteHelper = { state: S, buildPrompt: function (s) { return buildPrompt(s || 'all'); }, buildAuditPrompt: function (id) { return buildAuditPrompt(contestById(id)); }, extractJSON: extractJSON };
 })();

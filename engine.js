@@ -35,18 +35,27 @@
     var ids = contest.specific || [];
     var all = (values && values.specific) || [];
     // Also include questions that list this contest in "for" even if the contest doesn't list them.
+    // A question can also apply to every contest of a kind (e.g. all judicial retention votes).
     all.forEach(function (q) {
-      if (q.for && q.for.indexOf(contest.id) >= 0 && ids.indexOf(q.id) < 0) ids = ids.concat([q.id]);
+      var forThis = (q.for && q.for.indexOf(contest.id) >= 0) || q.appliesToKind === contest.kind;
+      if (forThis && ids.indexOf(q.id) < 0) ids = ids.concat([q.id]);
     });
     ids.forEach(function (qid) {
       var q = all.filter(function (x) { return x.id === qid; })[0];
       var ans = beliefs && beliefs.specific && beliefs.specific[qid];
       if (!q || !ans) return;
       var opt = q.options.filter(function (o) { return o.v === ans.v; })[0];
-      if (!opt || !opt.fx || !(contest.id in opt.fx)) return;
-      out.push({ q: q, option: opt, fx: opt.fx[contest.id] });
+      var fx = optionFx(opt, contest);
+      if (fx === undefined) return;
+      out.push({ q: q, option: opt, fx: fx });
     });
     return out;
+  }
+  function optionFx(opt, contest) {
+    if (!opt || !opt.fx) return undefined;
+    if (contest.id in opt.fx) return opt.fx[contest.id];
+    if (('*' + contest.kind) in opt.fx) return opt.fx['*' + contest.kind];
+    return undefined;
   }
 
   function labelFor(score, max) {
@@ -118,24 +127,28 @@
       return { id: cand.id, name: cand.name, score: score, pro: pro, con: con, reasons: reasons };
     });
     var sorted = cands.slice().sort(function (a, b) { return b.score - a.score; });
-    var best = sorted[0], second = sorted[1];
+    // Multi-seat races ("Vote for 3"): compare the last winning slot with the first losing one.
+    var seats = Math.max(1, contest.voteFor || 1);
+    var multi = seats > 1;
+    var best = sorted[0], edge = sorted[seats - 1], next = sorted[seats];
     var anySignal = cands.some(function (c) { return c.reasons.length > 0; });
     var label, pick = null;
-    if (contest.unopposed) {
-      label = 'unopposed'; pick = best ? best.id : null;
+    var topIds = sorted.slice(0, seats).map(function (c) { return c.id; });
+    if (contest.unopposed || (multi && cands.length <= seats)) {
+      label = 'unopposed'; pick = multi ? cands.map(function (c) { return c.id; }) : (best ? best.id : null);
     } else if (!anySignal) {
       label = 'none';
     } else {
-      var margin = best.score - (second ? second.score : 0);
+      var margin = (edge ? edge.score : 0) - (next ? next.score : 0);
       if (margin >= 1.5) label = 'strong';
       else if (margin >= 0.5) label = 'lean';
       else label = 'call';
-      if (label !== 'call') pick = best.id;
+      if (label !== 'call') pick = multi ? topIds : best.id;
     }
-    var margin2 = best && second ? best.score - second.score : 0;
+    var margin2 = edge && next ? edge.score - next.score : 0;
     var conflict = !contest.unopposed && anySignal && best && best.pro >= 0.75 && best.con >= 0.75 && margin2 < 1;
     return {
-      kind: 'race', label: label, pick: pick, candidates: cands, ranked: sorted,
+      kind: 'race', label: label, pick: pick, multi: multi, seats: seats, candidates: cands, ranked: sorted,
       margin: margin2, conflict: conflict, tension: best ? Math.min(best.pro, best.con) : 0,
       reasons: best ? best.reasons : []
     };
@@ -161,7 +174,7 @@
 
   // Outcome bucket used to tell whether an answer changes a suggestion.
   function bucket(r) {
-    if (r.kind === 'race') return r.pick || 'call';
+    if (Array.isArray(r.pick)) return r.pick.slice().sort().join(',');
     return r.pick || 'call';
   }
 
@@ -207,9 +220,35 @@
 
   // Part 2 questions relevant to the given contests.
   function specificFor(contests, values) {
-    var ids = {};
-    contests.forEach(function (c) { (c.specific || []).forEach(function (q) { ids[q] = true; }); });
-    return ((values && values.specific) || []).filter(function (q) { return ids[q.id]; });
+    var ids = {}, kinds = {};
+    contests.forEach(function (c) { kinds[c.kind] = true; (c.specific || []).forEach(function (q) { ids[q] = true; }); });
+    return ((values && values.specific) || []).filter(function (q) {
+      return ids[q.id] || (q.appliesToKind && kinds[q.appliesToKind]) ||
+        (q.for || []).some(function (id) { return contests.some(function (c) { return c.id === id; }); });
+    });
+  }
+
+  // ---------- cross-model audits ----------
+  // audits: { modelKey: { verdict: 'agree'|'minor'|'major'|'unparsed', lean, issues: [{severity}], tags: [{dim, agree}] } }
+  // Returns how other models' reviews compare with the data file's (Claude's) judgments and with each other.
+  function auditStatus(audits) {
+    var keys = Object.keys(audits || {});
+    if (!keys.length) return { count: 0, status: 'none', disputes: [], byModel: {} };
+    var byModel = {}, disputes = [], verdicts = {};
+    keys.forEach(function (k) {
+      var a = audits[k] || {};
+      var tagDisputes = (a.tags || []).filter(function (t) { return t && t.agree === false; }).map(function (t) { return t.dim; });
+      var majorIssue = (a.issues || []).some(function (i) { return i && i.severity === 'major'; });
+      var leaning = a.lean && ['none', 'unclear', ''].indexOf(a.lean) < 0;
+      var disagrees = a.verdict === 'major' || majorIssue || leaning || tagDisputes.length > 0;
+      var level = a.verdict === 'unparsed' ? 'unparsed' : disagrees ? 'disagree' : ((a.issues || []).length || a.verdict === 'minor') ? 'minor' : 'agree';
+      byModel[k] = { level: level, tagDisputes: tagDisputes, leaning: leaning ? a.lean : null };
+      verdicts[level] = true;
+      tagDisputes.forEach(function (d) { if (disputes.indexOf(d) < 0) disputes.push(d); });
+    });
+    // Models disagree when any model disputes Claude's write-up, or the models split (one agrees, another objects).
+    var status = verdicts.disagree ? 'disagree' : (verdicts.agree && verdicts.minor && keys.length > 1) ? 'split-minor' : verdicts.minor ? 'minor' : verdicts.agree ? 'agree' : 'unparsed';
+    return { count: keys.length, status: status, disputes: disputes, byModel: byModel };
   }
 
   // Pick the contests worth a closer look: strongest internal conflict first.
@@ -233,7 +272,7 @@
 
   var api = {
     IMPORTANCE: IMPORTANCE, score: score, swing: swing, specificFor: specificFor,
-    conflicts: conflicts, applies: applies, dimsTouched: dimsTouched, labelFor: labelFor
+    conflicts: conflicts, applies: applies, auditStatus: auditStatus, dimsTouched: dimsTouched, labelFor: labelFor
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.VHEngine = api;

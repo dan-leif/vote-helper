@@ -1,10 +1,173 @@
 {
- "schema": 1,
- "id": "2026-11/ca",
- "scope": "California statewide",
- "election": "2026-11-03",
+ "schema": 2,
+ "state": "ca",
+ "locality": "statewide",
+ "date": "2026-11-03",
+ "cycle": "general",
+ "name": "November 3, 2026 General Election",
+ "area": "California (statewide)",
  "researched": "2026-10-20",
  "method": "Official ballot label text was transcribed from a San Luis Obispo County ballot (the wording is the same statewide). Other facts came from web search results that summarize and link the named source; the pages themselves were not opened in full. Confidence: h = official ballot or matches several sources, m = one reputable source via search summary, l = advocacy, opinion, thin or conflicting sources.",
+ "questions": [
+  {
+   "id": "q_recall",
+   "for": [
+    "p5"
+   ],
+   "q": "If voters recall a governor, how should the replacement be chosen?",
+   "options": [
+    {
+     "v": "same_ballot",
+     "l": "Voters pick a replacement on the same ballot (current system)",
+     "fx": {
+      "p5": -2
+     }
+    },
+    {
+     "v": "later",
+     "l": "The lieutenant governor serves, or a later election fills the seat (Prop 5's approach)",
+     "fx": {
+      "p5": 2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No preference",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_research_institute",
+   "for": [
+    "p38"
+   ],
+   "q": "Prop 38 would send half of an $8.4B research bond to one institute chosen by the measure's criteria. Is that OK with you?",
+   "options": [
+    {
+     "v": "ok",
+     "l": "Fine, if the research is good",
+     "fx": {
+      "p38": 1
+     }
+    },
+    {
+     "v": "competitive",
+     "l": "No, all of it should be open to competitive grants",
+     "fx": {
+      "p38": -2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_wealth_tax_form",
+   "for": [
+    "p40",
+    "p41",
+    "p42"
+   ],
+   "q": "Prop 40 is a one-time 5% tax on billionaires' total net worth (assets, not income). How do you feel about taxing wealth this way?",
+   "options": [
+    {
+     "v": "support",
+     "l": "Support it",
+     "fx": {
+      "p40": 2,
+      "p41": -1,
+      "p42": -2
+     }
+    },
+    {
+     "v": "income_only",
+     "l": "I'd rather tax income, not wealth",
+     "fx": {
+      "p40": -1,
+      "p42": 1
+     }
+    },
+    {
+     "v": "oppose",
+     "l": "Oppose wealth taxes",
+     "fx": {
+      "p40": -2,
+      "p41": 1,
+      "p42": 2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_clinic_mandate",
+   "for": [
+    "p44"
+   ],
+   "q": "Should the state require nonprofit community clinics to spend at least 90% of their revenue on care, with penalties if they don't?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Yes, overhead should be capped",
+     "fx": {
+      "p44": 2
+     }
+    },
+    {
+     "v": "no",
+     "l": "No, let clinics decide how to spend",
+     "fx": {
+      "p44": -2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_public_insurance",
+   "for": [
+    "ins"
+   ],
+   "q": "Should California create a public disaster (home) insurance program instead of relying mainly on private insurers?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Yes, a public program",
+     "fx": {
+      "ins": {
+       "kim": 2
+      }
+     }
+    },
+    {
+     "v": "no",
+     "l": "No, stabilize the private market",
+     "fx": {
+      "ins": {
+       "allen": 2
+      }
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  }
+ ],
  "sources": {
   "ballot": {
    "title": "Official Ballot, Nov 3 2026, San Luis Obispo County (Ballot Type 26)",
@@ -348,27 +511,6 @@
    "url": "https://www.sfchronicle.com/opinion/editorials/article/prop-45-ceqa-california-22468905.php",
    "type": "opinion",
    "short": "SF Chron"
-  },
-  "cadem": {
-   "title": "2026 Proposition Endorsements",
-   "pub": "California Democratic Party",
-   "url": "https://cadem.org/wp-content/uploads/2026/10/2026-Proposition-Endorsements-2.pdf",
-   "type": "endorser",
-   "short": "CADEM"
-  },
-  "cagop": {
-   "title": "CAGOP Endorsements",
-   "pub": "California Republican Party",
-   "url": "https://cagop.org/endorsements/",
-   "type": "endorser",
-   "short": "CAGOP"
-  },
-  "lwvc": {
-   "title": "LWVC Ballot Recommendations for Nov. 3, 2026",
-   "pub": "League of Women Voters of California",
-   "url": "https://lwvc.org/ballot-recommendations-nov-3-2026/",
-   "type": "endorser",
-   "short": "LWVC"
   },
   "ppic": {
    "title": "PPIC Statewide Survey, September 2026 (as reported by KPBS and LAist)",
@@ -1495,9 +1637,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "neutral",
-    "lwvc": "yes"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "neutral",
+     "lwvc": "yes"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -1605,9 +1750,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "no",
-    "lwvc": "yes"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -1701,9 +1849,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "no",
-    "lwvc": "yes"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -1801,9 +1952,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "no",
-    "lwvc": "yes"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -1897,9 +2051,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "no",
-    "lwvc": "yes"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
    },
    "poll": {
     "t": "PPIC, September: 35% yes, 59% no among likely voters.",
@@ -2002,9 +2159,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "neutral",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "neutral",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -2105,9 +2265,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "yes",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "poll": {
     "t": "PPIC, September: 55% yes.",
@@ -2210,9 +2373,12 @@
     }
    ],
    "endorse": {
-    "cadem": "no",
-    "cagop": "yes",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -2318,9 +2484,12 @@
     }
    ],
    "endorse": {
-    "cadem": "yes",
-    "cagop": "no",
-    "lwvc": "neutral"
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "neutral"
+    },
+    "other": []
    },
    "poll": {
     "t": "UC Berkeley IGS: 48% yes, 41% no.",
@@ -2445,9 +2614,12 @@
     }
    ],
    "endorse": {
-    "cadem": "no",
-    "cagop": "yes",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -2567,9 +2739,11 @@
     }
    ],
    "endorse": {
-    "cadem": "no",
-    "cagop": "yes",
-    "lwvc": "no",
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
     "other": [
      {
       "who": "Gov. Gavin Newsom: yes",
@@ -2704,9 +2878,12 @@
     }
    ],
    "endorse": {
-    "cadem": "no",
-    "cagop": "yes",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -2816,9 +2993,12 @@
     }
    ],
    "endorse": {
-    "cadem": "no",
-    "cagop": "no",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "no",
+     "cagop": "no",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "tags": [
     {
@@ -2929,9 +3109,12 @@
     }
    ],
    "endorse": {
-    "cadem": "no",
-    "cagop": "yes",
-    "lwvc": "no"
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
    },
    "tags": [
     {

@@ -1,0 +1,76 @@
+{
+ "schema": 2,
+ "id": "wi",
+ "name": "Wisconsin",
+ "abbr": "WI",
+ "verified": "partial: settings below were checked via search summaries on 2026-10-20; confirm before publishing a place",
+ "measures": {
+  "has": true,
+  "name": "Constitutional Amendment Question",
+  "short": "Question",
+  "citizenInitiatives": false,
+  "note": "No statewide citizen initiatives. The Legislature places amendments on the ballot directly (no governor's signature), in spring or fall elections.",
+  "s": [
+   "bp_wi"
+  ],
+  "c": "m"
+ },
+ "constitutionalNote": "This amends the Wisconsin Constitution; changing it again takes legislative passage in two sessions and another statewide vote.",
+ "retention": {
+  "has": false,
+  "note": "Judges are elected in contested nonpartisan races (Supreme Court, Court of Appeals, circuit courts) at the April spring election."
+ },
+ "cycles": [
+  {
+   "id": "spring-primary",
+   "label": "Spring primary",
+   "months": [
+    2
+   ]
+  },
+  {
+   "id": "spring",
+   "label": "Spring (nonpartisan, judicial and local)",
+   "months": [
+    4
+   ]
+  },
+  {
+   "id": "partisan-primary",
+   "label": "Partisan primary",
+   "months": [
+    8
+   ]
+  },
+  {
+   "id": "general",
+   "label": "General",
+   "months": [
+    11
+   ]
+  }
+ ],
+ "primarySystem": "Partisan primaries in August; spring elections are nonpartisan.",
+ "partyLabel": "Party",
+ "parties": {
+  "D": "Democratic",
+  "R": "Republican",
+  "L": "Libertarian",
+  "G": "Green"
+ },
+ "endorsers": [],
+ "lookup": {
+  "label": "MyVote Wisconsin",
+  "url": "https://myvote.wi.gov/"
+ },
+ "questions": [],
+ "sources": {
+  "bp_wi": {
+   "title": "Wisconsin constitutional amendments",
+   "pub": "Ballotpedia News",
+   "short": "Ballotpedia",
+   "url": "https://news.ballotpedia.org/tag/wisconsin-constitutional-amendments/",
+   "type": "reference"
+  }
+ }
+}
