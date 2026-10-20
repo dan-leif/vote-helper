@@ -747,7 +747,7 @@
     var o = { id: c.id, kind: c.kind };
     if (c.kind === 'measure') {
       o.number = c.num; o.officialLabel = c.label; o.type = c.type;
-      o.officialText = official(c.summary).concat(official(c.fiscal)).concat(official(c.supporters));
+      o.officialText = c.ballotText ? [c.ballotText.t] : official(c.summary).concat(official(c.fiscal)).concat(official(c.supporters));
     } else if (c.kind === 'retention') {
       o.office = c.office; o.judges = (c.judges || []).map(function (j) { return j.name + ' (' + j.role + ')'; });
     } else {

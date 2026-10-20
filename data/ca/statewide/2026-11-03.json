@@ -1675,7 +1675,14 @@
    ],
    "quality": [],
    "qualityNote": "No specific drafting problems found in the sources searched.",
-   "conf": "h"
+   "conf": "h",
+   "ballotText": {
+    "t": "Authorizes $11.25 billion in state general obligation bonds for housing affordability programs, including multifamily rental housing, mortgages for veterans, supportive housing, preservation of existing affordable housing, and downpayment assistance. Fiscal Impact: Increased state cost of $500 million to $600 million annually for about 25 years to repay the housing bond. Supporters: US Vets; CA Federation of Teachers; Self-Help for the Elderly; Habitat for Humanity CA; CA Alliance of Child & Family Services. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p2",
@@ -1779,7 +1786,14 @@
      "c": "m"
     }
    ],
-   "conf": "h"
+   "conf": "h",
+   "ballotText": {
+    "t": "Increases California's Rainy Day Fund, approved by voters in 2014, to provide funding for education, health care, public safety, and other essential services during economic downturns. Fiscal Impact: State budget reserves would be higher. Supporters: CA Professional Firefighters; LA Chamber of Commerce; Gavin Newsom; Xavier Becerra; Assemblymember Jesse Gabriel. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p3",
@@ -1878,7 +1892,14 @@
    ],
    "quality": [],
    "qualityNote": "No specific drafting problems found. Like every constitutional amendment, changing it later takes another statewide vote.",
-   "conf": "h"
+   "conf": "h",
+   "ballotText": {
+    "t": "Makes permanent existing voter-approved tax rates for individuals earning over $371,000 (adjusted annually for inflation). Allocates tax revenues to public education. Fiscal Impact: Maintains $5 billion to $15 billion of annual state income tax revenue by making a temporary tax increase on high-income earners permanent instead of letting it expire in 2031. Supporters: California Teachers Association; CA School Nurses Organization; California State PTA; Planned Parenthood Affiliates of CA. Opponents: California Taxpayers Association; Family Business Association of California; California Hispanic Chambers of Commerce.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p4",
@@ -1981,7 +2002,14 @@
      "c": "m"
     }
    ],
-   "conf": "h"
+   "conf": "h",
+   "ballotText": {
+    "t": "Repeals prohibition on state and local governments offering public funding of candidate election campaigns. Public funding programs may not use funds earmarked for education, transportation, or public safety. Fiscal Impact: Ongoing costs to the state of a few hundred thousand dollars each year for the Fair Political Practices Commission to answer questions from state and local governments about public campaign finance programs. Supporters: League of Women Voters of CA; California Nurses Association; Mental Health Advocacy; Social Security Works; Consumer Watchdog. Opponents: California Taxpayers Assn; Howard Jarvis Taxpayers Assn; Family Business Assn of California; United Latinos Action.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p5",
@@ -2091,7 +2119,14 @@
      "c": "m"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Under current law, voters elect replacement candidates at the same time as the recall election. This measure instead fills recall vacancies by subsequent special election or appointment. Fiscal Impact: Net fiscal effect unknown. In the event of a recall, savings or costs of millions of dollars to administer the election depending on the office recalled. Supporters: None submitted. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p37",
@@ -2197,7 +2232,14 @@
      "c": "m"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Authorizes $25 billion in bonds to offer eligible buyers fixed-rate mortgages for up to 17% of purchase price of a newly constructed home priced below about $1.5 million. Borrowers must be California residents, occupy the home, meet income limits, and pay at least 3% down. Bonds repaid by mortgage payments, not State. Fiscal Impact: No direct state or local costs. Supporters: United Nurses Associations of California; California Conference of Carpenters; California State Treasurer Fiona Ma. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p38",
@@ -2305,7 +2347,14 @@
      "c": "m"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Authorizes $8.4 billion in general obligation bonds for immunology and immunotherapy research, half to a single University of California-affiliated nonprofit medical research institute, half to research grants. Fiscal Impact: Increased state cost of $500 million to $600 million annually for about 20 years to repay the research bond, with some or all of the cost offset if the funded research generates revenue. Supporters: Michael J. Fox Foundation; Alzheimer's Los Angeles; Kidney Cancer Assoc; American Nurses Assoc\\CA. Opponents: Robert M Kaplan Ph.D.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p39",
@@ -2411,7 +2460,14 @@
      "c": "l"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Invalidates mail ballots that do not have last four digits of designated government-issued identification number written on envelope. Prohibits in-person voting without presenting government-issued identification. Fiscal Impact: Costs of between tens of millions of dollars and low hundreds of millions of dollars each year to implement new voting requirements. Supporters: The Transparency Foundation; Latino American Political Assn; Howard Jarvis Taxpayers Assn; CA Women's Leadership Assn. Opponents: ACLU California Action; Common Cause; League of Women Voters of California.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p40",
@@ -2541,7 +2597,14 @@
      "c": "m"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Imposes 5% tax on certain taxpayers with assets over $1 billion; revenue primarily for health care. Exempts revenues from constitutional requirements for school funding and spending limit. Fiscal Impact: Temporary revenue increase of tens of billions of dollars spread over several years from wealth tax on billionaires. Possible ongoing decrease of less than $1 billion per year in income tax revenue from billionaires. Supporters: US Senator Bernie Sanders; SEIU United Healthcare Workers West. Opponents: California Primary Care Association; California School Boards Association; California Taxpayers Association.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p41",
@@ -2665,7 +2728,14 @@
      "c": "h"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Nullifies state taxes enacted after January 1, 2026 that exempt their revenues from voter-approved state spending limit. Requires pre-election and recurring audits of programs funded by new special taxes. Fiscal Impact: The net fiscal effect is unknown as it depends on future decisions by voters, the Legislature, and other policymakers. Supporters: CA Society of Certified Public Accountants (CalCPAs); CalAsian Chamber of Commerce; California Taxpayers Association (CalTax). Opponents: US Senator Bernie Sanders; SEIU United Healthcare Workers West.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p42",
@@ -2796,7 +2866,14 @@
      "c": "h"
     }
    ],
-   "conf": "h"
+   "conf": "h",
+   "ballotText": {
+    "t": "Prohibits any new state tax (1) imposed on the ownership of personal property (all things people own other than real estate), or (2) that applies retroactively based on taxpayer's past activities. Nullifies taxes enacted after January 1, 2026 that conflict with this measure. Fiscal Impact: Possibility that tax revenues will not go up as much in the future. Supporters: CA Professional Firefighters; State Building & Construction Trades Council of CA; AMVETS Department of CA. Opponents: US Senator Bernie Sanders; SEIU United Healthcare Workers West.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p43",
@@ -2925,7 +3002,14 @@
      "c": "m"
     }
    ],
-   "conf": "h"
+   "conf": "h",
+   "ballotText": {
+    "t": "Limits voters' ability to pass voter-proposed local special taxes by increasing percentage of votes needed to approve such ballot measures from a majority (over 50%) to two-thirds, beginning January 1, 2027. Fiscal Impact: Possibility that local government tax revenues will not go up as much in the future due to a higher vote threshold for certain taxes. Supporters: California Taxpayers Association; Family Business Association of California; California Hispanic Chambers of Commerce. Opponents: California Professional Firefighters; California Federation of Teachers; Nurse Alliance of SEIU CA.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p44",
@@ -3034,7 +3118,14 @@
      "c": "h"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Imposes penalties on nonprofit Federally Qualified Health Centers (community clinics providing primary care to medically underserved areas and populations) that spend less than 90% of revenue on \"program services\" advancing their charitable purpose, including but not limited to patient services. Fiscal Impact: Increased state costs in the low tens of millions of dollars per year, covered by fees. Supporters: None submitted. Opponents: American Academy of Pediatrics CA; CA School Nurses Org; CA Academy of Family Physicians; CA Medical Assoc.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   },
   {
    "id": "p45",
@@ -3156,7 +3247,14 @@
      "c": "m"
     }
    ],
-   "conf": "m"
+   "conf": "m",
+   "ballotText": {
+    "t": "Amends California Environmental Quality Act (CEQA) to expedite environmental review for certain projects (including most housing, transportation, water, and health projects) by setting deadlines to complete environmental review and resolve lawsuits challenging project approvals. Fiscal Impact: Initial costs for state and local governments, likely in the high tens of millions of dollars—potentially exceeding $100 million—annually, partly covered by fees. Uncertain, potentially more significant positive or negative longer-term fiscal effects. Supporters: California Children's Hospital Association; California Water Association; California Council for Affordable Housing. Opponents: Coalition for Clean Air; CA Environmental Voters; Physicians for Social Responsibility, LA; National Wildlife Federation.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
   }
  ]
 }
