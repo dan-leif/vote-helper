@@ -66,6 +66,10 @@ Answers already given carry over, so later elections need fewer questions.
 
 Vote Helper isn't affiliated with any campaign, party or election office. Check facts against your official voter guide and sample ballot.
 
+## License
+
+Code: [MIT](LICENSE). Data in `data/`: [CC BY 4.0](data/LICENSE.md).
+
 ## Credits
 
 Approach informed by [la-ballot-match](https://github.com/bretmorris/la-ballot-match) (issue dimensions, evidence rules) and [ballot-fit](https://github.com/arunash/ballot-fit) (static, dependency-free, readable rules). Both are MIT-licensed. No code was copied; the 2026 data here was researched separately.
