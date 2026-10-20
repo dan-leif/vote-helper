@@ -39,6 +39,8 @@ Please produce five things:
 
 5. QUICK PICKS. Some voters will only answer 3 questions. Choose the 3 belief questions from your list that would do the most to sort out how a voter's values apply to this particular ballot, ranked 1 to 3, with a one-line reason each.
 
+Use web search for candidate positions, any concerns about specific judges, and drafting problems, since these races and measures may be newer than your training data. Cite what you find. If you can't search in this chat, say so at the top of your reply and leave those parts blank rather than relying on memory.
+
 Before you answer, check your own work for balance: would a thoughtful voter on the left and one on the right both call your questions and mappings fair? Fix anything they wouldn't.
 
 BALLOT ITEMS (JSON):
