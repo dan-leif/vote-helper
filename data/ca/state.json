@@ -1,0 +1,125 @@
+{
+ "schema": 2,
+ "id": "ca",
+ "name": "California",
+ "abbr": "CA",
+ "measures": {
+  "has": true,
+  "name": "Proposition",
+  "short": "Prop",
+  "citizenInitiatives": true,
+  "note": "Measures can be citizen initiatives or referred by the Legislature. Constitutional amendments need a statewide vote to change later."
+ },
+ "constitutionalNote": "This amends the state constitution, so changing it later takes another statewide vote.",
+ "retention": {
+  "has": true,
+  "threshold": 0.5,
+  "courts": [
+   "Supreme Court",
+   "Courts of Appeal"
+  ],
+  "note": "Appellate justices face yes/no retention votes; a majority Yes keeps them."
+ },
+ "cycles": [
+  {
+   "id": "primary",
+   "label": "Primary",
+   "months": [
+    3,
+    6
+   ]
+  },
+  {
+   "id": "general",
+   "label": "General",
+   "months": [
+    11
+   ]
+  }
+ ],
+ "primarySystem": "Top-two: the two candidates with the most primary votes advance, regardless of party.",
+ "partyLabel": "Party Preference",
+ "parties": {
+  "D": "Democratic",
+  "R": "Republican",
+  "L": "Libertarian",
+  "G": "Green",
+  "PF": "Peace and Freedom",
+  "AI": "American Independent"
+ },
+ "endorsers": [
+  {
+   "id": "cadem",
+   "name": "CA Democratic Party",
+   "src": "cadem"
+  },
+  {
+   "id": "cagop",
+   "name": "CA Republican Party",
+   "src": "cagop"
+  },
+  {
+   "id": "lwvc",
+   "name": "League of Women Voters CA",
+   "src": "lwvc"
+  }
+ ],
+ "endorserNote": "Party and League positions come from search summaries of their published lists; CA GOP positions were read from a summary, so confirm on their site.",
+ "lookup": {
+  "label": "Check your registration and districts",
+  "url": "https://voterstatus.sos.ca.gov/"
+ },
+ "questions": [
+  {
+   "id": "q_judicial",
+   "q": "Judges on retention ballots run unopposed and can't campaign. When no problem with a judge has been found, what's your default?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Vote Yes to keep them",
+     "fx": {
+      "*retention": 2
+     }
+    },
+    {
+     "v": "no",
+     "l": "Vote No",
+     "fx": {
+      "*retention": -2
+     }
+    },
+    {
+     "v": "skip",
+     "l": "Leave them blank",
+     "fx": {
+      "*retention": "skip"
+     }
+    }
+   ],
+   "appliesToKind": "retention"
+  }
+ ],
+ "sources": {
+  "cadem": {
+   "title": "2026 Proposition Endorsements",
+   "pub": "California Democratic Party",
+   "url": "https://cadem.org/wp-content/uploads/2026/10/2026-Proposition-Endorsements-2.pdf",
+   "type": "endorser",
+   "short": "CADEM"
+  },
+  "cagop": {
+   "title": "CAGOP Endorsements",
+   "pub": "California Republican Party",
+   "url": "https://cagop.org/endorsements/",
+   "type": "endorser",
+   "short": "CAGOP"
+  },
+  "lwvc": {
+   "title": "LWVC Ballot Recommendations for Nov. 3, 2026",
+   "pub": "League of Women Voters of California",
+   "url": "https://lwvc.org/ballot-recommendations-nov-3-2026/",
+   "type": "endorser",
+   "short": "LWVC"
+  }
+ }
+}

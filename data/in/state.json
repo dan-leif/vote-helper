@@ -1,0 +1,124 @@
+{
+ "schema": 2,
+ "id": "in",
+ "name": "Indiana",
+ "abbr": "IN",
+ "verified": "partial: settings below were checked via search summaries on 2026-10-20; confirm before publishing a place",
+ "measures": {
+  "has": true,
+  "name": "Public Question",
+  "short": "Question",
+  "citizenInitiatives": false,
+  "note": "No statewide citizen initiatives. Constitutional amendments must pass two separately elected General Assemblies before going to voters, and need a majority of votes cast on the question.",
+  "s": [
+   "icc_bail"
+  ],
+  "c": "m"
+ },
+ "constitutionalNote": "This amends the Indiana Constitution; changing it again requires two separately elected General Assemblies and another statewide vote.",
+ "retention": {
+  "has": true,
+  "threshold": 0.5,
+  "courts": [
+   "Supreme Court",
+   "Court of Appeals",
+   "Tax Court"
+  ],
+  "note": "Justices and Court of Appeals judges face retention at the first general election after two years on the bench, then every 10 years. No Supreme Court justice has lost since 1970.",
+  "s": [
+   "in_courts",
+   "ilaw"
+  ],
+  "c": "m"
+ },
+ "cycles": [
+  {
+   "id": "primary",
+   "label": "Primary",
+   "months": [
+    5
+   ]
+  },
+  {
+   "id": "general",
+   "label": "General",
+   "months": [
+    11
+   ]
+  },
+  {
+   "id": "municipal",
+   "label": "Municipal (odd years)",
+   "months": [
+    5,
+    11
+   ]
+  }
+ ],
+ "primarySystem": "Partisan primaries; the party nominee advances.",
+ "partyLabel": "Party",
+ "parties": {
+  "D": "Democratic",
+  "R": "Republican",
+  "L": "Libertarian"
+ },
+ "endorsers": [],
+ "lookup": {
+  "label": "Indiana Voter Portal",
+  "url": "https://indianavoters.in.gov/"
+ },
+ "questions": [
+  {
+   "id": "q_judicial",
+   "appliesToKind": "retention",
+   "q": "Judges on retention ballots run unopposed. When no problem with a judge has been found, what's your default?",
+   "note": "Indiana uses merit selection; voters only decide whether to keep each appellate judge.",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Vote Yes to keep them",
+     "fx": {
+      "*retention": 2
+     }
+    },
+    {
+     "v": "no",
+     "l": "Vote No",
+     "fx": {
+      "*retention": -2
+     }
+    },
+    {
+     "v": "skip",
+     "l": "Leave them blank",
+     "fx": {
+      "*retention": "skip"
+     }
+    }
+   ]
+  }
+ ],
+ "sources": {
+  "icc_bail": {
+   "title": "Indiana bail amendment clears General Assembly",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/02/17/indiana-bail-amendment-clears-general-assembly-sending-detention-question-to-november-ballot/",
+   "type": "news"
+  },
+  "in_courts": {
+   "title": "Retention of Justices and Judges",
+   "pub": "Indiana Judicial Branch",
+   "short": "IN Courts",
+   "url": "https://www.in.gov/courts/about/retention/",
+   "type": "official"
+  },
+  "ilaw": {
+   "title": "Retention vote for the Indiana Supreme Court is contested this year",
+   "pub": "The Indiana Lawyer",
+   "short": "IN Lawyer",
+   "url": "https://theindianalawyer.com/?p=226575",
+   "type": "news"
+  }
+ }
+}

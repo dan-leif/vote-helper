@@ -1,0 +1,3260 @@
+{
+ "schema": 2,
+ "state": "ca",
+ "locality": "statewide",
+ "date": "2026-11-03",
+ "cycle": "general",
+ "name": "November 3, 2026 General Election",
+ "area": "California (statewide)",
+ "researched": "2026-10-20",
+ "method": "Official ballot label text was transcribed from a San Luis Obispo County ballot (the wording is the same statewide). Other facts came from web search results that summarize and link the named source; the pages themselves were not opened in full. Confidence: h = official ballot or matches several sources, m = one reputable source via search summary, l = advocacy, opinion, thin or conflicting sources.",
+ "questions": [
+  {
+   "id": "q_recall",
+   "for": [
+    "p5"
+   ],
+   "q": "If voters recall a governor, how should the replacement be chosen?",
+   "options": [
+    {
+     "v": "same_ballot",
+     "l": "Voters pick a replacement on the same ballot (current system)",
+     "fx": {
+      "p5": -2
+     }
+    },
+    {
+     "v": "later",
+     "l": "The lieutenant governor serves, or a later election fills the seat (Prop 5's approach)",
+     "fx": {
+      "p5": 2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No preference",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_research_institute",
+   "for": [
+    "p38"
+   ],
+   "q": "Prop 38 would send half of an $8.4B research bond to one institute chosen by the measure's criteria. Is that OK with you?",
+   "options": [
+    {
+     "v": "ok",
+     "l": "Fine, if the research is good",
+     "fx": {
+      "p38": 1
+     }
+    },
+    {
+     "v": "competitive",
+     "l": "No, all of it should be open to competitive grants",
+     "fx": {
+      "p38": -2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_wealth_tax_form",
+   "for": [
+    "p40",
+    "p41",
+    "p42"
+   ],
+   "q": "Prop 40 is a one-time 5% tax on billionaires' total net worth (assets, not income). How do you feel about taxing wealth this way?",
+   "options": [
+    {
+     "v": "support",
+     "l": "Support it",
+     "fx": {
+      "p40": 2,
+      "p41": -1,
+      "p42": -2
+     }
+    },
+    {
+     "v": "income_only",
+     "l": "I'd rather tax income, not wealth",
+     "fx": {
+      "p40": -1,
+      "p42": 1
+     }
+    },
+    {
+     "v": "oppose",
+     "l": "Oppose wealth taxes",
+     "fx": {
+      "p40": -2,
+      "p41": 1,
+      "p42": 2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_clinic_mandate",
+   "for": [
+    "p44"
+   ],
+   "q": "Should the state require nonprofit community clinics to spend at least 90% of their revenue on care, with penalties if they don't?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Yes, overhead should be capped",
+     "fx": {
+      "p44": 2
+     }
+    },
+    {
+     "v": "no",
+     "l": "No, let clinics decide how to spend",
+     "fx": {
+      "p44": -2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_public_insurance",
+   "for": [
+    "ins"
+   ],
+   "q": "Should California create a public disaster (home) insurance program instead of relying mainly on private insurers?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Yes, a public program",
+     "fx": {
+      "ins": {
+       "kim": 2
+      }
+     }
+    },
+    {
+     "v": "no",
+     "l": "No, stabilize the private market",
+     "fx": {
+      "ins": {
+       "allen": 2
+      }
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "Not sure",
+     "fx": {}
+    }
+   ]
+  }
+ ],
+ "sources": {
+  "ballot": {
+   "title": "Official Ballot, Nov 3 2026, San Luis Obispo County (Ballot Type 26)",
+   "pub": "SLO County Clerk-Recorder",
+   "url": "https://slocounty.ca.gov/departments/clerk-recorder/all-services/elections-and-voting/elections-conducted-by-county-of-san-luis-obispo/november-3,-2026,-general-election",
+   "type": "official",
+   "short": "Ballot"
+  },
+  "lao1": {
+   "title": "Proposition 1 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=1&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao2": {
+   "title": "Proposition 2 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=2&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao3": {
+   "title": "Proposition 3 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=3&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao4": {
+   "title": "Proposition 4 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=4&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao5": {
+   "title": "Proposition 5 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=5&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao37": {
+   "title": "Proposition 37 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=37&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao38": {
+   "title": "Proposition 38 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=38&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao39": {
+   "title": "Proposition 39 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=39&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao40": {
+   "title": "Proposition 40 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/BallotAnalysis/Proposition?number=40&year=2026",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao41": {
+   "title": "Proposition 41 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/ballot/2026/prop41-110326.pdf",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao44": {
+   "title": "Proposition 44 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/ballot/2026/prop44-110326.pdf",
+   "type": "official",
+   "short": "LAO"
+  },
+  "lao45": {
+   "title": "Proposition 45 analysis",
+   "pub": "Legislative Analyst's Office",
+   "url": "https://lao.ca.gov/ballot/2026/prop45-110326.pdf",
+   "type": "official",
+   "short": "LAO"
+  },
+  "cm_p1": {
+   "title": "CA voter guide: Proposition 1, housing bond",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/proposition-1-housing-bond/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "cbpc_p1": {
+   "title": "Proposition 1: California's Veterans and Affordable Housing Bond",
+   "pub": "California Budget & Policy Center",
+   "url": "https://calbudgetcenter.org/resources/proposition-1-californias-veterans-and-affordable-housing-bond/",
+   "type": "advocacy",
+   "short": "CBPC"
+  },
+  "laist_p2": {
+   "title": "Proposition 2: Require the state to beef up its rainy day fund",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-2-rainy-day-fund",
+   "type": "news",
+   "short": "LAist"
+  },
+  "spur_p2": {
+   "title": "California Prop 2: Rainy Day Fund",
+   "pub": "SPUR",
+   "url": "https://www.spur.org/voter-guide/2026-11/ca-prop-2-rainy-day-fund",
+   "type": "advocacy",
+   "short": "SPUR"
+  },
+  "laist_p3": {
+   "title": "Proposition 3: extending a tax on the state's richest taxpayers",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-3-income-tax",
+   "type": "news",
+   "short": "LAist"
+  },
+  "lwv_p3": {
+   "title": "Prop 3 (2026)",
+   "pub": "CaVotes (League of Women Voters of California Education Fund)",
+   "url": "https://cavotes.org/ballot-measure/2026-prop-3/",
+   "type": "analysis",
+   "short": "LWVC"
+  },
+  "laist_p4": {
+   "title": "Prop. 4: Repealing California's ban on public funds in political campaigns",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-4",
+   "type": "news",
+   "short": "LAist"
+  },
+  "hoover_p4": {
+   "title": "Repeal the Ban on Public Financing of Political Campaigns",
+   "pub": "Hoover Institution",
+   "url": "https://www.hoover.org/proposition-lab-proposition-4",
+   "type": "analysis",
+   "short": "Hoover"
+  },
+  "cm_p5": {
+   "title": "What to know about Prop. 5 and California recall elections",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/proposition-5-recall-reform/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "kpbs_p5": {
+   "title": "2026 General Election: Proposition 5",
+   "pub": "KPBS",
+   "url": "https://www.kpbs.org/news/politics/2026/10/02/proposition-5-delay-replacing-recalled-state-officials",
+   "type": "news",
+   "short": "KPBS"
+  },
+  "hoover_p5": {
+   "title": "Prop 5: Recall reform",
+   "pub": "Hoover Institution",
+   "url": "https://www.hoover.org/research/prop-5-recall-reform-eliminate-replacement-question",
+   "type": "analysis",
+   "short": "Hoover"
+  },
+  "laist_p37": {
+   "title": "Proposition 37: Loan program to help middle-income Californians buy homes",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-37-loan-program-for-buying-homes",
+   "type": "news",
+   "short": "LAist"
+  },
+  "kpbs_p37": {
+   "title": "2026 General Election: Proposition 37",
+   "pub": "KPBS",
+   "url": "https://www.kpbs.org/news/politics/2026/10/02/proposition-37-create-low-cost-mortgages-for-homebuyers",
+   "type": "news",
+   "short": "KPBS"
+  },
+  "laist_p38": {
+   "title": "Prop. 38: The controversial billion-dollar bond measure for immunology research",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-38",
+   "type": "news",
+   "short": "LAist"
+  },
+  "hoover_p38": {
+   "title": "The Immunology and Immunotherapy Research Bond",
+   "pub": "Hoover Institution",
+   "url": "https://www.hoover.org/proposition-lab-proposition-38",
+   "type": "analysis",
+   "short": "Hoover"
+  },
+  "pd_p38": {
+   "title": "Opinion: Proposition 38 promises far more than it can deliver",
+   "pub": "Press Democrat (opinion)",
+   "url": "https://www.pressdemocrat.com/2026/10/05/opinion-proposition-38-promises-far-more-than-it-can-deliver/",
+   "type": "opinion",
+   "short": "PressDem"
+  },
+  "laist_p39": {
+   "title": "Prop. 39: The Voter ID measure",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-39",
+   "type": "news",
+   "short": "LAist"
+  },
+  "cbpc_p39": {
+   "title": "Proposition 39 Explained: What Voter ID Would Mean for California",
+   "pub": "California Budget & Policy Center",
+   "url": "https://calbudgetcenter.org/resources/proposition-39-explained-what-voter-id-would-mean-for-california/",
+   "type": "advocacy",
+   "short": "CBPC"
+  },
+  "laist_p40": {
+   "title": "Prop. 40: The billionaire's tax",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-prop-40-billionaire-tax",
+   "type": "news",
+   "short": "LAist"
+  },
+  "nbc_p40": {
+   "title": "Prop. 40: Will California voters approve the billionaire tax?",
+   "pub": "NBC Los Angeles",
+   "url": "https://www.nbclosangeles.com/news/local/prop-40-billionaire-tax/3948359/",
+   "type": "news",
+   "short": "NBC LA"
+  },
+  "lapp_40": {
+   "title": "Propositions 41 and 42 could kill California's billionaire tax even if it passes",
+   "pub": "LA Public Press",
+   "url": "https://lapublicpress.org/2026/10/la-elections-2026-prop-40-41-42-billionare-tax/",
+   "type": "news",
+   "short": "LAPP"
+  },
+  "cm_p41": {
+   "title": "CA voter guide to Proposition 41: Tax audits",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/proposition-41-tax-audits/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "spur_p41": {
+   "title": "California Prop 41: Audits of Special Taxes",
+   "pub": "SPUR",
+   "url": "https://www.spur.org/voter-guide/2026-11/ca-prop-41-audits-special-taxes",
+   "type": "advocacy",
+   "short": "SPUR"
+  },
+  "cm_p42": {
+   "title": "CA voter guide to Proposition 42: Property taxes",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/proposition-42-property-taxes/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "cm_newsom42": {
+   "title": "Gavin Newsom backs measure to kill the billionaire tax and ban future wealth taxes",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/politics/2026/10/newsom-tax-propositions-november-election/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "kpbs_p42": {
+   "title": "2026 General Election explainer: Proposition 42",
+   "pub": "KPBS",
+   "url": "https://www.kpbs.org/news/politics/2026/10/01/proposition-42-ban-new-personal-property-tax",
+   "type": "news",
+   "short": "KPBS"
+  },
+  "cbpc_p42": {
+   "title": "What Would Proposition 42 Mean for California?",
+   "pub": "California Budget & Policy Center",
+   "url": "https://calbudgetcenter.org/resources/what-would-proposition-42-mean-for-california/",
+   "type": "advocacy",
+   "short": "CBPC"
+  },
+  "laist_p43": {
+   "title": "Proposition 43: Making it harder to pass citizen-led local tax initiatives",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-43-local-special-tax",
+   "type": "news",
+   "short": "LAist"
+  },
+  "cm_p43": {
+   "title": "Prop. 43 would make special taxes harder to pass",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/politics/2026/10/california-prop-43-election-2026/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "cm_p44": {
+   "title": "California voter guide: Proposition 44, healthcare spending",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/proposition-44-clinic-funding/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "kqed_p44": {
+   "title": "2026 California Voter Guide: Proposition 44",
+   "pub": "KQED",
+   "url": "https://www.kqed.org/voterguide/california/proposition-44",
+   "type": "news",
+   "short": "KQED"
+  },
+  "laist_p44": {
+   "title": "Proposition 44: Requiring clinics to spend more revenue on patient care",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-44-health-care-spending",
+   "type": "news",
+   "short": "LAist"
+  },
+  "laist_p45": {
+   "title": "Proposition 45: What to know about the environmental review measure",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-proposition-45-environmental-review",
+   "type": "news",
+   "short": "LAist"
+  },
+  "mn_p45": {
+   "title": "Proposition 45: What California's November ballot measure could mean for CEQA review",
+   "pub": "Meyers Nave (law firm)",
+   "url": "https://www.meyersnave.com/proposition-45-what-californias-november-ballot-measure-could-mean-for-ceqa-review/",
+   "type": "analysis",
+   "short": "MeyersNave"
+  },
+  "kqed_p45": {
+   "title": "2026 California Voter Guide: Proposition 45",
+   "pub": "KQED",
+   "url": "https://www.kqed.org/voterguide/california/proposition-45",
+   "type": "news",
+   "short": "KQED"
+  },
+  "sfc_p45": {
+   "title": "Endorsement: CEQA is a mess. Prop 45 is even messier",
+   "pub": "San Francisco Chronicle (editorial)",
+   "url": "https://www.sfchronicle.com/opinion/editorials/article/prop-45-ceqa-california-22468905.php",
+   "type": "opinion",
+   "short": "SF Chron"
+  },
+  "ppic": {
+   "title": "PPIC Statewide Survey, September 2026 (as reported by KPBS and LAist)",
+   "pub": "Public Policy Institute of California",
+   "url": "https://www.kpbs.org/news/politics/2026/10/02/proposition-5-delay-replacing-recalled-state-officials",
+   "type": "news",
+   "short": "PPIC"
+  },
+  "gov_where": {
+   "title": "Where California governor candidates Becerra, Hilton stand on key issues",
+   "pub": "Yahoo News",
+   "url": "https://www.yahoo.com/news/politics/articles/where-california-governor-candidates-becerra-152038247.html",
+   "type": "news",
+   "short": "Yahoo"
+  },
+  "cm_gov": {
+   "title": "Who are the 2026 California governor candidates?",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/governor/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "cnn_gov": {
+   "title": "Becerra and Hilton clash over taxes, AI and immigration during the CNN debate",
+   "pub": "CNN",
+   "url": "https://www.cnn.com/2026/09/30/politics/live-news/california-governor-debate-midterms",
+   "type": "news",
+   "short": "CNN"
+  },
+  "nbc_ltg": {
+   "title": "Fiona Ma and Gloria Romero advance to lieutenant governor runoff",
+   "pub": "NBC Los Angeles",
+   "url": "https://www.nbclosangeles.com/news/local/fiona-ma-and-gloria-romero-advance-to-lieutenant-governor-general-election/3902677/",
+   "type": "news",
+   "short": "NBC LA"
+  },
+  "fox40_ltg": {
+   "title": "California lieutenant governor race: Ma, Romero lead",
+   "pub": "FOX40",
+   "url": "https://fox40.com/news/ma-romero-california-lieutenant-governor/",
+   "type": "news",
+   "short": "FOX40"
+  },
+  "laist_ltg": {
+   "title": "California lieutenant governor: Who's running and why it matters",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-lieutenant-governor",
+   "type": "news",
+   "short": "LAist"
+  },
+  "cm_sos": {
+   "title": "California secretary of state race",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/politics/2026/04/california-secretary-state-race/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "kpbs_sos": {
+   "title": "California's race for secretary of state shows partisan divide over how to count ballots",
+   "pub": "KPBS",
+   "url": "https://www.kpbs.org/news/politics/2026/04/29/californias-race-for-secretary-of-state-shows-partisan-divide-over-how-to-count-ballots",
+   "type": "news",
+   "short": "KPBS"
+  },
+  "cm_ctrl": {
+   "title": "Who are the state controller candidates?",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/controller/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "kpbs_ctrl": {
+   "title": "2026 General Election: California Controller race explainer",
+   "pub": "KPBS",
+   "url": "https://www.kpbs.org/news/politics/2026/09/14/2026/2026-general-election-california-controller-race-explainer",
+   "type": "news",
+   "short": "KPBS"
+  },
+  "laist_treas": {
+   "title": "California state treasurer: Who's running",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-state-treasurer",
+   "type": "news",
+   "short": "LAist"
+  },
+  "wiki_treas": {
+   "title": "2026 California State Treasurer election",
+   "pub": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_California_State_Treasurer_election",
+   "type": "reference",
+   "short": "Wiki"
+  },
+  "db_ag": {
+   "title": "Incumbent Rob Bonta, Michael Gates advance in attorney general primary",
+   "pub": "Daily Bruin",
+   "url": "https://dailybruin.com/2026/06/02/incumbent-rob-bonta-candidate-michael-gates-advance-in-attorney-general-primary/",
+   "type": "news",
+   "short": "DailyBruin"
+  },
+  "laist_ag": {
+   "title": "California attorney general: Who's running",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-attorney-general",
+   "type": "news",
+   "short": "LAist"
+  },
+  "cm_ins": {
+   "title": "California insurance commissioner top two",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/economy/2026/06/california-insurance-commissioner-top-two/",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "sbi_ins": {
+   "title": "California insurance commissioner race is set: Kim vs. Allen",
+   "pub": "Santa Barbara Independent",
+   "url": "https://www.independent.com/2026/06/12/california-insurance-commissioner-race-is-set-kim-vs-allen/",
+   "type": "news",
+   "short": "SB Indy"
+  },
+  "inn_ins": {
+   "title": "Endorsement: Ben Allen for insurance commissioner",
+   "pub": "InsuranceNewsNet (reprinted editorial)",
+   "url": "https://insurancenewsnet.com/oarticle/endorsement-ben-allen-for-insurance-commissioner",
+   "type": "opinion",
+   "short": "INN"
+  },
+  "laist_ins": {
+   "title": "California insurance commissioner: Who's running and why it matters",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-insurance-commissioner",
+   "type": "news",
+   "short": "LAist"
+  },
+  "eds_spi": {
+   "title": "Shaw and Barrera offer starkly different visions for California schools",
+   "pub": "EdSource",
+   "url": "https://edsource.org/2026/shaw-barrera-california-superintendent/760092",
+   "type": "news",
+   "short": "EdSource"
+  },
+  "eds_spi_primary": {
+   "title": "Shaw, Barrera emerge as front-runners in California superintendent race",
+   "pub": "EdSource",
+   "url": "https://edsource.org/2026/shaw-barrera-emerge-as-frontrunners-in-california-state-superintendent-race/759722",
+   "type": "news",
+   "short": "EdSource"
+  },
+  "eds_cta": {
+   "title": "Labor unions split among Democratic candidates for state superintendent",
+   "pub": "EdSource",
+   "url": "https://edsource.org/2026/labor-unions-split-among-democratic-candidates-for-state-superintendent/749840",
+   "type": "news",
+   "short": "EdSource"
+  },
+  "eds_ccsa": {
+   "title": "Charter schools association endorses Barrera for state superintendent",
+   "pub": "EdSource",
+   "url": "https://edsource.org/updates/charter-schools-association-endorses-barrera-for-state-superintendent",
+   "type": "news",
+   "short": "EdSource"
+  },
+  "bb_judges": {
+   "title": "California judges on the ballot",
+   "pub": "The Ballot Brief",
+   "url": "https://theballotbrief.com/judges/california",
+   "type": "reference",
+   "short": "BallotBrief"
+  },
+  "cm_scoca": {
+   "title": "California Supreme Court retention",
+   "pub": "CalMatters",
+   "url": "https://calmatters.org/california-voter-guide-2026/supreme-court",
+   "type": "news",
+   "short": "CalMatters"
+  },
+  "laist_coa": {
+   "title": "Courts of Appeal justices on your ballot",
+   "pub": "LAist",
+   "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-courts-appeal-justice-la-orange-county",
+   "type": "news",
+   "short": "LAist"
+  }
+ },
+ "contests": [
+  {
+   "id": "gov",
+   "kind": "race",
+   "order": 10,
+   "level": "State",
+   "office": "Governor",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Runs the executive branch, proposes the state budget, signs or vetoes bills and appoints judges.",
+     "s": [
+      "cm_gov"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "becerra",
+     "name": "Xavier Becerra",
+     "party": "D",
+     "designation": "Voting Rights Attorney",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "tax_wealthy",
+       "stance": -0.5,
+       "t": "Backs a progressive income tax and higher rates on high earners for schools, but opposes Prop 40, calling it \"sketchy policy\".",
+       "s": [
+        "gov_where",
+        "laist_p40"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "housing",
+       "stance": 0.5,
+       "t": "Would declare a housing emergency to fund 40,000 approved affordable units and push cities to zone for more multifamily housing.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "regulation",
+       "stance": 0.5,
+       "t": "Would use emergency powers to freeze insurance and utility rates and crack down on price gouging.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Says he would clear encampments while expanding mental health and addiction treatment and homelessness prevention.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "hilton",
+     "name": "Steve Hilton",
+     "party": "R",
+     "designation": "Small Business Owner",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "tax_level",
+       "stance": 1,
+       "t": "Would end state income tax on the first $150,000 of earnings, use a flat rate above that, and halve the gas tax.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "tax_wealthy",
+       "stance": 0.5,
+       "t": "Flat income tax above $150,000; opposes Prop 40.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "climate",
+       "stance": 1,
+       "t": "Promises $3 gas and half-price electricity by eliminating climate change programs.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "housing",
+       "stance": 0.5,
+       "t": "Would cap government fees and rules on new homes at $50,000 and open natural land for new cities and suburban single-family homes.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Running for his first elected office.",
+       "s": [
+        "cm_gov"
+       ],
+       "c": "l"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Coverage notes he has not given detailed cost estimates for his proposals.",
+       "s": [
+        "gov_where"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "ltgov",
+   "kind": "race",
+   "order": 11,
+   "level": "State",
+   "office": "Lieutenant Governor",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Largely ceremonial; becomes acting governor when the governor is absent or the office is vacant.",
+     "s": [
+      "laist_ltg"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "ma",
+     "name": "Fiona Ma",
+     "party": "D",
+     "designation": "State Treasurer/CPA",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Current state treasurer.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Campaign centers on small businesses, jobs and affordability.",
+       "s": [
+        "nbc_ltg"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "romero",
+     "name": "Gloria Romero",
+     "party": "R",
+     "designation": "Educator/Businesswoman",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican; former Democratic state Senate majority leader who switched parties in 2024.",
+       "s": [
+        "nbc_ltg"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "school_choice",
+       "stance": 1,
+       "t": "Long-time advocate for charter schools.",
+       "s": [
+        "fox40_ltg"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Running as Steve Hilton's running mate; focuses on education and government accountability.",
+       "s": [
+        "nbc_ltg"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "sos",
+   "kind": "race",
+   "order": 12,
+   "level": "State",
+   "office": "Secretary of State",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Runs state elections and business filings.",
+     "s": [
+      "cm_sos"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "weber",
+     "name": "Shirley N. Weber",
+     "party": "D",
+     "designation": "California Secretary of State",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat; incumbent.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "voting",
+       "stance": -1,
+       "t": "Pledges to expand voting access, plus more transparency in filings and cybersecurity.",
+       "s": [
+        "cm_sos"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent seeking a second term.",
+       "s": [
+        "cm_sos"
+       ],
+       "c": "h"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Criticized for slow vote counting.",
+       "s": [
+        "cm_sos",
+        "kpbs_sos"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "wagner",
+     "name": "Donald P. (Don) Wagner",
+     "party": "R",
+     "designation": "Orange County Supervisor",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "voting",
+       "stance": 1,
+       "t": "Supports voter ID at the polls and faster counting; says fraud isn't widespread but voter confidence is low.",
+       "s": [
+        "cm_sos",
+        "kpbs_sos"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "ctrl",
+   "kind": "race",
+   "order": 13,
+   "level": "State",
+   "office": "Controller",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "The state's chief fiscal officer: pays the state's bills and audits spending.",
+     "s": [
+      "cm_ctrl"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "morgan",
+     "name": "Herb W Morgan",
+     "party": "R",
+     "designation": "Chief Investment Officer",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Former chief investment officer campaigning on exposing government fraud.",
+       "s": [
+        "cm_ctrl"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "cohen",
+     "name": "Malia M. Cohen",
+     "party": "D",
+     "designation": "State Controller/Mother",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat; incumbent seeking a second term.",
+       "s": [
+        "ballot",
+        "cm_ctrl"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent.",
+       "s": [
+        "cm_ctrl"
+       ],
+       "c": "h"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "California Democratic Party, California Labor Federation, Equality California",
+       "s": [
+        "cm_ctrl"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m",
+   "flags": [
+    {
+     "t": "Little issue-by-issue information found for this race; the match leans on party and experience.",
+     "c": "l"
+    }
+   ]
+  },
+  {
+   "id": "treas",
+   "kind": "race",
+   "order": 14,
+   "level": "State",
+   "office": "Treasurer",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Manages the state's investments and sells its bonds. Fiona Ma is term-limited.",
+     "s": [
+      "wiki_treas"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "kounalakis",
+     "name": "Eleni Kounalakis",
+     "party": "D",
+     "designation": "Lieutenant Governor of California",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Current lieutenant governor.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "Gov. Newsom, Nancy Pelosi, Sen. Alex Padilla, Sen. Adam Schiff",
+       "s": [
+        "laist_treas"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "hawks",
+     "name": "Jennifer Hawks",
+     "party": "R",
+     "designation": "Retired Business Executive",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Retired business executive; has not held state office.",
+       "s": [
+        "ballot"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "California Republican Party",
+       "s": [
+        "wiki_treas"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "l",
+   "flags": [
+    {
+     "t": "Little issue-by-issue information found for this race.",
+     "c": "l"
+    }
+   ]
+  },
+  {
+   "id": "ag",
+   "kind": "race",
+   "order": 15,
+   "level": "State",
+   "office": "Attorney General",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "The state's top lawyer and law-enforcement officer.",
+     "s": [
+      "laist_ag"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "gates",
+     "name": "Michael E. Gates",
+     "party": "R",
+     "designation": "Deputy United States Attorney",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "public_safety",
+       "stance": 1,
+       "t": "As Huntington Beach city attorney, challenged what he viewed as lenient state criminal-justice policy; public safety is his top campaign issue.",
+       "s": [
+        "db_ag"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "housing",
+       "stance": -1,
+       "t": "Fought state housing laws that would have required Huntington Beach to plan for more affordable housing.",
+       "s": [
+        "db_ag"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "federal",
+       "stance": 1,
+       "t": "Served in the U.S. Justice Department's Civil Rights Division under the Trump administration in 2025.",
+       "s": [
+        "db_ag"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "bonta",
+     "name": "Rob Bonta",
+     "party": "D",
+     "designation": "California Attorney General",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat; incumbent.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "federal",
+       "stance": -1,
+       "t": "Has filed or joined more than 50 lawsuits against the Trump administration.",
+       "s": [
+        "db_ag"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent seeking a second full term.",
+       "s": [
+        "db_ag"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "ins",
+   "kind": "race",
+   "order": 16,
+   "level": "State",
+   "office": "Insurance Commissioner",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Regulates insurers and approves rate increases under Prop 103 (1988). Big issue: home insurers pulling back from fire areas and growth of the FAIR Plan.",
+     "s": [
+      "sbi_ins"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_public_insurance"
+   ],
+   "candidates": [
+    {
+     "id": "allen",
+     "name": "Ben Allen",
+     "party": "D",
+     "designation": "California State Senator",
+     "positions": [
+      {
+       "dim": "regulation",
+       "stance": 0,
+       "t": "Wants more enforcement power and staff for consumer complaints and more oversight of the FAIR Plan, while continuing current reforms meant to bring insurers back.",
+       "s": [
+        "laist_ins",
+        "inn_ins"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Sitting state senator.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "Orange County Register editorial board",
+       "s": [
+        "sbi_ins"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "kim",
+     "name": "Jane Kim",
+     "party": "D",
+     "designation": "Attorney/Consumer Advocate",
+     "positions": [
+      {
+       "dim": "regulation",
+       "stance": 1,
+       "t": "Proposes a public disaster insurance program; one editorial called it poorly defined and risky.",
+       "s": [
+        "inn_ins"
+       ],
+       "c": "l"
+      },
+      {
+       "dim": "outsider",
+       "stance": 0,
+       "t": "Former San Francisco supervisor; not in office now.",
+       "s": [
+        "cm_ins"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "SEIU California and other unions; Rep. Ro Khanna",
+       "s": [
+        "sbi_ins"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Both candidates are Democrats. Kim led the June primary with about 27%; Allen had about 20%.",
+     "s": [
+      "sbi_ins"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "judges-sc",
+   "kind": "retention",
+   "order": 30,
+   "level": "Judicial",
+   "office": "Supreme Court of California",
+   "about": [
+    {
+     "t": "Retention votes are yes/no. Justices run unopposed, can't campaign, and voters don't pick a replacement; if a justice loses, the governor appoints one.",
+     "s": [
+      "cm_scoca"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "The only time voters removed California Supreme Court justices was 1986.",
+     "s": [
+      "laist_coa"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "No organized opposition to these justices was found.",
+     "s": [
+      "cm_scoca",
+      "bb_judges"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_judicial"
+   ],
+   "judges": [
+    {
+     "id": "groban",
+     "name": "Joshua Groban",
+     "role": "Associate Justice",
+     "notes": [
+      {
+       "t": "Appointed by Gov. Jerry Brown in 2018; on the ballot now for the rest of a term ending January 2027, then again for a full 12-year term.",
+       "s": [
+        "cm_scoca"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "evans",
+     "name": "Kelli M. Evans",
+     "role": "Associate Justice",
+     "notes": [
+      {
+       "t": "Appointed by Gov. Newsom in 2022; former Alameda County Superior Court judge; first time on the ballot.",
+       "s": [
+        "cm_scoca"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "spi",
+   "kind": "race",
+   "order": 40,
+   "level": "School",
+   "office": "Superintendent of Public Instruction",
+   "voteFor": 1,
+   "nonpartisan": true,
+   "about": [
+    {
+     "t": "Nonpartisan office that leads the state Department of Education.",
+     "s": [
+      "eds_spi"
+     ],
+     "c": "h"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "barrera",
+     "name": "Richard Barrera",
+     "designation": "State Superintendent Advisor",
+     "positions": [
+      {
+       "dim": "school_choice",
+       "stance": 0,
+       "t": "Endorsed by both the California Teachers Association and the California Charter Schools Association's advocacy arm, groups that usually back opposing candidates.",
+       "s": [
+        "eds_cta",
+        "eds_ccsa"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -0.5,
+       "t": "Longtime San Diego Unified school board president.",
+       "s": [
+        "eds_cta"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "California Teachers Association; California Charter Schools Association Advocates",
+       "s": [
+        "eds_cta",
+        "eds_ccsa"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "shaw",
+     "name": "Sonja Shaw",
+     "designation": "School District President",
+     "positions": [
+      {
+       "dim": "social",
+       "stance": 1,
+       "t": "Wants to end state rules that bar school staff from telling parents about a student's gender identity, and to keep transgender girls out of girls' sports.",
+       "s": [
+        "eds_spi"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Registered Republican (the office is nonpartisan); would be the first Republican in the job since 1971.",
+       "s": [
+        "eds_spi_primary"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Both say test scores are too low and oppose a proposed restructuring of the Department of Education.",
+     "s": [
+      "eds_spi"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "p1",
+   "kind": "measure",
+   "order": 101,
+   "num": "1",
+   "title": "Housing bond ($11.25B)",
+   "label": "Authorizes bonds for housing affordability programs. Legislative statute.",
+   "type": "Legislative statute (bond)",
+   "summary": [
+    {
+     "t": "Lets the state borrow $11.25 billion: $10 billion for housing programs repaid from the General Fund, and $1.25 billion for veterans' home loans repaid by the veterans.",
+     "s": [
+      "lao1"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Funds multifamily rentals, supportive housing, preserving existing affordable housing and down-payment help.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Expected to subsidize up to about 40,000 rental units, 2,500 farmworker units and 1,200 student beds, and help up to 40,000 households buy homes.",
+     "s": [
+      "cm_p1"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "The state can borrow $11.25 billion for these housing programs.",
+   "no": "The state can't sell these bonds.",
+   "fiscal": [
+    {
+     "t": "State cost of $500 million to $600 million a year for about 25 years to repay the bond.",
+     "s": [
+      "ballot",
+      "lao1"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Adds funding for affordable homes during a housing shortage.",
+     "s": [
+      "cm_p1"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Adds to state debt; no official argument against was submitted.",
+     "s": [
+      "cm_p1",
+      "ballot"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "US Vets; CA Federation of Teachers; Self-Help for the Elderly; Habitat for Humanity CA; CA Alliance of Child & Family Services. Opponents: none submitted.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "neutral",
+     "lwvc": "yes"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "debt",
+     "yes": -1,
+     "w": 3,
+     "why": "Yes means $11.25B of new state borrowing.",
+     "s": [
+      "lao1"
+     ]
+    },
+    {
+     "dim": "housing",
+     "yes": 1,
+     "w": 2,
+     "why": "Yes funds tens of thousands of affordable units.",
+     "s": [
+      "cm_p1"
+     ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": -1,
+     "w": 1,
+     "why": "Repayment comes from the General Fund for 25 years.",
+     "s": [
+      "lao1"
+     ]
+    }
+   ],
+   "quality": [],
+   "qualityNote": "No specific drafting problems found in the sources searched.",
+   "conf": "h",
+   "ballotText": {
+    "t": "Authorizes $11.25 billion in state general obligation bonds for housing affordability programs, including multifamily rental housing, mortgages for veterans, supportive housing, preservation of existing affordable housing, and downpayment assistance. Fiscal Impact: Increased state cost of $500 million to $600 million annually for about 25 years to repay the housing bond. Supporters: US Vets; CA Federation of Teachers; Self-Help for the Elderly; Habitat for Humanity CA; CA Alliance of Child & Family Services. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p2",
+   "kind": "measure",
+   "order": 102,
+   "num": "2",
+   "title": "Bigger rainy-day fund",
+   "label": "Increases state's rainy day fund. Legislative constitutional amendment.",
+   "type": "Legislative constitutional amendment",
+   "constitutional": true,
+   "summary": [
+    {
+     "t": "Raises the cap on the state's main rainy-day fund from 10% to 20% of General Fund taxes, with bigger deposits when capital-gains revenue is very high.",
+     "s": [
+      "lao2",
+      "laist_p2"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Deposits would no longer count toward the state spending limit (Gann limit) until withdrawn.",
+     "s": [
+      "laist_p2"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Extends required extra debt payments from 2030 to 2040 and lets reserves pay down debt.",
+     "s": [
+      "lao2"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "The state saves more in reserves during good years.",
+   "no": "The current 10% cap and rules stay.",
+   "fiscal": [
+    {
+     "t": "State budget reserves would be higher.",
+     "s": [
+      "ballot",
+      "lao2"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Saving more in strong years makes it easier to balance budgets in downturns (LAO).",
+     "s": [
+      "laist_p2"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Excluding deposits from the spending limit could let lawmakers hold back revenue without triggering refunds; critics warn of a \"slush fund\".",
+     "s": [
+      "laist_p2"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "CA Professional Firefighters; LA Chamber of Commerce; Gavin Newsom; Xavier Becerra; Asm. Jesse Gabriel. Opponents: none submitted.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "savings",
+     "yes": 1,
+     "w": 3,
+     "why": "Yes doubles how much the state can save for downturns.",
+     "s": [
+      "lao2"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "fiscal-mechanics",
+     "sev": "low",
+     "t": "Moves reserve deposits outside the Gann spending limit, an accounting change most voters won't see in the title.",
+     "s": [
+      "laist_p2"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "h",
+   "ballotText": {
+    "t": "Increases California's Rainy Day Fund, approved by voters in 2014, to provide funding for education, health care, public safety, and other essential services during economic downturns. Fiscal Impact: State budget reserves would be higher. Supporters: CA Professional Firefighters; LA Chamber of Commerce; Gavin Newsom; Xavier Becerra; Assemblymember Jesse Gabriel. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p3",
+   "kind": "measure",
+   "order": 103,
+   "num": "3",
+   "title": "Make high-income tax rates permanent",
+   "label": "Provides permanent funding for schools and health care by extending existing tax on high incomes. Initiative constitutional amendment.",
+   "type": "Initiative constitutional amendment",
+   "constitutional": true,
+   "summary": [
+    {
+     "t": "Makes permanent the extra income-tax rates (10.3%, 11.3%, 12.3%) on income over about $371,000 for single filers, adjusted for inflation, which are set to expire in 2031.",
+     "s": [
+      "ballot",
+      "laist_p3"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Revenue goes mostly to public schools and community colleges.",
+     "s": [
+      "ballot",
+      "laist_p3"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Today's top income-tax rates continue permanently.",
+   "no": "The extra rates expire at the end of 2030.",
+   "fiscal": [
+    {
+     "t": "Keeps $5 billion to $15 billion a year of state income-tax revenue that would otherwise end in 2031.",
+     "s": [
+      "ballot",
+      "lao3"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Gives schools stable funding instead of repeated fights over expiration; the top 2% keep paying current rates.",
+     "s": [
+      "laist_p3",
+      "lwv_p3"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Voters were told in 2012 and 2016 the tax was temporary; opponents say the state has a spending problem, not a revenue problem.",
+     "s": [
+      "laist_p3"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "California Teachers Association; CA School Nurses Organization; California State PTA; Planned Parenthood Affiliates of CA. Opponents: California Taxpayers Association; Family Business Association of California; California Hispanic Chambers of Commerce.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "tax_wealthy",
+     "yes": -1,
+     "w": 3,
+     "why": "Yes keeps higher rates on the top ~2% of earners.",
+     "s": [
+      "laist_p3"
+     ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": -1,
+     "w": 2,
+     "why": "Yes keeps $5–15B a year of revenue for schools and health care.",
+     "s": [
+      "lao3"
+     ]
+    }
+   ],
+   "quality": [],
+   "qualityNote": "No specific drafting problems found. Like every constitutional amendment, changing it later takes another statewide vote.",
+   "conf": "h",
+   "ballotText": {
+    "t": "Makes permanent existing voter-approved tax rates for individuals earning over $371,000 (adjusted annually for inflation). Allocates tax revenues to public education. Fiscal Impact: Maintains $5 billion to $15 billion of annual state income tax revenue by making a temporary tax increase on high-income earners permanent instead of letting it expire in 2031. Supporters: California Teachers Association; CA School Nurses Organization; California State PTA; Planned Parenthood Affiliates of CA. Opponents: California Taxpayers Association; Family Business Association of California; California Hispanic Chambers of Commerce.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p4",
+   "kind": "measure",
+   "order": 104,
+   "num": "4",
+   "title": "Allow public campaign financing",
+   "label": "Repeals prohibition against public funding of election campaigns. Legislative statute.",
+   "type": "Legislative statute",
+   "summary": [
+    {
+     "t": "Ends California's ban on public money for candidates' campaigns, so the state and local governments may create public financing programs. It creates no program itself.",
+     "s": [
+      "lao4",
+      "laist_p4"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Programs can't use money earmarked for education, transportation or public safety.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Also raises penalties for illegal contributions from foreign governments.",
+     "s": [
+      "hoover_p4"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "State and local governments may create public campaign financing.",
+   "no": "The ban stays.",
+   "fiscal": [
+    {
+     "t": "A few hundred thousand dollars a year for the Fair Political Practices Commission to answer questions about such programs. Program costs would depend on future decisions.",
+     "s": [
+      "ballot",
+      "lao4"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "California is the only state that bans public campaign financing; it can reduce reliance on big donors.",
+     "s": [
+      "laist_p4"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Taxpayer money could fund political campaigns.",
+     "s": [
+      "laist_p4"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "League of Women Voters of CA; California Nurses Association; Mental Health Advocacy; Social Security Works; Consumer Watchdog. Opponents: California Taxpayers Assn; Howard Jarvis Taxpayers Assn; Family Business Assn of California; United Latinos Action.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "campaign_money",
+     "yes": -1,
+     "w": 3,
+     "why": "Yes allows public money in campaigns.",
+     "s": [
+      "lao4"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "open-ended",
+     "sev": "low",
+     "t": "Sets broad rules but leaves key design and cost decisions to future officials, so the fiscal estimate doesn't cover what programs would cost.",
+     "s": [
+      "lao4"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "h",
+   "ballotText": {
+    "t": "Repeals prohibition on state and local governments offering public funding of candidate election campaigns. Public funding programs may not use funds earmarked for education, transportation, or public safety. Fiscal Impact: Ongoing costs to the state of a few hundred thousand dollars each year for the Fair Political Practices Commission to answer questions from state and local governments about public campaign finance programs. Supporters: League of Women Voters of CA; California Nurses Association; Mental Health Advocacy; Social Security Works; Consumer Watchdog. Opponents: California Taxpayers Assn; Howard Jarvis Taxpayers Assn; Family Business Assn of California; United Latinos Action.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p5",
+   "kind": "measure",
+   "order": 105,
+   "num": "5",
+   "title": "Change how recalled officials are replaced",
+   "label": "Changes recall election process for statewide officers. Legislative constitutional amendment.",
+   "type": "Legislative constitutional amendment",
+   "constitutional": true,
+   "summary": [
+    {
+     "t": "Removes the second question (who replaces the official) from recall ballots. A recall becomes a yes/no on removal only.",
+     "s": [
+      "ballot",
+      "cm_p5"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "If a governor is recalled, the lieutenant governor takes over, and may serve until the next statewide election. Other offices are filled by appointment or a later special election, and the recalled official may run.",
+     "s": [
+      "kpbs_p5",
+      "lao5"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Recall ballots ask only whether to remove the official.",
+   "no": "Voters keep choosing a replacement on the same ballot.",
+   "fiscal": [
+    {
+     "t": "Net effect unknown; possible costs of millions of dollars for later special elections.",
+     "s": [
+      "ballot",
+      "lao5"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Today a replacement can win with a small plurality in a crowded field; supporters cite a winner with roughly 28% of recall voters.",
+     "s": [
+      "kpbs_p5"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Voters lose the power to choose the replacement; the lieutenant governor may share the recalled governor's party.",
+     "s": [
+      "kpbs_p5",
+      "hoover_p5"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "Supporters: none submitted. Opponents: none submitted.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "yes"
+    },
+    "other": []
+   },
+   "poll": {
+    "t": "PPIC, September: 35% yes, 59% no among likely voters.",
+    "s": [
+     "ppic"
+    ],
+    "c": "m"
+   },
+   "tags": [
+    {
+     "dim": "direct_dem",
+     "yes": 1,
+     "w": 2,
+     "why": "Yes takes the replacement choice away from voters.",
+     "s": [
+      "cm_p5"
+     ]
+    }
+   ],
+   "specific": [
+    "q_recall"
+   ],
+   "quality": [
+    {
+     "type": "design",
+     "sev": "med",
+     "t": "A recalled governor would be replaced by the lieutenant governor, who may be from the same party, possibly until the next statewide election.",
+     "s": [
+      "hoover_p5",
+      "kpbs_p5"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Under current law, voters elect replacement candidates at the same time as the recall election. This measure instead fills recall vacancies by subsequent special election or appointment. Fiscal Impact: Net fiscal effect unknown. In the event of a recall, savings or costs of millions of dollars to administer the election depending on the office recalled. Supporters: None submitted. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p37",
+   "kind": "measure",
+   "order": 137,
+   "num": "37",
+   "title": "Loans for middle-income buyers of new homes",
+   "label": "Creates loan program for middle-income buyers of qualified new homes. Initiative statute.",
+   "type": "Initiative statute",
+   "summary": [
+    {
+     "t": "Lets the state housing finance agency (CalHFA) sell up to $25 billion in revenue bonds to fund fixed-rate loans covering up to 17% of the price of a newly built home under about $1.5 million.",
+     "s": [
+      "ballot",
+      "laist_p37"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Buyers must live in the home, meet income limits and put at least 3% down.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "yes": "CalHFA can create the new-home loan program.",
+   "no": "No new program.",
+   "fiscal": [
+    {
+     "t": "No direct state or local cost; bonds are repaid by borrowers. Wider effects depend on investor demand for the bonds and whether it spurs construction.",
+     "s": [
+      "ballot",
+      "lao37"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Makes homeownership more reachable at no cost to taxpayers.",
+     "s": [
+      "laist_p37"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "No argument against was submitted to the official guide; the League of Women Voters opposes it.",
+     "s": [
+      "laist_p37",
+      "lwvc"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "United Nurses Associations of California; California Conference of Carpenters; State Treasurer Fiona Ma. Opponents: none submitted.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "neutral",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "housing",
+     "yes": 1,
+     "w": 2,
+     "why": "Yes aims to boost new home construction and ownership.",
+     "s": [
+      "laist_p37"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "one-sided-record",
+     "sev": "info",
+     "t": "No official argument against was filed, so the voter guide presents only one side.",
+     "s": [
+      "laist_p37"
+     ],
+     "c": "m"
+    },
+    {
+     "type": "uncertain-effect",
+     "sev": "low",
+     "t": "LAO says the impact is uncertain: it depends on investor demand for the bonds and whether the loans beat existing programs.",
+     "s": [
+      "lao37"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Authorizes $25 billion in bonds to offer eligible buyers fixed-rate mortgages for up to 17% of purchase price of a newly constructed home priced below about $1.5 million. Borrowers must be California residents, occupy the home, meet income limits, and pay at least 3% down. Bonds repaid by mortgage payments, not State. Fiscal Impact: No direct state or local costs. Supporters: United Nurses Associations of California; California Conference of Carpenters; California State Treasurer Fiona Ma. Opponents: None submitted.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p38",
+   "kind": "measure",
+   "order": 138,
+   "num": "38",
+   "title": "Immunology research bond ($8.4B)",
+   "label": "Authorizes bonds for immunology medical research. Initiative statute.",
+   "type": "Initiative statute (bond)",
+   "summary": [
+    {
+     "t": "$8.4 billion in state bonds for immunology and immunotherapy research.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Half goes to a single University of California-affiliated nonprofit research institute; half to research grants.",
+     "s": [
+      "ballot",
+      "laist_p38"
+     ],
+     "c": "h"
+    }
+   ],
+   "yes": "The state borrows $8.4 billion for this research.",
+   "no": "No bond.",
+   "fiscal": [
+    {
+     "t": "State cost of $500 million to $600 million a year for about 20 years, possibly offset if the research earns revenue.",
+     "s": [
+      "ballot",
+      "lao38"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Backers say it would speed treatments for immune diseases and cancer.",
+     "s": [
+      "hoover_p38"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Half the money would go to one research group; an opinion piece calls the claim it pays for itself speculative.",
+     "s": [
+      "laist_p38",
+      "pd_p38"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "Michael J. Fox Foundation; Alzheimer's Los Angeles; Kidney Cancer Assoc; American Nurses Assoc CA. Opponents: Robert M Kaplan Ph.D.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "poll": {
+    "t": "PPIC, September: 55% yes.",
+    "s": [
+     "laist_p38"
+    ],
+    "c": "m"
+   },
+   "tags": [
+    {
+     "dim": "debt",
+     "yes": -1,
+     "w": 3,
+     "why": "Yes means $8.4B of new state borrowing.",
+     "s": [
+      "lao38"
+     ]
+    }
+   ],
+   "specific": [
+    "q_research_institute"
+   ],
+   "quality": [
+    {
+     "type": "narrow-beneficiary",
+     "sev": "high",
+     "t": "Half of the funds go to one institute; reporting says the criteria fit a UCLA-affiliated institute whose main backer is the campaign's largest funder.",
+     "s": [
+      "laist_p38",
+      "hoover_p38"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Authorizes $8.4 billion in general obligation bonds for immunology and immunotherapy research, half to a single University of California-affiliated nonprofit medical research institute, half to research grants. Fiscal Impact: Increased state cost of $500 million to $600 million annually for about 20 years to repay the research bond, with some or all of the cost offset if the funded research generates revenue. Supporters: Michael J. Fox Foundation; Alzheimer's Los Angeles; Kidney Cancer Assoc; American Nurses Assoc\\CA. Opponents: Robert M Kaplan Ph.D.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p39",
+   "kind": "measure",
+   "order": 139,
+   "num": "39",
+   "title": "Voter ID",
+   "label": "Prohibits citizens from voting unless they present government-issued identification. Initiative constitutional amendment.",
+   "type": "Initiative constitutional amendment",
+   "constitutional": true,
+   "summary": [
+    {
+     "t": "Requires government-issued ID to vote in person, and invalidates mail ballots without the last four digits of a designated ID number written on the envelope.",
+     "s": [
+      "ballot",
+      "laist_p39"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Requires officials to use \"best efforts\" to verify citizenship against government data and report yearly.",
+     "s": [
+      "laist_p39"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Voters must show ID in person and write ID digits on mail ballots.",
+   "no": "Current identity checks (signature matching, registration) stay.",
+   "fiscal": [
+    {
+     "t": "Costs between tens of millions and low hundreds of millions of dollars a year to implement.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Supporters say ID requirements build confidence that only eligible citizens vote.",
+     "s": [
+      "laist_p39"
+     ],
+     "c": "l"
+    }
+   ],
+   "con": [
+    {
+     "t": "Adds barriers for eligible voters without current ID; ID digits on envelopes create identity-theft risk; citizenship checks may wrongly flag citizens.",
+     "s": [
+      "cbpc_p39",
+      "laist_p39"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "The Transparency Foundation; Latino American Political Assn; Howard Jarvis Taxpayers Assn; CA Women's Leadership Assn. Opponents: ACLU California Action; Common Cause; League of Women Voters of California.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "voting",
+     "yes": 1,
+     "w": 3,
+     "why": "Yes adds ID requirements to every ballot.",
+     "s": [
+      "laist_p39"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "implementation-risk",
+     "sev": "med",
+     "t": "Writing ID digits on the outside of mail envelopes exposes personal data, according to a policy group opposing it.",
+     "s": [
+      "cbpc_p39"
+     ],
+     "c": "l"
+    },
+    {
+     "type": "implementation-risk",
+     "sev": "med",
+     "t": "Matching voters against government citizenship data can misflag citizens, according to the same group.",
+     "s": [
+      "cbpc_p39"
+     ],
+     "c": "l"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Invalidates mail ballots that do not have last four digits of designated government-issued identification number written on envelope. Prohibits in-person voting without presenting government-issued identification. Fiscal Impact: Costs of between tens of millions of dollars and low hundreds of millions of dollars each year to implement new voting requirements. Supporters: The Transparency Foundation; Latino American Political Assn; Howard Jarvis Taxpayers Assn; CA Women's Leadership Assn. Opponents: ACLU California Action; Common Cause; League of Women Voters of California.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p40",
+   "kind": "measure",
+   "order": 140,
+   "num": "40",
+   "title": "One-time 5% billionaire tax",
+   "label": "Imposes one-time tax on certain taxpayers. Initiative constitutional amendment and statute.",
+   "type": "Initiative constitutional amendment and statute",
+   "constitutional": true,
+   "related": [
+    "p41",
+    "p42"
+   ],
+   "summary": [
+    {
+     "t": "One-time tax of 5% of net worth on billionaires who lived in California on January 1, 2026, due in 2027, payable over five years at extra cost. Real estate, pensions and retirement accounts are generally excluded.",
+     "s": [
+      "laist_p40"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Revenue goes mainly to health care (about 90%), the rest to food assistance and education; it's exempt from school-funding rules and the spending limit.",
+     "s": [
+      "ballot",
+      "laist_p40"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Billionaires pay a one-time 5% tax on their wealth.",
+   "no": "No wealth tax.",
+   "fiscal": [
+    {
+     "t": "Temporary revenue of tens of billions of dollars over several years; possible ongoing loss of under $1 billion a year in income tax if billionaires leave.",
+     "s": [
+      "ballot",
+      "lao40"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Offsets federal cuts to health care and food aid; backers (SEIU-UHW) project about $100 billion.",
+     "s": [
+      "laist_p40"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Both candidates for governor oppose it; some billionaires have already left the state.",
+     "s": [
+      "laist_p40",
+      "nbc_p40"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "US Senator Bernie Sanders; SEIU United Healthcare Workers West. Opponents: California Primary Care Association; California School Boards Association; California Taxpayers Association.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "yes",
+     "cagop": "no",
+     "lwvc": "neutral"
+    },
+    "other": []
+   },
+   "poll": {
+    "t": "UC Berkeley IGS: 48% yes, 41% no.",
+    "s": [
+     "laist_p40"
+    ],
+    "c": "m"
+   },
+   "tags": [
+    {
+     "dim": "tax_wealthy",
+     "yes": -1,
+     "w": 3,
+     "why": "Yes taxes billionaires' wealth.",
+     "s": [
+      "lao40"
+     ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": -1,
+     "w": 1,
+     "why": "Yes raises tens of billions for health care.",
+     "s": [
+      "lao40"
+     ]
+    }
+   ],
+   "specific": [
+    "q_wealth_tax_form"
+   ],
+   "quality": [
+    {
+     "type": "conflicting-measures",
+     "sev": "high",
+     "t": "Props 41 and 42 would each void this if they pass with more yes votes.",
+     "s": [
+      "lapp_40"
+     ],
+     "c": "h"
+    },
+    {
+     "type": "fiscal-uncertainty",
+     "sev": "med",
+     "t": "The sponsor's $100 billion estimate includes about $29 billion from billionaires reported to have already left.",
+     "s": [
+      "nbc_p40"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Imposes 5% tax on certain taxpayers with assets over $1 billion; revenue primarily for health care. Exempts revenues from constitutional requirements for school funding and spending limit. Fiscal Impact: Temporary revenue increase of tens of billions of dollars spread over several years from wealth tax on billionaires. Possible ongoing decrease of less than $1 billion per year in income tax revenue from billionaires. Supporters: US Senator Bernie Sanders; SEIU United Healthcare Workers West. Opponents: California Primary Care Association; California School Boards Association; California Taxpayers Association.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p41",
+   "kind": "measure",
+   "order": 141,
+   "num": "41",
+   "title": "Spending-limit rule and audits for new taxes",
+   "label": "Prohibits new state taxes that exclude revenues from state spending limit. Requires audits for new state special taxes. Initiative constitutional amendment.",
+   "type": "Initiative constitutional amendment",
+   "constitutional": true,
+   "related": [
+    "p40",
+    "p42"
+   ],
+   "summary": [
+    {
+     "t": "Voids state taxes enacted after January 1, 2026 whose revenue is exempt from the state spending limit (Prop 40's revenue is).",
+     "s": [
+      "ballot",
+      "cm_p41"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Requires state audits before elections on citizen special-tax initiatives and every four years for programs funded by new special taxes.",
+     "s": [
+      "ballot",
+      "lao41"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "New taxes must count under the spending limit, and new special taxes get audits. Prop 40 is voided if 41 gets more yes votes.",
+   "no": "No new limit or audits.",
+   "fiscal": [
+    {
+     "t": "Net effect unknown; depends on future decisions by voters and lawmakers.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Keeps new taxes inside the voter-approved spending limit and adds accountability through audits.",
+     "s": [
+      "cm_p41"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Opponents see it mainly as a way to kill the billionaire tax and restrict future revenue.",
+     "s": [
+      "lapp_40",
+      "spur_p41"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "CA Society of CPAs; CalAsian Chamber of Commerce; California Taxpayers Association. Opponents: US Senator Bernie Sanders; SEIU United Healthcare Workers West.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "tax_level",
+     "yes": 1,
+     "w": 2,
+     "why": "Yes restricts new taxes and adds audits.",
+     "s": [
+      "cm_p41"
+     ]
+    },
+    {
+     "dim": "tax_wealthy",
+     "yes": 1,
+     "w": 2,
+     "why": "Yes would void Prop 40's billionaire tax.",
+     "s": [
+      "lapp_40"
+     ]
+    }
+   ],
+   "specific": [
+    "q_wealth_tax_form"
+   ],
+   "quality": [
+    {
+     "type": "title-mismatch",
+     "sev": "med",
+     "t": "The title stresses audits, but its main near-term effect may be voiding Prop 40.",
+     "s": [
+      "lapp_40",
+      "cm_p41"
+     ],
+     "c": "m"
+    },
+    {
+     "type": "conflicting-measures",
+     "sev": "high",
+     "t": "Competes with Prop 40: whichever gets more yes votes controls.",
+     "s": [
+      "lapp_40"
+     ],
+     "c": "h"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Nullifies state taxes enacted after January 1, 2026 that exempt their revenues from voter-approved state spending limit. Requires pre-election and recurring audits of programs funded by new special taxes. Fiscal Impact: The net fiscal effect is unknown as it depends on future decisions by voters, the Legislature, and other policymakers. Supporters: CA Society of Certified Public Accountants (CalCPAs); CalAsian Chamber of Commerce; California Taxpayers Association (CalTax). Opponents: US Senator Bernie Sanders; SEIU United Healthcare Workers West.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p42",
+   "kind": "measure",
+   "order": 142,
+   "num": "42",
+   "title": "Ban new wealth and retroactive taxes",
+   "label": "Prohibits new state personal property taxes and certain retroactive state taxes. Initiative constitutional amendment.",
+   "type": "Initiative constitutional amendment",
+   "constitutional": true,
+   "related": [
+    "p40",
+    "p41"
+   ],
+   "summary": [
+    {
+     "t": "Bans new state taxes on owning personal property (financial assets, retirement accounts, business stakes, art, vehicles; not real estate) and most retroactive taxes, for taxes enacted after January 1, 2026.",
+     "s": [
+      "ballot",
+      "kpbs_p42",
+      "cm_p42"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Would void Prop 40 if it gets more yes votes.",
+     "s": [
+      "laist_p40",
+      "lapp_40"
+     ],
+     "c": "h"
+    }
+   ],
+   "yes": "No new state wealth taxes without another constitutional amendment.",
+   "no": "Future wealth taxes stay possible.",
+   "fiscal": [
+    {
+     "t": "Possibility that tax revenues will not go up as much in the future.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Protects retirement and life savings from new state taxes (Gov. Newsom).",
+     "s": [
+      "cm_newsom42"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Designed to block taxing billionaires and limits future revenue options.",
+     "s": [
+      "cbpc_p42",
+      "cm_p42"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "CA Professional Firefighters; State Building & Construction Trades Council of CA; AMVETS Department of CA. Opponents: US Senator Bernie Sanders; SEIU United Healthcare Workers West.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": [
+     {
+      "who": "Gov. Gavin Newsom: yes",
+      "s": [
+       "cm_newsom42"
+      ]
+     }
+    ]
+   },
+   "tags": [
+    {
+     "dim": "tax_wealthy",
+     "yes": 1,
+     "w": 3,
+     "why": "Yes bans wealth taxes and would void Prop 40.",
+     "s": [
+      "cm_p42"
+     ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": 1,
+     "w": 1,
+     "why": "Yes narrows future tax options.",
+     "s": [
+      "cbpc_p42"
+     ]
+    }
+   ],
+   "specific": [
+    "q_wealth_tax_form"
+   ],
+   "quality": [
+    {
+     "type": "title-mismatch",
+     "sev": "low",
+     "t": "\"Personal property\" here means financial and other non-real-estate assets, including retirement accounts; it doesn't cover homes.",
+     "s": [
+      "kpbs_p42"
+     ],
+     "c": "m"
+    },
+    {
+     "type": "conflicting-measures",
+     "sev": "high",
+     "t": "Competes with Prop 40: whichever gets more yes votes controls.",
+     "s": [
+      "lapp_40"
+     ],
+     "c": "h"
+    }
+   ],
+   "conf": "h",
+   "ballotText": {
+    "t": "Prohibits any new state tax (1) imposed on the ownership of personal property (all things people own other than real estate), or (2) that applies retroactively based on taxpayer's past activities. Nullifies taxes enacted after January 1, 2026 that conflict with this measure. Fiscal Impact: Possibility that tax revenues will not go up as much in the future. Supporters: CA Professional Firefighters; State Building & Construction Trades Council of CA; AMVETS Department of CA. Opponents: US Senator Bernie Sanders; SEIU United Healthcare Workers West.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p43",
+   "kind": "measure",
+   "order": 143,
+   "num": "43",
+   "title": "Two-thirds vote for citizen local special taxes",
+   "label": "Limits voters' ability to raise revenues for local government services. Legislative constitutional amendment.",
+   "type": "Legislative constitutional amendment",
+   "constitutional": true,
+   "summary": [
+    {
+     "t": "From January 1, 2027, local special taxes proposed by citizens need two-thirds of the vote instead of a simple majority.",
+     "s": [
+      "ballot",
+      "laist_p43"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Reverses court rulings after a 2017 California Supreme Court decision (Upland) that let citizen tax measures pass by majority.",
+     "s": [
+      "laist_p43"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Also bars new local property taxes based on value (ad valorem), including through initiatives, beyond what the constitution already allows.",
+     "s": [
+      "laist_p43"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Placed on the ballot by lawmakers as part of a deal with the Howard Jarvis Taxpayers Association to withdraw a stricter initiative.",
+     "s": [
+      "cm_p43"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Citizen-proposed local special taxes need two-thirds approval.",
+   "no": "They can still pass with a simple majority.",
+   "fiscal": [
+    {
+     "t": "Local tax revenues may not grow as much in the future.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Closes a loophole so citizen and government tax measures face the same threshold.",
+     "s": [
+      "laist_p43"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Lets a minority block measures a clear majority supports; two 2024 Sonoma County measures wouldn't have passed.",
+     "s": [
+      "laist_p43",
+      "cm_p43"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "California Taxpayers Association; Family Business Association of California; California Hispanic Chambers of Commerce. Opponents: California Professional Firefighters; California Federation of Teachers; Nurse Alliance of SEIU CA.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "tax_votes",
+     "yes": 1,
+     "w": 3,
+     "why": "Yes raises the threshold to two-thirds.",
+     "s": [
+      "laist_p43"
+     ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": 1,
+     "w": 1,
+     "why": "Yes makes local tax increases harder.",
+     "s": [
+      "laist_p43"
+     ]
+    },
+    {
+     "dim": "direct_dem",
+     "yes": 1,
+     "w": 1,
+     "why": "Yes makes citizen tax initiatives harder to pass.",
+     "s": [
+      "laist_p43"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "title-mismatch",
+     "sev": "med",
+     "t": "Besides the two-thirds rule, it also bars new local value-based property taxes, which the short title doesn't mention.",
+     "s": [
+      "laist_p43"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "h",
+   "ballotText": {
+    "t": "Limits voters' ability to pass voter-proposed local special taxes by increasing percentage of votes needed to approve such ballot measures from a majority (over 50%) to two-thirds, beginning January 1, 2027. Fiscal Impact: Possibility that local government tax revenues will not go up as much in the future due to a higher vote threshold for certain taxes. Supporters: California Taxpayers Association; Family Business Association of California; California Hispanic Chambers of Commerce. Opponents: California Professional Firefighters; California Federation of Teachers; Nurse Alliance of SEIU CA.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p44",
+   "kind": "measure",
+   "order": 144,
+   "num": "44",
+   "title": "Clinics must spend 90% on care",
+   "label": "Requires community health clinics spend 90% of revenue on program services. Initiative statute.",
+   "type": "Initiative statute",
+   "summary": [
+    {
+     "t": "Requires nonprofit community clinics (Federally Qualified Health Centers) to spend at least 90% of revenue on program services; clinics now average about 80%.",
+     "s": [
+      "ballot",
+      "lao44"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "The attorney general would define qualifying spending; clinics that fall short pay the state the gap, recoverable if they comply within five years. Waivers possible.",
+     "s": [
+      "cm_p44",
+      "kqed_p44"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Clinics must meet the 90% spending rule or pay penalties.",
+   "no": "No new spending rule.",
+   "fiscal": [
+    {
+     "t": "State costs in the low tens of millions of dollars a year, covered by fees.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Shifts clinic money from overhead to patient care.",
+     "s": [
+      "kqed_p44"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "A fixed 90% rule could squeeze management and facilities spending and force some clinics to close.",
+     "s": [
+      "kqed_p44",
+      "laist_p44"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "Supporters: none submitted. Opponents: American Academy of Pediatrics CA; CA School Nurses Org; CA Academy of Family Physicians; CA Medical Assoc.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "no",
+     "cagop": "no",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "regulation",
+     "yes": 1,
+     "w": 1,
+     "why": "Yes adds a state spending mandate on nonprofit clinics.",
+     "s": [
+      "cm_p44"
+     ]
+    }
+   ],
+   "specific": [
+    "q_clinic_mandate"
+   ],
+   "quality": [
+    {
+     "type": "vague-language",
+     "sev": "low",
+     "t": "What counts as qualifying spending is left to the attorney general to define.",
+     "s": [
+      "cm_p44"
+     ],
+     "c": "m"
+    },
+    {
+     "type": "one-sided-record",
+     "sev": "info",
+     "t": "No supporters submitted a ballot argument.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Imposes penalties on nonprofit Federally Qualified Health Centers (community clinics providing primary care to medically underserved areas and populations) that spend less than 90% of revenue on \"program services\" advancing their charitable purpose, including but not limited to patient services. Fiscal Impact: Increased state costs in the low tens of millions of dollars per year, covered by fees. Supporters: None submitted. Opponents: American Academy of Pediatrics CA; CA School Nurses Org; CA Academy of Family Physicians; CA Medical Assoc.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  },
+  {
+   "id": "p45",
+   "kind": "measure",
+   "order": 145,
+   "num": "45",
+   "title": "Faster environmental review for essential projects",
+   "label": "Modifies environmental review for certain projects. Initiative statute.",
+   "type": "Initiative statute",
+   "summary": [
+    {
+     "t": "Creates an optional fast track under CEQA for \"essential projects\" (including most housing, transportation, water and health projects) with deadlines for reviews and lawsuits.",
+     "s": [
+      "ballot",
+      "laist_p45"
+     ],
+     "c": "h"
+    },
+    {
+     "t": "Reported deadlines: 30 days to deem an application complete, 365 days for environmental review, 90 days for permits, and 270 days for courts to rule.",
+     "s": [
+      "kqed_p45",
+      "mn_p45"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Sponsored by the California Chamber of Commerce.",
+     "s": [
+      "laist_p45"
+     ],
+     "c": "m"
+    }
+   ],
+   "yes": "Eligible projects can choose the faster review track.",
+   "no": "Current CEQA process stays.",
+   "fiscal": [
+    {
+     "t": "Initial state and local costs likely in the high tens of millions of dollars a year, possibly over $100 million, partly covered by fees; longer-term effects uncertain.",
+     "s": [
+      "ballot",
+      "lao45"
+     ],
+     "c": "h"
+    }
+   ],
+   "pro": [
+    {
+     "t": "Tighter timelines and faster lawsuits would lower project costs and speed housing and infrastructure.",
+     "s": [
+      "laist_p45"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Limits on review, public comment and court challenges could let projects proceed without full review of impacts on air, water, health and wildlife.",
+     "s": [
+      "laist_p45"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "California Children's Hospital Association; California Water Association; California Council for Affordable Housing. Opponents: Coalition for Clean Air; CA Environmental Voters; Physicians for Social Responsibility LA; National Wildlife Federation.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "endorse": {
+    "positions": {
+     "cadem": "no",
+     "cagop": "yes",
+     "lwvc": "no"
+    },
+    "other": []
+   },
+   "tags": [
+    {
+     "dim": "environment",
+     "yes": 1,
+     "w": 3,
+     "why": "Yes speeds approvals with less review and fewer lawsuits.",
+     "s": [
+      "laist_p45"
+     ]
+    },
+    {
+     "dim": "housing",
+     "yes": 1,
+     "w": 2,
+     "why": "Yes aims to speed housing approvals.",
+     "s": [
+      "laist_p45"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "vague-language",
+     "sev": "med",
+     "t": "Commentators dispute whether \"essential projects\" could include data centers.",
+     "s": [
+      "kqed_p45"
+     ],
+     "c": "l"
+    },
+    {
+     "type": "editorial-criticism",
+     "sev": "low",
+     "t": "The SF Chronicle editorial board called it messier than current CEQA (headline: \"CEQA is a mess. Prop 45 is even messier\").",
+     "s": [
+      "sfc_p45"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m",
+   "ballotText": {
+    "t": "Amends California Environmental Quality Act (CEQA) to expedite environmental review for certain projects (including most housing, transportation, water, and health projects) by setting deadlines to complete environmental review and resolve lawsuits challenging project approvals. Fiscal Impact: Initial costs for state and local governments, likely in the high tens of millions of dollars—potentially exceeding $100 million—annually, partly covered by fees. Uncertain, potentially more significant positive or negative longer-term fiscal effects. Supporters: California Children's Hospital Association; California Water Association; California Council for Affordable Housing. Opponents: Coalition for Clean Air; CA Environmental Voters; Physicians for Social Responsibility, LA; National Wildlife Federation.",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   }
+  }
+ ]
+}

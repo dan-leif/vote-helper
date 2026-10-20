@@ -1,0 +1,107 @@
+{
+ "schema": 2,
+ "id": "il",
+ "name": "Illinois",
+ "abbr": "IL",
+ "verified": "partial: settings below were checked via search summaries on 2026-10-20; confirm before publishing a place",
+ "measures": {
+  "has": true,
+  "name": "Constitutional Amendment / Referendum",
+  "short": "Question",
+  "citizenInitiatives": false,
+  "note": "Statewide citizen initiatives are very limited; most statewide questions are legislatively referred. Local advisory and binding referenda are common.",
+  "c": "l"
+ },
+ "constitutionalNote": "This amends the Illinois Constitution; changing it again takes another statewide vote.",
+ "retention": {
+  "has": true,
+  "threshold": 0.6,
+  "courts": [
+   "Supreme Court",
+   "Appellate Court",
+   "Circuit Court"
+  ],
+  "note": "After their first election, judges need at least 60% Yes to be retained. Cook County ballots often list dozens of circuit judges.",
+  "s": [
+   "iw_ret"
+  ],
+  "c": "h"
+ },
+ "cycles": [
+  {
+   "id": "primary",
+   "label": "Primary",
+   "months": [
+    3
+   ]
+  },
+  {
+   "id": "general",
+   "label": "General",
+   "months": [
+    11
+   ]
+  },
+  {
+   "id": "consolidated",
+   "label": "Consolidated (odd years)",
+   "months": [
+    2,
+    4
+   ]
+  }
+ ],
+ "primarySystem": "Partisan primaries; Chicago municipal elections are nonpartisan with runoffs.",
+ "partyLabel": "Party",
+ "parties": {
+  "D": "Democratic",
+  "R": "Republican",
+  "L": "Libertarian",
+  "G": "Green"
+ },
+ "endorsers": [],
+ "lookup": {
+  "label": "Illinois voter registration lookup",
+  "url": "https://ova.elections.il.gov/RegistrationLookup.aspx"
+ },
+ "questions": [
+  {
+   "id": "q_judicial",
+   "appliesToKind": "retention",
+   "q": "Judges on retention ballots run unopposed. When no problem with a judge has been found, what's your default?",
+   "note": "Illinois retention needs 60% Yes, so a No vote counts for more than in majority states.",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Vote Yes to keep them",
+     "fx": {
+      "*retention": 2
+     }
+    },
+    {
+     "v": "no",
+     "l": "Vote No",
+     "fx": {
+      "*retention": -2
+     }
+    },
+    {
+     "v": "skip",
+     "l": "Leave them blank",
+     "fx": {
+      "*retention": "skip"
+     }
+    }
+   ]
+  }
+ ],
+ "sources": {
+  "iw_ret": {
+   "title": "Judicial election results: retention",
+   "pub": "Injustice Watch",
+   "short": "Injustice Watch",
+   "url": "https://www.injusticewatch.org/project/2022/judicial-election-results-preliminary-retention/",
+   "type": "news"
+  }
+ }
+}
