@@ -1,13 +1,13 @@
 /* Vote Helper app. Plain JS, no build step. Reads data/places.json, the chosen state's
    data/<state>/state.json and its data/<state>/<locality>/<date>.json election file.
    Keeps the person's beliefs in localStorage and never sends them anywhere.
-   All judgments about ballot items live in the data files; this file only displays and does arithmetic. */
+   All judgments about ballot items live in the data files; this file only displays and does arithmetic.
+   To add a ballot, Vote Helper's own logic, or another model's logic (e.g. Grok's), follow CLAUDE.md;
+   it takes data files only, no changes here. */
 (function () {
   'use strict';
   var E = window.VHEngine;
   var STORE_KEY = 'voteHelper.v1';
-  var AUDIT_KEY = 'voteHelper.audits.v1';
-  var LOGIC_KEY = 'voteHelper.logics.v1';   // other models' logic pasted in this browser
   var DATA = 'data/';
   var IN_FRAME = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
   // Old election ids from before data was organized by place.
@@ -15,7 +15,7 @@
 
   var S = {
     values: null, baseValues: null, places: null, place: null, state: null, election: null, contests: [], sources: {},
-    results: {}, beliefs: null, audits: {}, view: 'home', itemId: null,
+    results: {}, beliefs: null, view: 'home', itemId: null,
     logics: {}, lres: {},
     queue: [], queuePos: 0, walk: [], walkPos: 0, disagree: null, aiScope: null
   };
@@ -73,11 +73,6 @@
     S.beliefs.updated = today();
     try { localStorage.setItem(STORE_KEY, JSON.stringify(S.beliefs)); } catch (e) {}
   }
-  function loadLocalLogics() { try { return JSON.parse(localStorage.getItem(LOGIC_KEY) || '{}') || {}; } catch (e) { return {}; } }
-  function saveLocalLogics(all) { try { localStorage.setItem(LOGIC_KEY, JSON.stringify(all)); } catch (e) {} }
-  function loadAudits() { try { return JSON.parse(localStorage.getItem(AUDIT_KEY) || '{}') || {}; } catch (e) { return {}; } }
-  function saveAudits() { try { localStorage.setItem(AUDIT_KEY, JSON.stringify(S.audits)); } catch (e) {} }
-  function itemAudits(id) { var a = S.audits[S.election.key] || {}; return a[id] || {}; }
   function eState() {
     var id = S.election.key;
     if (!S.beliefs.elections[id]) S.beliefs.elections[id] = { districts: {}, effort: 'quick', choices: {}, ai: {} };
@@ -96,7 +91,8 @@
   function placeKey(p) { return p.state + '/' + p.locality; }
   function electionPath(state, locality, date) { return DATA + state + '/' + locality + '/' + date + '.json'; }
   // Load a place's election: the state config, the locality file, and any files it includes (e.g. statewide).
-  function loadElection(place, date) {
+  function loadElection(ballot) {
+    var place = { state: ballot.state, locality: ballot.locality }, date = ballot.date;
     var stateP = fetchJSON(DATA + place.state + '/state.json');
     var mainP = fetchJSON(electionPath(place.state, place.locality, date));
     return Promise.all([stateP, mainP]).then(function (res) {
@@ -120,7 +116,11 @@
         S.election = main; S.election.key = main._key;
         S.allContests = contests; S.sources = sources;
         S.values = { general: S.baseValues.general, specific: questions };
-        S.beliefs.place = { key: placeKey(place), date: date }; save();
+        S.ballot = ballot;
+        S.beliefs.place = { ballot: ballot.id, key: placeKey(place), date: date };
+        // The ballot fixes its districts; there's nothing for the voter to pick.
+        eState().districts = Object.assign({}, ballot.districts || {});
+        save();
         return loadLogics(place, date, main);
       }).then(function () { applyDistricts(); });
     });
@@ -132,10 +132,7 @@
     var listed = (main.logics || []).map(function (l) {
       return fetchJSON(base + l.id + '.json').then(function (raw) { addLogic(l.id, l.label || l.id, raw, 'data'); }).catch(function () {});
     });
-    return Promise.all(listed).then(function () {
-      var local = loadLocalLogics()[S.election.key] || {};
-      Object.keys(local).forEach(function (id) { addLogic(id, local[id].label || id, local[id], 'browser'); });
-    });
+    return Promise.all(listed);
   }
   function addLogic(id, label, raw, origin) {
     var m = E.logicToModel(S.allContests, raw);
@@ -232,10 +229,6 @@
     if (c.conf === 'l') out.push('<span class="flag low">Thin information</span>');
     if (st.ai[c.id]) out.push('<span class="flag low">AI note</span>');
     differs(c.id).forEach(function (lid) { out.push('<span class="flag quality">≠ ' + esc(ctx(lid).label) + ' differs</span>'); });
-    var au = E.auditStatus(itemAudits(c.id));
-    if (au.status === 'disagree') out.push('<span class="flag quality">≠ Models disagree</span>');
-    else if (au.status === 'split-minor' || au.status === 'minor') out.push('<span class="flag low">Audit notes</span>');
-    else if (au.status === 'agree') out.push('<span class="flag decided">Audited</span>');
     return out.join('');
   }
   function choiceFor(c) {
@@ -266,7 +259,7 @@
     render(); window.scrollTo(0, 0);
   }
   function renderTabs() {
-    var tabs = [['home', 'Start'], ['slate', 'My ballot'], ['sheet', 'Cheat sheet'], ['profile', 'My beliefs'], ['audit', 'Bias check'], ['about', 'How it works']];
+    var tabs = [['home', 'Start'], ['slate', 'My ballot'], ['sheet', 'Cheat sheet'], ['profile', 'My beliefs'], ['about', 'How it works']];
     $('#tabs').innerHTML = tabs.map(function (t) {
       var cur = S.view === t[0] || (t[0] === 'slate' && S.view === 'item');
       return '<button type="button" data-nav="' + t[0] + '"' + (cur ? ' aria-current="page"' : '') + '>' + t[1] + '</button>';
@@ -277,7 +270,7 @@
   function render() {
     renderTabs();
     var app = $('#app');
-    var fn = { home: viewHome, ask: viewAsk, slate: viewSlate, item: viewItem, sheet: viewSheet, profile: viewProfile, about: viewAbout, ai: viewAI, data: viewData, audit: viewAudit }[S.view] || viewHome;
+    var fn = { home: viewHome, ask: viewAsk, slate: viewSlate, item: viewItem, sheet: viewSheet, profile: viewProfile, about: viewAbout, ai: viewAI, data: viewData }[S.view] || viewHome;
     app.innerHTML = fn();
     if (S.view === 'ai' || S.view === 'data') { var ta = $('#app textarea[readonly]'); if (ta) ta.scrollTop = 0; }
   }
@@ -291,34 +284,19 @@
   }
   function viewHome() {
     var st = eState(), cnt = countAnswered();
-    var miss = uncovered();
-    var dHTML = (S.election.districts || []).map(function (d) {
-      return '<label class="field" for="dist-' + d.id + '">' + esc(d.label) + '<select id="dist-' + d.id + '" data-district="' + d.id + '">' +
-        d.options.map(function (o) { return '<option value="' + esc(o.v) + '"' + (st.districts[d.id] === o.v ? ' selected' : '') + '>' + esc(o.l) + '</option>'; }).join('') +
-        '</select></label>';
-    }).join('');
     var efforts = [
       ['quick', 'Quick', 'About 3 questions, the ones that move the most votes on this ballot. Then your full ballot, with the 2–3 items worth a closer look.'],
       ['standard', 'Standard', 'About 8–12 questions, then a walk through the close calls and conflicts, one at a time.'],
       ['deep', 'Deep', 'Every relevant question, then every contest one at a time.']
     ];
-    var lookup = S.election.lookup || S.state.lookup;
-    var placeOpts = S.places.places.map(function (p) {
-      var st = S.stateNames[p.state] || p.state.toUpperCase();
-      return '<option value="' + esc(placeKey(p)) + '"' + (placeKey(p) === placeKey(S.place) ? ' selected' : '') + '>' + esc(p.name + ', ' + st) + '</option>';
-    }).join('');
-    var dateOpts = S.place.elections.map(function (e) {
-      return '<option value="' + esc(e.date) + '"' + (e.date === S.election.date ? ' selected' : '') + '>' + esc(e.date + ' · ' + e.name) + '</option>';
+    var ballotOpts = S.places.ballots.map(function (b) {
+      return '<option value="' + esc(b.id) + '"' + (S.ballot && b.id === S.ballot.id ? ' selected' : '') + '>' + esc(b.label) + '</option>';
     }).join('');
     return '' +
       '<section class="panel"><div class="band"><h2>Your ballot</h2><span class="votefor">' + esc(S.election.date) + '</span></div><div class="panel-body">' +
         '<p>Vote Helper explains each item on your ballot, shows how your beliefs map onto it, and lets you agree or disagree. It learns from your disagreements. Everything you enter stays in this browser.</p>' +
-        '<div class="split"><label class="field" for="pick-place">Where you vote<select id="pick-place" data-pick="place">' + placeOpts + '</select></label>' +
-        '<label class="field" for="pick-date">Election<select id="pick-date" data-pick="date">' + dateOpts + '</select></label></div>' +
-        (dHTML ? '<div class="split">' + dHTML + '</div>' : '') +
-        (lookup ? '<p class="small muted">Not sure? <a href="' + esc(lookup.url) + '" target="_blank" rel="noopener">' + esc(lookup.label) + '</a>' + (S.election.districtHint ? '. ' + esc(S.election.districtHint) : '.') + '</p>' : '') +
-        (miss.length ? '<div class="callout warn"><p><b>Not covered yet:</b> ' + esc(miss.join(', ')) + '. Those contests won\'t appear here; check your sample ballot.</p></div>' : '') +
-        '<p class="small muted">' + esc(S.election.coverageNote) + '</p>' +
+        '<label class="field" for="pick-ballot">Your ballot<select id="pick-ballot" data-pick="ballot">' + ballotOpts + '</select></label>' +
+        (S.ballot && S.ballot.note ? '<p class="small muted">' + esc(S.ballot.note) + '</p>' : '') +
       '</div></section>' +
       '<section class="panel"><div class="band"><h2>How much thinking?</h2><span class="votefor">Choose one</span></div><div class="panel-body">' +
         '<div class="efforts">' + efforts.map(function (e) {
@@ -561,8 +539,7 @@
       var side = b.pos < 0 ? d.a : b.pos > 0 ? d.b : 'in between';
       var strength = Math.abs(b.pos) === 2 ? 'strongly' : 'lean';
       var imp = ['doesn\'t matter', 'a little', 'matters', 'top issue'][typeof b.imp === 'number' ? b.imp : 2];
-      var disputed = E.auditStatus(itemAudits(c.id)).disputes.indexOf(x.dim) >= 0 ? ' <span class="flag quality">≠ a model disputes this mapping</span>' : '';
-      return '<li><b>' + esc(d.label) + '</b>' + disputed + ' (you ' + strength + ': "' + esc(side) + '"; ' + imp + '). ' + esc(x.why) + ' → ' + dir + '</li>';
+      return '<li><b>' + esc(d.label) + '</b> (you ' + strength + ': "' + esc(side) + '"; ' + imp + '). ' + esc(x.why) + ' → ' + dir + '</li>';
     }).join('') + '</ul>';
   }
   function endorseHTML(c) {
@@ -670,9 +647,7 @@
         secondOpinionHTML(c) +
         (c.kind === 'measure' ? qualityHTML(c, r) : '') +
         aiNoteHTML(c) +
-        (E.auditStatus(itemAudits(c.id)).status === 'disagree' ? '<div class="callout warn"><p class="small"><b>≠ Models disagree.</b> Another AI model disputes parts of this entry. See "Bias check by other AI models" below.</p></div>' : '') +
         body +
-        auditHTML(c) +
         '<div class="row no-print"><button type="button" class="btn ghost small" data-act="ai-one">Ask your AI about this</button></div>' +
       '</div></section>' +
       decisionHTML(c, r) + walkNav;
@@ -825,377 +800,6 @@
     if (S.disagree) { var el = $('#disagree'); if (el) el.scrollIntoView({ block: 'nearest' }); }
   }
 
-  // ---------- cross-model bias audit ----------
-  // Two rounds, both built only from the data files (never from other models' replies):
-  //   blind    = official ballot text + belief list; the model maps items itself; the app compares.
-  //   critique = Claude's full write-up and belief questions; the model points out bias and errors.
-  var AUDIT_MODELS = [['grok', 'Grok', 'https://grok.com/'], ['chatgpt', 'ChatGPT', 'https://chatgpt.com/'], ['gemini', 'Gemini', 'https://gemini.google.com/'], ['claude', 'Claude', 'https://claude.ai/'], ['other', 'Other model', '']];
-  var PART_CHARS = 14000;
-  function modelLabel(k) {
-    var blind = /~blind$/.test(k), base = k.replace(/~blind$/, '');
-    var m = AUDIT_MODELS.filter(function (x) { return x[0] === base; })[0];
-    return (m ? m[1] : base) + (blind ? ' (blind)' : '');
-  }
-  function auditStore() { var ek = S.election.key; S.audits[ek] = S.audits[ek] || {}; return S.audits[ek]; }
-  function sourcesFor(c) {
-    var srcIds = {}, out = {};
-    JSON.stringify(c, function (k, v) { if (k === 's' && Array.isArray(v)) v.forEach(function (x) { srcIds[x] = 1; }); return v; });
-    Object.keys(srcIds).forEach(function (k) { var x = S.sources[c._file + ':' + k] || S.sources['state:' + k]; if (x) out[k] = x.pub + ': ' + x.title + ' <' + x.url + '>'; });
-    return out;
-  }
-  function questionsFor(c, withEffects) {
-    return E.specificFor([c], S.values).map(function (q) {
-      return { id: q.id, question: q.q, options: q.options.map(function (o) {
-        var fx = o.fx && (o.fx[c.id] != null ? o.fx[c.id] : o.fx['*' + c.kind]);
-        return withEffects ? { answer: o.l, effectOnThisItem: fx == null ? 'none' : fx } : o.l;
-      }) };
-    });
-  }
-  function beliefList() {
-    return S.values.general.map(function (d) { return { id: d.id, label: d.label, question: d.q, sideA: d.a, sideB: d.b }; });
-  }
-  // Critique payload: Claude's full entry.
-  function critiqueItem(c) {
-    var item = JSON.parse(JSON.stringify(c, function (k, v) { return k === '_file' || k === 'order' ? undefined : v; }));
-    item.followUpQuestions = questionsFor(c, true);
-    item.sources = sourcesFor(c);
-    return item;
-  }
-  // Blind payload: only what's printed on the official ballot, none of Claude's judgments.
-  function blindItem(c) {
-    var official = function (arr) { return (arr || []).filter(function (x) { return (x.s || []).indexOf('ballot') >= 0; }).map(function (x) { return x.t; }); };
-    var o = { id: c.id, kind: c.kind };
-    if (c.kind === 'measure') {
-      o.number = c.num; o.officialLabel = c.label; o.type = c.type;
-      o.officialText = c.ballotText ? [c.ballotText.t] : official(c.summary).concat(official(c.fiscal)).concat(official(c.supporters));
-    } else if (c.kind === 'retention') {
-      o.office = c.office; o.judges = (c.judges || []).map(function (j) { return j.name + ' (' + j.role + ')'; });
-    } else {
-      o.office = c.office; o.voteFor = c.voteFor || 1;
-      o.candidates = (c.candidates || []).map(function (k) { return { id: k.id, name: k.name, party: k.party ? partyName(k.party) : undefined, ballotDesignation: k.designation }; });
-    }
-    var qs = questionsFor(c, false);
-    if (qs.length) o.followUpQuestionsAsked = qs;
-    return o;
-  }
-  function parts(mode) {
-    var list = [], cur = null;
-    // Each part repeats the instructions (and, in the blind round, the belief list), so budget for them.
-    var overhead = (mode === 'blind' ? JSON.stringify(beliefList(), null, 1).length : 0) + 3500;
-    var budget = Math.max(4000, PART_CHARS - overhead);
-    if (mode === 'critique') {
-      list.push({ id: 'beliefs', title: 'Belief questions', beliefs: true, items: [] });
-    }
-    S.contests.forEach(function (c) {
-      var size = JSON.stringify(mode === 'blind' ? blindItem(c) : critiqueItem(c)).length;
-      if (!cur || cur.size + size > budget) { cur = { id: 'p' + list.length, title: '', items: [], size: 0 }; list.push(cur); }
-      cur.items.push(c.id); cur.size += size;
-    });
-    list.forEach(function (p) {
-      if (p.beliefs) return;
-      var first = contestById(p.items[0]), last = contestById(p.items[p.items.length - 1]);
-      p.title = contestTitle(first) + (p.items.length > 1 ? ' … ' + contestTitle(last) : '');
-    });
-    return list;
-  }
-  var CRITIQUE_RULES = [
-    'Check each of these:',
-    '1. Framing: is any wording in the summary, Yes/No meaning, fiscal text, pros or cons slanted toward one side? Quote the words.',
-    '2. Arguments: are the strongest arguments on both sides present and fairly stated? Name any major missing argument and who makes it.',
-    '3. Facts: flag anything you believe is wrong or outdated. Only flag what you can support, say when you\'re unsure, and cite a source if you can.',
-    '4. Belief mappings: each "tag" says which belief a Yes vote moves ("yes": +1 toward side B, -1 toward side A) and how strongly ("w": 1-3). For candidates, each position has a "stance" from -1 (side A) to +1 (side B). Follow-up questions show how each answer moves the item (positive = toward Yes or toward that candidate). Are any directions wrong, weights off, or mappings missing?',
-    '5. Quality flags: are any unsupported, one-sided, or held to a different standard than you would apply to a similar measure favored by the other side? Are real drafting problems missing?',
-    '6. Overall lean: does the entry lean left, right, toward Yes, or toward No?'
-  ];
-  var BELIEF_RULES = [
-    'Also review the BELIEF QUESTIONS that voters answer. For each: is the question or either side (A/B) worded to make one answer sound better? Is either side a straw man? Is anything important missing from the list for this ballot?'
-  ];
-  function independenceNote() {
-    return 'Work independently. Don\'t look up or rely on other AI tools\' reviews of this guide. If you have memory of earlier conversations about Vote Helper, ignore it.';
-  }
-  function critiquePrompt(part, total, index) {
-    var items = part.items.map(contestById).map(critiqueItem);
-    var lines = [
-      'You are reviewing a nonpartisan voter guide written by another AI model (Claude) for Vote Helper, a ballot advisor. Your job is to find bias, errors and gaps. Don\'t say how to vote. ' + independenceNote(),
-      '',
-      'Ballot: ' + S.election.name + ', ' + S.election.area + '.' + (total > 1 ? ' This is part ' + (index + 1) + ' of ' + total + '; review only what\'s here.' : ''),
-      ''
-    ];
-    if (part.beliefs || part.all) lines = lines.concat(BELIEF_RULES, ['', 'BELIEF QUESTIONS (JSON):', JSON.stringify(beliefList(), null, 1), '']);
-    if (items.length) lines = lines.concat(['For each ballot entry:'], CRITIQUE_RULES, ['Be specific and brief. If an entry is fair and accurate, say so.', '', 'BALLOT ENTRIES (JSON):', JSON.stringify(items, null, 1), '']);
-    lines = lines.concat([
-      'End your reply with exactly one JSON block in this format:',
-      '```json',
-      '{"voteHelperAudit": 1, "items": [{"id": "<entry id>", "verdict": "agree | minor | major", "lean": "none | left | right | yes | no | unclear", "issues": [{"area": "framing | arguments | facts | tags | quality | candidates", "severity": "minor | major", "detail": "...", "fix": "..."}], "tags": [{"dim": "<belief id>", "agree": true, "direction": -1, "weight": 3, "note": ""}]}]' +
-        (part.beliefs || part.all ? ', "beliefQuestions": [{"id": "<belief id>", "verdict": "agree | minor | major", "lean": "none | left | right | unclear", "issue": "...", "fix": "..."}], "missingBeliefs": [{"label": "...", "why": "..."}]' : '') + '}',
-      '```',
-      'Include every entry' + (part.beliefs || part.all ? ' and every belief question' : '') + ' you were given. verdict: agree = fair and accurate; minor = small fixes; major = biased, wrong, or missing something important.'
-    ]);
-    return lines.join('\n');
-  }
-  function blindPrompt(part, total, index) {
-    var items = part.items.map(contestById).map(blindItem);
-    return [
-      'You are helping test a nonpartisan ballot advisor for bias. Below are items from an official ballot and a list of belief questions voters answer. Without any other write-up to go on, decide for each item which beliefs it touches and which way. Don\'t say how to vote. ' + independenceNote(),
-      '',
-      'Ballot: ' + S.election.name + ', ' + S.election.area + '.' + (total > 1 ? ' This is part ' + (index + 1) + ' of ' + total + '.' : ''),
-      '',
-      'For each MEASURE: list the beliefs a Yes vote moves. "yes": +1 means a Yes vote moves toward side B of that belief, -1 toward side A. "w" is how strongly, 1 (slightly) to 3 (centrally). Only include beliefs it clearly touches.',
-      'For each CANDIDATE RACE: for beliefs where you know a candidate\'s record or stated positions, give "stance" from -1 (side A) to +1 (side B). Skip what you don\'t know; don\'t guess from party alone except for the "party" belief.',
-      'For any item, note real drafting or policy-quality problems you know of (vague terms, loopholes, title that doesn\'t match the effect, conflicting measures), each with a specific reason.',
-      'Finally, list any belief a voter would need for this ballot that the list is missing.',
-      '',
-      'BELIEF QUESTIONS (JSON):',
-      JSON.stringify(beliefList(), null, 1),
-      '',
-      'BALLOT ITEMS (JSON):',
-      JSON.stringify(items, null, 1),
-      '',
-      'End your reply with exactly one JSON block in this format:',
-      '```json',
-      '{"voteHelperBlind": 1, "items": [{"id": "<item id>", "tags": [{"dim": "<belief id>", "yes": 1, "w": 2}], "stances": [{"candidate": "<candidate id>", "dim": "<belief id>", "stance": -1}], "quality": [{"type": "...", "detail": "..."}]}], "missingBeliefs": [{"label": "...", "why": "..."}]}',
-      '```',
-      'Include every item you were given.'
-    ].join('\n');
-  }
-  function promptFor(mode, part, total, index) { return mode === 'blind' ? blindPrompt(part, total, index) : critiquePrompt(part, total, index); }
-  function allParts(mode, split) {
-    if (split) return parts(mode);
-    return [{ id: 'all', title: 'Whole ballot', all: mode === 'critique', items: S.contests.map(function (c) { return c.id; }) }];
-  }
-
-  // Pull the JSON object containing a marker key out of a pasted reply.
-  function extractJSON(text, marker) {
-    try { var whole = JSON.parse(text); if (whole && whole[marker] != null) return whole; } catch (e) {}
-    var i = text.indexOf('"' + marker + '"'); if (i < 0) return null;
-    var start = text.lastIndexOf('{', i); if (start < 0) return null;
-    var depth = 0, inStr = false, escNext = false;
-    for (var j = start; j < text.length; j++) {
-      var ch = text[j];
-      if (inStr) { if (escNext) escNext = false; else if (ch === '\\') escNext = true; else if (ch === '"') inStr = false; continue; }
-      if (ch === '"') inStr = true; else if (ch === '{') depth++; else if (ch === '}') { depth--; if (depth === 0) { try { return JSON.parse(text.slice(start, j + 1)); } catch (e) { return null; } } }
-    }
-    return null;
-  }
-  // Save a pasted reply. Accepts critique or blind replies, for one item or many.
-  function saveReply(model, text, fallbackItem) {
-    var store = auditStore(), date = today(), n = 0;
-    var put = function (cid, key, rec) { store[cid] = store[cid] || {}; store[cid][key] = rec; n++; };
-    var app = function (key, extra) { store._app = store._app || {}; store._app[key] = Object.assign(store._app[key] || {}, extra, { date: date }); };
-    var crit = extractJSON(text, 'voteHelperAudit');
-    if (crit) {
-      var items = Array.isArray(crit.items) ? crit.items : (crit.item ? [crit] : []);
-      items.forEach(function (it) {
-        var cid = it.id || it.item || fallbackItem; if (!contestById(cid)) return;
-        put(cid, model, { model: model, mode: 'critique', date: date,
-          verdict: ['agree', 'minor', 'major'].indexOf(it.verdict) >= 0 ? it.verdict : 'minor', lean: it.lean || 'unclear',
-          issues: Array.isArray(it.issues) ? it.issues.slice(0, 20) : [], tags: Array.isArray(it.tags) ? it.tags.slice(0, 30) : [] });
-      });
-      if (crit.beliefQuestions || crit.missingBeliefs) app(model, { beliefQuestions: crit.beliefQuestions || [], missingBeliefs: crit.missingBeliefs || [] });
-      saveAudits(); return { mode: 'critique', n: n };
-    }
-    var blind = extractJSON(text, 'voteHelperBlind');
-    if (blind) {
-      (blind.items || []).forEach(function (it) {
-        var cid = it.id || fallbackItem, c = contestById(cid); if (!c) return;
-        var rec = E.compareBlind(c, it);
-        rec.model = model; rec.date = date; rec.blindRaw = it;
-        put(cid, model + '~blind', rec);
-      });
-      if (blind.missingBeliefs) app(model + '~blind', { missingBeliefs: blind.missingBeliefs });
-      saveAudits(); return { mode: 'blind', n: n };
-    }
-    if (fallbackItem && contestById(fallbackItem)) {
-      put(fallbackItem, model, { model: model, mode: 'critique', date: date, verdict: 'unparsed', issues: [], tags: [], raw: text.slice(0, 6000) });
-      saveAudits(); return { mode: 'unparsed', n: 1 };
-    }
-    return { mode: 'none', n: 0 };
-  }
-  function receivedBy(part, mode) {
-    var store = auditStore(), got = [];
-    AUDIT_MODELS.forEach(function (m) {
-      var key = mode === 'blind' ? m[0] + '~blind' : m[0];
-      var items = part.items.every(function (id) { return store[id] && store[id][key]; });
-      var beliefsOk = !(part.beliefs || part.all) || (store._app && store._app[key] && store._app[key].beliefQuestions);
-      if (items && beliefsOk && (part.items.length || part.beliefs)) got.push(m[1]);
-    });
-    return got;
-  }
-  function modelSelect(id) {
-    return '<select id="' + id + '">' + AUDIT_MODELS.map(function (m) { return '<option value="' + m[0] + '">' + m[1] + '</option>'; }).join('') + '</select>';
-  }
-  function modelLinks() {
-    return AUDIT_MODELS.filter(function (m) { return m[2]; }).map(function (m) { return '<a class="small" href="' + m[2] + '" target="_blank" rel="noopener">Open ' + m[1] + '</a>'; }).join(' · ');
-  }
-
-  // Whole-app view.
-  function viewAudit() {
-    var mode = S.auditMode || 'blind', split = S.auditSplit !== false;
-    var list = allParts(mode, split);
-    var store = auditStore();
-    var partRows = list.map(function (p, i) {
-      var text = promptFor(mode, p, list.length, i);
-      var got = receivedBy(p, mode);
-      return '<div class="sh-row"><span class="sh-office">' + (list.length > 1 ? 'Part ' + (i + 1) + ' of ' + list.length + ': ' : '') + esc(p.title) +
-        '<br><span class="small muted">' + (p.items.length ? p.items.length + ' items · ' : '') + Math.round(text.length / 1000) + 'k characters' + (got.length ? ' · received from ' + esc(got.join(', ')) : '') + '</span></span>' +
-        '<span class="sh-pick"><button type="button" class="btn small" data-copy-part="' + i + '">Copy</button></span>' +
-        '<textarea class="part-text" id="part-' + i + '" readonly hidden>' + esc(text) + '</textarea></div>';
-    }).join('');
-    // Results
-    var rows = S.contests.map(function (c) {
-      var a = itemAudits(c.id), st = E.auditStatus(a);
-      var chips = Object.keys(a).map(function (k) {
-        var m = st.byModel[k] || {};
-        return '<span class="flag ' + (m.level === 'disagree' ? 'quality' : m.level === 'agree' ? 'decided' : 'low') + '">' + esc(modelLabel(k)) + '</span>';
-      }).join(' ');
-      return '<button type="button" class="slate-row" data-open="' + c.id + '"><span class="s-title">' + esc(contestTitle(c)) + '</span>' +
-        (st.status === 'disagree' ? '<span class="flag quality">≠ Models disagree</span>' : st.count ? '<span class="flag decided">' + st.count + ' review' + (st.count > 1 ? 's' : '') + '</span>' : '<span class="small muted">Not reviewed</span>') +
-        '<span class="s-flags">' + chips + '</span></button>';
-    }).join('');
-    var appNotes = Object.keys(store._app || {}).map(function (k) {
-      var a = store._app[k];
-      var bq = (a.beliefQuestions || []).filter(function (q) { return q.verdict && q.verdict !== 'agree'; }).map(function (q) {
-        var d = dimById(q.id);
-        return '<li><b>' + esc(d ? d.label : q.id) + '</b> <span class="sev">' + esc(q.verdict + (q.lean && q.lean !== 'none' ? ' · leans ' + q.lean : '')) + '</span> ' + esc(q.issue || '') + (q.fix ? ' <span class="muted">Fix: ' + esc(q.fix) + '</span>' : '') + '</li>';
-      }).join('');
-      var mb = (a.missingBeliefs || []).map(function (m) { return '<li>Missing: <b>' + esc(m.label) + '</b>. ' + esc(m.why || '') + '</li>'; }).join('');
-      if (!bq && !mb) return '<p class="small"><b>' + esc(modelLabel(k)) + '</b>: no problems with the belief questions.</p>';
-      return '<div class="stack"><b>' + esc(modelLabel(k)) + '</b> <span class="small muted">' + esc(a.date) + '</span><ul class="claims small">' + bq + mb + '</ul></div>';
-    }).join('');
-    var nDis = S.contests.filter(function (c) { return E.auditStatus(itemAudits(c.id)).status === 'disagree'; }).length;
-    var nRev = S.contests.filter(function (c) { return E.auditStatus(itemAudits(c.id)).count; }).length;
-    return ownLogicHTML() +
-      '<section class="panel"><div class="band"><h2>Bias check</h2><span class="votefor">Whole app</span></div><div class="panel-body">' +
-      '<p>Everything Vote Helper says about this ballot, plus the belief questions themselves, was written by Claude. Ask other AI models to check it.</p>' +
-      '<div class="callout"><h4>Keeping each model independent</h4><ul class="claims small">' +
-        '<li>Prompts are built only from the guide\'s data. They never include another model\'s replies, or your beliefs.</li>' +
-        '<li><b>Round 1 (blind)</b> gives the model only the official ballot text and the belief list. It maps each item itself, then Vote Helper compares its answers with Claude\'s. Do this round first.</li>' +
-        '<li><b>Round 2 (critique)</b> shows the model Claude\'s full write-up and belief questions and asks what\'s slanted, missing or wrong.</li>' +
-        '<li>Use a fresh temporary or private chat for each part (ChatGPT: Temporary Chat; Grok: Private chat) so earlier answers and memory don\'t carry over.</li>' +
-      '</ul></div>' +
-      '<div class="stack"><span class="small" style="font-weight:600">Round</span><div class="chips">' +
-        '<button type="button" data-audit-mode="blind" aria-pressed="' + (mode === 'blind') + '">1 · Blind</button>' +
-        '<button type="button" data-audit-mode="critique" aria-pressed="' + (mode === 'critique') + '">2 · Critique</button></div></div>' +
-      '<div class="stack"><span class="small" style="font-weight:600">Size</span><div class="chips">' +
-        '<button type="button" data-audit-split="1" aria-pressed="' + split + '">Split into parts (free tiers)</button>' +
-        '<button type="button" data-audit-split="0" aria-pressed="' + !split + '">One paste</button></div>' +
-        '<p class="small muted">Free tiers often cut off long messages or long replies. Split keeps each part around ' + Math.round(PART_CHARS / 1000) + 'k characters.</p></div>' +
-      '<div class="row">' + modelLinks() + '</div>' +
-      '</div>' + partRows + '</section>' +
-      '<section class="panel"><div class="band"><h2>Paste a reply</h2></div><div class="panel-body">' +
-        '<label class="field" for="audit-model-all">Which model answered?' + modelSelect('audit-model-all') + '</label>' +
-        '<label class="field" for="audit-reply-all">Its whole reply (any part, either round)<textarea id="audit-reply-all" placeholder="Paste here"></textarea></label>' +
-        '<div class="row"><button type="button" class="btn" data-act="save-reply-all">Save reply</button></div>' +
-        (S.auditMsg ? '<p class="small">' + esc(S.auditMsg) + '</p>' : '') +
-      '</div></section>' +
-      '<section class="panel"><div class="band"><h2>Results</h2><span class="votefor">' + nRev + ' of ' + S.contests.length + ' reviewed · ' + nDis + ' disputed</span></div>' +
-        (appNotes ? '<div class="panel-body"><h4>Belief questions</h4>' + appNotes + '</div>' : '') + rows + '</section>' +
-      '<div class="row"><button type="button" class="btn ghost" data-nav="data">Export replies</button></div>';
-  }
-
-  // Own-logic round: a model writes its own questions and mappings; the app runs them side by side.
-  function ownLogicPrompt() {
-    return window.VHPrompts.buildOwnLogicPrompt({ contests: S.contests, state: S.state, election: S.election, districts: eState().districts });
-  }
-  function ownLogicHTML() {
-    var list = logicIds().map(function (lid) {
-      var L = S.logics[lid], cx = ctx(lid);
-      var covered = cx.contests.filter(function (c) { return c.covered; }).length;
-      var nDiff = S.contests.filter(function (c) { return E.picksDiffer(S.results[c.id], (S.lres[lid] || {})[c.id]); }).length;
-      return '<div class="sh-row"><span class="sh-office">' + esc(L.label) + ' <span class="small muted">' + esc([L.model.name, L.model.version, L.model.webSearch ? 'web search' : (L.model.webSearch === false ? 'no web search' : '')].filter(Boolean).join(' · ')) + '</span>' +
-        '<br><span class="small muted">' + L.values.general.length + ' questions · covers ' + covered + ' of ' + cx.contests.length + ' items' + (hasAnswers(lid) ? ' · differs on ' + nDiff : '') + ' · ' + (L.origin === 'data' ? 'part of the guide' : 'pasted in this browser') + '</span></span>' +
-        '<span class="sh-pick"><button type="button" class="btn small" data-start-logic="' + esc(lid) + '">Answer</button>' + (L.origin === 'browser' ? '<button type="button" class="btn small ghost" data-logic-del="' + esc(lid) + '">Remove</button>' : '') + '</span></div>';
-    }).join('');
-    return '<section class="panel"><div class="band"><h2>Other models\' logic</h2><span class="votefor">Side by side</span></div><div class="panel-body">' +
-      '<p>Ask a model to design its own belief questions and mappings for this ballot, from the official ballot text only. Vote Helper then runs that logic next to its own, and flags items where they differ.</p>' +
-      '<div class="row"><button type="button" class="btn small" data-act="copy-own-logic">Copy own-logic prompt</button>' + modelLinks() + '</div>' +
-      '<textarea id="own-logic-prompt" readonly hidden>' + esc(ownLogicPrompt()) + '</textarea>' +
-      '<p class="small muted">Use a fresh private or incognito chat. If the model asks to continue, reply "continue" and paste every part below. Follow-up corrections from the same model can be pasted too; they\'re merged in.</p>' +
-      '<label class="field" for="logic-model">Which model answered?' + modelSelect('logic-model') + '</label>' +
-      '<label class="field" for="logic-reply">Paste its reply<textarea id="logic-reply" placeholder="Paste here"></textarea></label>' +
-      '<div class="row"><button type="button" class="btn small" data-act="save-logic">Save logic</button></div>' +
-      (S.logicMsg ? '<p class="small">' + esc(S.logicMsg) + '</p>' : '') +
-      '</div>' + list + '</section>';
-  }
-  // Pull every JSON object with a marker key out of a reply (a model may split its answer into parts).
-  function extractAllJSON(text, marker) {
-    var out = [], from = 0;
-    while (true) {
-      var i = text.indexOf('"' + marker + '"', from);
-      var obj = null;
-      if (i < 0) break;
-      var sub = extractJSON(text.slice(text.lastIndexOf('{', i)), marker);
-      if (sub) out.push(sub);
-      from = i + marker.length + 2;
-    }
-    return out;
-  }
-  function saveLogicReply(model, text) {
-    var parts = extractAllJSON(text, 'voteHelperLogic');
-    // A follow-up may come back without the marker but with "items"/"changes".
-    if (!parts.length) { var f = extractJSON(text, 'changes') || extractJSON(text, 'items'); if (f) parts = [f]; }
-    if (!parts.length) return { ok: false, msg: 'No logic JSON found. The reply should end with a JSON block that starts with {"voteHelperLogic": 1.' };
-    var all = loadLocalLogics(), ek = S.election.key;
-    all[ek] = all[ek] || {};
-    var base = all[ek][model] || (S.logics[model] && S.logics[model].origin === 'data' ? S.logics[model].raw : null) || {};
-    parts.forEach(function (p) { base = E.mergeLogic(base, p); });
-    base.label = base.label || modelLabel(model);
-    all[ek][model] = base; saveLocalLogics(all);
-    addLogic(model, base.label, base, 'browser'); rescore();
-    var ids = {}; S.allContests.forEach(function (c) { ids[c.id] = true; });
-    var got = (base.items || []).filter(function (i) { return ids[i.id]; }).length;
-    var dims = {}; (base.general || []).forEach(function (d) { dims[d.id] = true; });
-    var bad = (base.items || []).reduce(function (n, i) { return n + (i.tags || []).concat(i.stances || []).filter(function (t) { return !dims[t.dim]; }).length; }, 0);
-    return { ok: true, msg: 'Saved ' + base.label + '\'s logic: ' + (base.general || []).length + ' questions, ' + got + ' of ' + S.allContests.length + ' items' + (bad ? ', ' + bad + ' mappings use a question it didn\'t define (ignored)' : '') + '.' };
-  }
-
-  // Per-item panel.
-  function auditHTML(c) {
-    var audits = itemAudits(c.id), st = E.auditStatus(audits);
-    var headline = {
-      none: 'Not checked by another model yet.',
-      agree: 'Other models found this entry fair.',
-      minor: 'Other models suggested small fixes.',
-      'split-minor': 'Models differ slightly: one found it fair, another suggested small fixes.',
-      disagree: 'Models disagree with parts of this entry. Read their objections before relying on it.',
-      unparsed: 'A reply was saved but had no JSON block; read it below.'
-    }[st.status];
-    var verdictName = { agree: 'Fair', minor: 'Small fixes', major: 'Major problems', unparsed: 'Unparsed' };
-    var blocks = Object.keys(audits).map(function (k) {
-      var a = audits[k], m = st.byModel[k] || {};
-      var issues = (a.issues || []).map(function (i) {
-        return '<li><span class="sev">' + esc((i.severity || '') + ' · ' + (i.area || '')) + '</span> ' + esc(i.detail || '') + (i.fix ? ' <span class="muted">Suggested fix: ' + esc(i.fix) + '</span>' : '') + '</li>';
-      }).join('');
-      var tagLines = (a.tags || []).filter(function (t) { return t && t.agree === false; }).map(function (t) {
-        var d = dimById(t.dim);
-        return '<li><b>' + esc(d ? d.label : t.dim) + '</b>: ' + (a.mode === 'blind' ? 'its own mapping differs' : 'disputes the mapping') + (t.direction != null ? ' (direction ' + esc(t.direction) + ')' : '') + (t.weight != null ? ', weight ' + esc(t.weight) : '') + (t.note ? '. ' + esc(t.note) : '') + '</li>';
-      }).join('');
-      var chip = a.mode === 'blind' ? (m.level === 'disagree' ? 'Mapped it differently' : m.level === 'agree' ? 'Same mapping' : 'Mostly the same') :
-        (a.verdict !== 'major' && m.tagDisputes && m.tagDisputes.length ? 'Disputes a mapping' : (verdictName[a.verdict] || a.verdict));
-      return '<div class="stack" style="border-top:1px solid var(--rule);padding-top:8px">' +
-        '<div class="row"><b>' + esc(modelLabel(k)) + '</b><span class="flag ' + (m.level === 'disagree' ? 'quality' : m.level === 'agree' ? 'decided' : 'low') + '">' + esc(chip) + '</span>' +
-        (m.leaning ? '<span class="flag quality">Sees a lean: ' + esc(m.leaning) + '</span>' : '') + '<span class="small muted">' + esc(a.date) + '</span>' +
-        '<button type="button" class="linkish small" data-audit-del="' + esc(k) + '">Remove</button></div>' +
-        (issues ? '<ul class="claims small">' + issues + '</ul>' : '') +
-        (tagLines ? '<ul class="claims small">' + tagLines + '</ul>' : '') +
-        (a.verdict === 'unparsed' ? '<details><summary class="small">Show reply</summary><p class="small" style="white-space:pre-wrap">' + esc(a.raw) + '</p></details>' : '') +
-        '</div>';
-    }).join('');
-    var one = { id: 'one', title: contestTitle(c), items: [c.id] };
-    var open = st.status === 'disagree' || (S.auditOpen === c.id);
-    return '<details class="callout' + (st.status === 'disagree' ? ' warn' : '') + '"' + (open ? ' open' : '') + ' id="audit-box"><summary><h4 style="display:inline">Bias check by other AI models' + (st.count ? ' (' + st.count + ')' : '') + '</h4></summary>' +
-      '<p class="small">' + esc(headline) + ' Claude wrote this entry. Use a fresh temporary chat; prompts never include other models\' replies or your beliefs. <button type="button" class="linkish" data-nav="audit">Check the whole app at once</button></p>' +
-      blocks +
-      '<div class="stack no-print"><div class="row"><button type="button" class="btn small" data-copy-item="blind">Copy blind prompt</button><button type="button" class="btn small ghost" data-copy-item="critique">Copy critique prompt</button></div>' +
-      '<div class="row">' + modelLinks() + '</div>' +
-      '<textarea id="item-prompt-blind" readonly hidden>' + esc(blindPrompt(one, 1, 0)) + '</textarea>' +
-      '<textarea id="item-prompt-critique" readonly hidden>' + esc(critiquePrompt(one, 1, 0)) + '</textarea>' +
-      '<label class="field" for="audit-model">Which model answered?' + modelSelect('audit-model') + '</label>' +
-      '<label class="field" for="audit-reply">Paste its whole reply<textarea id="audit-reply" placeholder="Paste here"></textarea></label>' +
-      '<div class="row"><button type="button" class="btn small" data-act="save-audit">Save reply</button></div></div>' +
-      '</details>';
-  }
-
   // ---------- cheat sheet ----------
   function sheetRows() {
     var rows = [];
@@ -1283,11 +887,6 @@
       '<textarea id="export-json" readonly>' + esc(json) + '</textarea>' +
       '<div class="row"><button type="button" class="btn" data-act="copy-export">Copy</button>' + (IN_FRAME ? '' : '<button type="button" class="btn ghost" data-act="download">Download beliefs.json</button>') + '</div>' +
       '</div></section>' +
-      '<section class="panel"><div class="band"><h2>Bias-check replies</h2></div><div class="panel-body">' +
-      '<p class="small">Replies you saved from other AI models, per item and model. These hold no personal views; share them with whoever maintains the data so the entries can be fixed.</p>' +
-      '<textarea id="export-audits" readonly>' + esc(JSON.stringify({ app: 'vote-helper-audits', schema: 1, exported: today(), audits: S.audits }, null, 2)) + '</textarea>' +
-      '<div class="row"><button type="button" class="btn ghost" data-act="copy-audits">Copy</button></div>' +
-      '</div></section>' +
       '<section class="panel"><div class="band"><h2>Import beliefs</h2></div><div class="panel-body">' +
       '<p class="small">Paste a beliefs file, or an AI reply that ends with a <code>voteHelperReply</code> JSON block.</p>' +
       '<textarea id="import-json" placeholder="Paste here"></textarea>' +
@@ -1321,13 +920,6 @@
       save(); rescore();
       S.importMsg = 'Added AI notes to ' + n + ' items.' + (S.aiProfile.length ? ' Review the suggested profile changes below.' : '');
       render(); return;
-    }
-    if (data.app === 'vote-helper-audits' && data.audits) {
-      Object.keys(data.audits).forEach(function (ek) {
-        S.audits[ek] = S.audits[ek] || {};
-        Object.keys(data.audits[ek]).forEach(function (cid) { S.audits[ek][cid] = Object.assign(S.audits[ek][cid] || {}, data.audits[ek][cid]); });
-      });
-      saveAudits(); S.importMsg = 'Imported bias-check replies.'; render(); return;
     }
     if (data.app !== 'vote-helper' || !data.general) { S.importMsg = 'This doesn\'t look like a Vote Helper beliefs file.'; render(); return; }
     S.beliefs = normalize(data); save(); applyDistricts();
@@ -1412,7 +1004,6 @@
       '<div class="stack"><h4>Research method for this election</h4><p class="small">' + esc(S.election.method || '') + ' Researched ' + esc(S.election.researched || '') + '.</p></div>' +
       (S.state.measures && S.state.measures.note ? '<div class="stack"><h4>Ballot measures in ' + esc(S.state.name) + '</h4><p class="small">' + esc(S.state.measures.note) + '</p></div>' : '') +
       (S.state.retention && S.state.retention.note ? '<div class="stack"><h4>Judges in ' + esc(S.state.name) + '</h4><p class="small">' + esc(S.state.retention.note) + '</p></div>' : '') +
-      '<div class="stack"><h4>Bias check with other AI models</h4><p class="small">The summaries, arguments, belief tags, quality flags and the belief questions were written by Claude. The Bias check tab gives other models the whole app in two rounds: blind (official ballot text only; the model maps items itself and Vote Helper compares) and critique (the model reviews Claude\'s write-up). Prompts never include other models\' replies or your beliefs. Items where a model objects are flagged "Models disagree."</p></div>' +
       '</div></section>';
   }
 
@@ -1460,16 +1051,6 @@
       return;
     }
     if (ds.choose) { var c = contestById(S.itemId); return choose(c, ds.choose); }
-    if (ds.copyPart != null) { var pt = $('#part-' + ds.copyPart); pt.hidden = false; return copyText(pt.value, pt); }
-    if (ds.copyItem) { var it = $('#item-prompt-' + ds.copyItem); it.hidden = false; return copyText(it.value, it); }
-    if (ds.auditMode) { S.auditMode = ds.auditMode; S.auditMsg = ''; return render(); }
-    if (ds.auditSplit != null) { S.auditSplit = ds.auditSplit === '1'; return render(); }
-    if (ds.logicDel) {
-      var allL = loadLocalLogics(); if (allL[S.election.key]) delete allL[S.election.key][ds.logicDel]; saveLocalLogics(allL);
-      delete S.logics[ds.logicDel];
-      return loadLogics(S.place, S.election.date, S.election).then(function () { rescore(); render(); });
-    }
-    if (ds.auditDel) { var ek = S.election.key; delete (S.audits[ek] || {})[S.itemId][ds.auditDel]; saveAudits(); S.auditOpen = S.itemId; return render(); }
     switch (ds.act) {
       case 'start': S.returnTo = null; return startFlow(null);
       case 'q-next': commitDraft(); S.queuePos++; if (S.returnTo && S.queuePos >= S.queue.length) { var rt = S.returnTo; S.returnTo = null; rescore(); return setView(rt); } return advanceQueue();
@@ -1492,30 +1073,6 @@
       case 'copy-ai': return copyText($('#ai-prompt').value, $('#ai-prompt'));
       case 'copy-export': return copyText($('#export-json').value, $('#export-json'));
       case 'copy-sheet': return copyText(sheetText(), null);
-      case 'copy-audits': return copyText($('#export-audits').value, $('#export-audits'));
-      case 'save-audit': {
-        var txt = ($('#audit-reply') || {}).value || '';
-        if (!txt.trim()) { toast('Paste the model\'s reply first'); return; }
-        var res = saveReply($('#audit-model').value, txt, S.itemId);
-        S.auditOpen = S.itemId; render();
-        toast(res.mode === 'unparsed' ? 'Saved, but no JSON block was found' : res.n ? 'Saved ' + (res.mode === 'blind' ? 'blind mapping' : 'review') : 'Nothing to save for this item');
-        var box = $('#audit-box'); if (box) box.scrollIntoView({ block: 'nearest' });
-        return;
-      }
-      case 'copy-own-logic': { var olp = $('#own-logic-prompt'); olp.hidden = false; return copyText(olp.value, olp); }
-      case 'save-logic': {
-        var lt = ($('#logic-reply') || {}).value || '';
-        if (!lt.trim()) { toast('Paste the model\'s reply first'); return; }
-        var lr = saveLogicReply($('#logic-model').value, lt);
-        S.logicMsg = lr.msg; return render();
-      }
-      case 'save-reply-all': {
-        var t2 = ($('#audit-reply-all') || {}).value || '', mdl = $('#audit-model-all').value;
-        if (!t2.trim()) { toast('Paste the model\'s reply first'); return; }
-        var r2 = saveReply(mdl, t2, null);
-        S.auditMsg = r2.n ? 'Saved ' + modelLabel(r2.mode === 'blind' ? mdl + '~blind' : mdl) + ' for ' + r2.n + ' item' + (r2.n > 1 ? 's' : '') + '.' : (r2.mode === 'critique' ? 'Saved the belief-question review.' : 'No Vote Helper JSON block found. Ask the model to end with the JSON block from the prompt.');
-        return render();
-      }
       case 'print': return window.print();
       case 'download': {
         var blob = new Blob([JSON.stringify(S.beliefs, null, 2)], { type: 'application/json' });
@@ -1533,14 +1090,11 @@
   });
   document.addEventListener('change', function (ev) {
     var t = ev.target;
-    if (t.dataset && t.dataset.pick) {
-      var pk = t.dataset.pick === 'place' ? t.value : placeKey(S.place);
-      var place = S.places.places.filter(function (p) { return placeKey(p) === pk; })[0];
-      var date = t.dataset.pick === 'date' ? t.value : place.elections[place.elections.length - 1].date;
+    if (t.dataset && t.dataset.pick === 'ballot') {
+      var ballot = S.places.ballots.filter(function (b) { return b.id === t.value; })[0];
       $('#app').innerHTML = '<div class="loading">Loading…</div>';
-      return loadElection(place, date).then(function () { setView('home'); }).catch(showLoadError);
+      return loadElection(ballot).then(function () { setView('home'); }).catch(showLoadError);
     }
-    if (t.dataset && t.dataset.district) { eState().districts[t.dataset.district] = t.value; save(); applyDistricts(); return render(); }
     if (t.name === 'dg' && S.disagree) { S.disagree.key = t.value; S.disagree.draft = null; var n = $('#dg-note'); S.disagree.note = n ? n.value : ''; return render(); }
   });
   document.addEventListener('input', function (ev) {
@@ -1552,31 +1106,23 @@
     $('#app').innerHTML = '<div class="callout warn"><p><b>Couldn\'t load the ballot data.</b> ' + esc(err.message) + '. If you opened this file directly from your computer, serve the folder instead (for example <code>python3 -m http.server</code>) or use the hosted page.</p></div>';
   }
   function pickInitial() {
-    var saved = S.beliefs.place, list = S.places.places;
-    var place = saved && list.filter(function (p) { return placeKey(p) === saved.key; })[0];
-    // No saved place (e.g. beliefs from the first version): use a place this person already has answers for.
-    if (!place) place = list.filter(function (p) { return Object.keys(S.beliefs.elections).some(function (k) { return k.indexOf(placeKey(p) + '/') === 0; }); })[0];
-    place = place || list[0];
-    var date = saved && saved.key === placeKey(place) && place.elections.some(function (e) { return e.date === saved.date; }) ? saved.date : null;
-    if (!date) {
-      // Default to the next upcoming election, else the latest.
-      var t = today(), up = place.elections.filter(function (e) { return e.date >= t; });
-      date = (up[0] || place.elections[place.elections.length - 1]).date;
-    }
-    return { place: place, date: date };
+    var saved = S.beliefs.place || {}, list = S.places.ballots;
+    var key = function (b) { return b.state + '/' + b.locality + '/' + b.date; };
+    return list.filter(function (b) { return b.id === saved.ballot; })[0] ||
+      list.filter(function (b) { return saved.key && key(b) === saved.key + '/' + saved.date; })[0] ||
+      // No saved choice (e.g. beliefs from an older version): a ballot this person already has answers for.
+      list.filter(function (b) { return S.beliefs.elections[key(b)]; })[0] ||
+      list[0];
   }
   S.beliefs = load();
-  S.audits = loadAudits();
   Promise.all([fetchJSON(DATA + 'values.json'), fetchJSON(DATA + 'places.json')]).then(function (res) {
     S.baseValues = res[0]; S.places = res[1];
-    S.stateNames = S.places.stateNames || {};
-    var init = pickInitial();
-    return loadElection(init.place, init.date);
+    return loadElection(pickInitial());
   }).then(function () {
     var hasAny = Object.keys(S.beliefs.general).length > 0;
     setView(hasAny ? 'slate' : 'home');
   }).catch(showLoadError);
 
   // Exposed for tests and the console.
-  window.VoteHelper = { state: S, buildPrompt: function (s) { return buildPrompt(s || 'all'); }, critiquePrompt: function (id) { return critiquePrompt({ items: [id] }, 1, 0); }, blindPrompt: function (id) { return blindPrompt({ items: [id] }, 1, 0); }, parts: parts, saveReply: saveReply, extractJSON: extractJSON };
+  window.VoteHelper = { state: S, buildPrompt: function (s) { return buildPrompt(s || 'all'); } };
 })();

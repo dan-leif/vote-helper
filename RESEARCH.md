@@ -38,8 +38,8 @@ Check each measure against the same list, whichever side it favors:
 
 Every flag must name a specific problem and cite a source. No "experts dislike it."
 
-## 7. Cross-model bias check
-After writing an item, open it in Vote Helper, copy its audit prompt into at least one other model (free ChatGPT or Grok work), and paste the reply back. Export the replies and fix the data where an objection holds up. Keep judgments in the data files; never encode them in code.
+## 7. Second logic and critique
+Get another model's own logic for the ballot, and have a model critique Vote Helper's logic. Steps are in [CLAUDE.md](CLAUDE.md), sections 3 and 4. Keep judgments in the data files; never encode them in code.
 
 ## 8. Validate
 `node test/validate-data.mjs` checks that every claim cites a known source and every tag uses a known belief.

@@ -1,4 +1,5 @@
-/* Vote Helper scoring engine. Pure functions, no DOM.
+/* Vote Helper scoring engine. Pure functions, no DOM. Scores any logic (Vote Helper's own or another
+   model's, see logicToModel) the same way. Maintainer steps are in CLAUDE.md.
    Works in the browser (window.VHEngine) and in Node (module.exports). */
 (function (root) {
   'use strict';
@@ -286,68 +287,6 @@
     return norm(a.pick) !== norm(b.pick);
   }
 
-  // ---------- blind comparison ----------
-  // A blind reply is another model's own mapping of an item, made without seeing Claude's.
-  // blind: { tags: [{dim, yes, w}], stances: [{candidate, dim, stance}], quality: [{type, detail}] }
-  // Returns a record in the same shape as a critique audit, so auditStatus() can compare both kinds.
-  function compareBlind(contest, blind) {
-    var issues = [], tags = [];
-    var theirs = {};
-    (blind.tags || []).forEach(function (t) { if (t && t.dim) theirs[t.dim] = t; });
-    (contest.tags || []).forEach(function (t) {
-      var o = theirs[t.dim];
-      if (!o) {
-        if (t.w >= 2) issues.push({ area: 'tags', severity: 'minor', detail: 'Did not connect this item to "' + t.dim + '" (Claude: direction ' + t.yes + ', weight ' + t.w + ').' });
-        return;
-      }
-      var dir = o.yes > 0 ? 1 : o.yes < 0 ? -1 : 0;
-      if (dir && dir !== t.yes) tags.push({ dim: t.dim, agree: false, direction: dir, weight: o.w, note: 'Blind mapping points the opposite way.' });
-      else if (typeof o.w === 'number' && Math.abs(o.w - t.w) >= 2) issues.push({ area: 'tags', severity: 'minor', detail: '"' + t.dim + '" weight ' + o.w + ' vs Claude\'s ' + t.w + '.' });
-      else tags.push({ dim: t.dim, agree: true });
-    });
-    Object.keys(theirs).forEach(function (dim) {
-      var o = theirs[dim];
-      var mine = (contest.tags || []).some(function (t) { return t.dim === dim; });
-      if (!mine && (o.w || 0) >= 2) tags.push({ dim: dim, agree: false, direction: o.yes, weight: o.w, note: 'Blind mapping uses a belief Claude left out.' });
-    });
-    (blind.stances || []).forEach(function (st) {
-      var cand = (contest.candidates || []).filter(function (k) { return k.id === st.candidate; })[0];
-      if (!cand) return;
-      var p = (cand.positions || []).filter(function (x) { return x.dim === st.dim; })[0];
-      if (p && p.stance && st.stance && Math.sign(p.stance) !== Math.sign(st.stance)) {
-        tags.push({ dim: st.dim, agree: false, direction: Math.sign(st.stance), note: cand.name + ': blind stance is on the other side.' });
-      }
-    });
-    (blind.quality || []).forEach(function (q) {
-      if (q && q.detail) issues.push({ area: 'quality', severity: 'minor', detail: 'Blind review raised: ' + q.detail });
-    });
-    var disputes = tags.filter(function (t) { return t.agree === false; }).length;
-    return { verdict: disputes ? 'major' : issues.length ? 'minor' : 'agree', lean: 'none', issues: issues, tags: tags, mode: 'blind' };
-  }
-
-  // ---------- cross-model audits ----------
-  // audits: { modelKey: { verdict: 'agree'|'minor'|'major'|'unparsed', lean, issues: [{severity}], tags: [{dim, agree}] } }
-  // Returns how other models' reviews compare with the data file's (Claude's) judgments and with each other.
-  function auditStatus(audits) {
-    var keys = Object.keys(audits || {});
-    if (!keys.length) return { count: 0, status: 'none', disputes: [], byModel: {} };
-    var byModel = {}, disputes = [], verdicts = {};
-    keys.forEach(function (k) {
-      var a = audits[k] || {};
-      var tagDisputes = (a.tags || []).filter(function (t) { return t && t.agree === false; }).map(function (t) { return t.dim; });
-      var majorIssue = (a.issues || []).some(function (i) { return i && i.severity === 'major'; });
-      var leaning = a.lean && ['none', 'unclear', ''].indexOf(a.lean) < 0;
-      var disagrees = a.verdict === 'major' || majorIssue || leaning || tagDisputes.length > 0;
-      var level = a.verdict === 'unparsed' ? 'unparsed' : disagrees ? 'disagree' : ((a.issues || []).length || a.verdict === 'minor') ? 'minor' : 'agree';
-      byModel[k] = { level: level, tagDisputes: tagDisputes, leaning: leaning ? a.lean : null };
-      verdicts[level] = true;
-      tagDisputes.forEach(function (d) { if (disputes.indexOf(d) < 0) disputes.push(d); });
-    });
-    // Models disagree when any model disputes Claude's write-up, or the models split (one agrees, another objects).
-    var status = verdicts.disagree ? 'disagree' : (verdicts.agree && verdicts.minor && keys.length > 1) ? 'split-minor' : verdicts.minor ? 'minor' : verdicts.agree ? 'agree' : 'unparsed';
-    return { count: keys.length, status: status, disputes: disputes, byModel: byModel };
-  }
-
   // Pick the contests worth a closer look: strongest internal conflict first.
   function conflicts(contests, results, n) {
     return contests
@@ -369,7 +308,7 @@
 
   var api = {
     IMPORTANCE: IMPORTANCE, score: score, swing: swing, specificFor: specificFor,
-    conflicts: conflicts, applies: applies, auditStatus: auditStatus, compareBlind: compareBlind, mergeLogic: mergeLogic, logicToModel: logicToModel, picksDiffer: picksDiffer, dimsTouched: dimsTouched, labelFor: labelFor
+    conflicts: conflicts, applies: applies, mergeLogic: mergeLogic, logicToModel: logicToModel, picksDiffer: picksDiffer, dimsTouched: dimsTouched, labelFor: labelFor
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.VHEngine = api;

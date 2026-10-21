@@ -69,7 +69,109 @@ Start your reply by stating which AI model you are (name and version, as specifi
 \`\`\`
 Include every item id listed above. If your reply would get cut off, stop after a complete item, close the JSON, and write CONTINUE on the last line; when I reply "continue", send the remaining items in another JSON block of the same shape (repeat the "model" object; put "quickPicks" in the last block).`;
   }
-  var api = { buildOwnLogicPrompt: buildOwnLogicPrompt, ballotItems: ballotItems };
+
+  // o: { contests, state, election, districts, values, sources, quickPicks }
+  // Asks a model to critique Vote Helper's own logic, checking it the same way Vote Helper checks
+  // another model's: direction vs. reasoning, rule adherence, weights, coverage, wording balance, sources.
+  // o.part = { index, total, items: [contest ids] } builds one self-contained part of a split prompt.
+  function buildCritiquePrompt(o) {
+    // Sources are listed once and referred to by short ids to keep the prompt small.
+    var srcTable = {}, srcIds = {}, n = 0;
+    var url = function (ids) { return (ids || []).map(function (id) {
+      var s = o.sources[id]; if (!s) return null;
+      if (!srcIds[s.url]) { srcIds[s.url] = 'S' + (++n); srcTable[srcIds[s.url]] = s.url; }
+      return srcIds[s.url];
+    }).filter(Boolean); };
+    var pick = o.part ? o.part.items : null;
+    var items = ballotItems(o.contests.filter(function (c) { return !pick || pick.indexOf(c.id) >= 0; }), o.state).map(function (it) {
+      var c = o.contests.filter(function (x) { return x.id === it.id; })[0];
+      if (c.kind === 'measure') {
+        it.mappings = (c.tags || []).map(function (t) { return { belief: t.dim, yes: t.yes, w: t.w, why: t.why, sources: url(t.s) }; });
+        it.qualityFlags = (c.quality || []).map(function (q) { return { type: q.type, severity: q.sev, detail: q.t, sources: url(q.s) }; });
+        if (c.constitutional) it.constitutional = true;
+      } else if (c.kind === 'race') {
+        it.candidates.forEach(function (k) {
+          var cand = (c.candidates || []).filter(function (x) { return x.id === k.id; })[0] || {};
+          k.stances = (cand.positions || []).map(function (p) { return { belief: p.dim, stance: p.stance, why: p.t, sources: url(p.s) }; });
+        });
+      }
+      var qs = o.values.specific.filter(function (q) { return (q.for || []).indexOf(c.id) >= 0 || q.appliesToKind === c.kind; });
+      if (qs.length) it.followUpQuestions = qs.map(function (q) { return q.id; });
+      return it;
+    });
+    var beliefs = o.values.general.map(function (d) {
+      var b = { id: d.id, label: d.label, q: d.q, a: d.a, b: d.b };
+      if (d.tiebreaker) b.tiebreaker = true;
+      return b;
+    });
+    var followUps = o.values.specific.filter(function (q) { return items.some(function (it) { return (it.followUpQuestions || []).indexOf(q.id) >= 0; }); }).map(function (q) {
+      return { id: q.id, q: q.q, options: q.options.map(function (op) {
+        var fx = {};
+        Object.keys(op.fx || {}).forEach(function (k) { fx[k === '*retention' ? 'every judicial retention item' : k] = op.fx[k]; });
+        return { answer: op.l, moves: fx };
+      }) };
+    });
+    var where = (o.election.districts || []).map(function (d) {
+      var v = o.districts && o.districts[d.id] != null ? o.districts[d.id] : d.default;
+      var opt = (d.options || []).filter(function (x) { return x.v === v; })[0];
+      return opt ? d.label + ': ' + opt.l : null;
+    }).filter(Boolean).join('; ');
+    return [
+      'I\'m testing a free, nonpartisan ballot advisor for mistakes and bias. A voter answers values questions on a 5-point scale between two sides, A and B, and simple arithmetic matches the answers to each item on their ballot. The logic below was written by another AI system. Please critique it carefully and specifically. Work from your own judgment and research; don\'t rely on any other review of this guide. Don\'t tell anyone how to vote.',
+      '',
+      'BALLOT: ' + o.election.name + ', ' + o.election.area + (where ? ' (' + where + ')' : '') + '.' +
+        (o.part ? ' This is part ' + o.part.index + ' of ' + o.part.total + ' of the ballot; review only the items included here, plus the belief and follow-up questions.' : ''),
+      '',
+      'HOW THE LOGIC WORKS',
+      '- BELIEFS: each has side A and side B. A voter answers from -2 (strongly A) to +2 (strongly B) and says how much it matters. Beliefs marked "tiebreaker" count half as much.',
+      '- MEASURES: each mapping says which belief a YES vote moves. "yes": 1 means a Yes vote moves toward side B, -1 toward side A. "w" is how central the belief is to the measure, 1 (slightly) to 3 (central). "why" is the reasoning.',
+      '- CANDIDATES: each stance runs from -1 (side A) to 1 (side B), based on the candidate\'s record or stated positions, with sources.',
+      '- FOLLOW-UP QUESTIONS are asked only where the beliefs don\'t settle an item. Each answer moves an item: a number from -2 (toward No) to 2 (toward Yes), or toward a named candidate.',
+      '- QUICK MODE asks only 3 belief questions. These are chosen automatically as the ones that change the most suggestions on this ballot: ' + (o.quickPicks || []).join(', ') + '.',
+      '- QUALITY FLAGS describe drafting or policy-quality problems. They are shown separately and don\'t change the match.',
+      '',
+      'THE RULES IT WAS SUPPOSED TO FOLLOW',
+      '- Belief questions reflect real disagreements this ballot turns on, are worded so a person on each side would accept their side\'s wording (no straw men, no loaded words), and are general enough to reuse in future elections.',
+      '- Candidate stances come from a candidate\'s record or stated positions, with a source. Unknown positions are left out rather than guessed. Party alone is used only for the party-lean belief.',
+      '- Every quality flag names a specific problem with a source, and the same standard applies to measures favored by either side.',
+      '',
+      'PLEASE CHECK',
+      '1. Direction: for every mapping and stance, does the "why" agree with the side the number points to, using that belief\'s own A/B definitions? List every case where they contradict.',
+      '2. Rules: stances based only on party, stances without a real record or source, different values for candidates with no sourced difference.',
+      '3. Weights: mappings that are much too strong or too weak, and important mappings that are missing.',
+      '4. Coverage: beliefs this ballot needs that are missing, beliefs that are defined but barely used, items or candidates that end up matched on party alone or not at all.',
+      '5. Wording: any belief question or side that is slanted, a straw man, or lumps together views that don\'t belong together.',
+      '6. Follow-up questions: are the options balanced, and does each answer move the item the right way?',
+      '7. Quick mode: are those 3 the best questions for sorting this particular ballot? If not, which 3?',
+      '8. Quality flags: unsupported, one-sided or missing ones.',
+      '9. Facts: anything wrong or out of date. Use web search to check candidate positions and sources, and cite what you find. If you can\'t search in this chat, say so at the top of your reply.',
+      'Be specific. If something is fine, say so briefly instead of rewriting it.',
+      '',
+      'BELIEF QUESTIONS (JSON):',
+      JSON.stringify(beliefs),
+      '',
+      'FOLLOW-UP QUESTIONS (JSON):',
+      JSON.stringify(followUps),
+      '',
+      'BALLOT ITEMS WITH THEIR MAPPINGS (JSON; ballot text copied from the official ballot; "sources" refer to the SOURCES list):',
+      JSON.stringify(items),
+      '',
+      'SOURCES (JSON):',
+      JSON.stringify(srcTable),
+      '',
+      'Start your reply by stating which AI model you are (name and version, as specifically as you can), whether you used web search, and today\'s date. Then give a short overall assessment, then the result as JSON in exactly this shape:',
+      '```json',
+      '{"voteHelperCritique": 1,',
+      ' "model": {"name": "<your model name>", "version": "<version, or unknown>", "maker": "<company>", "webSearch": true, "date": "YYYY-MM-DD"},',
+      ' "overall": "fair | minor problems | major problems",',
+      ' "issues": [{"item": "<item id, or empty for a belief question>", "belief": "<belief id>", "candidate": "<candidate id, or empty>", "kind": "direction | rule | weight | missing-mapping | coverage | wording | follow-up | quick-mode | quality-flag | fact | other", "severity": "minor | major", "current": "what it says now", "suggested": "what it should say", "reason": "...", "source": "url or empty"}],',
+      ' "missingBeliefs": [{"label": "...", "a": "side A", "b": "side B", "why": "..."}],',
+      ' "quickPicks": [{"rank": 1, "id": "<belief id>", "why": "..."}]}',
+      '```',
+      'If your reply would get cut off, stop after a complete issue, close the JSON, and write CONTINUE on the last line; when I reply "continue", send the remaining issues in another JSON block of the same shape.'
+    ].join('\n');
+  }
+  var api = { buildOwnLogicPrompt: buildOwnLogicPrompt, buildCritiquePrompt: buildCritiquePrompt, ballotItems: ballotItems };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.VHPrompts = api;
 })(typeof window !== 'undefined' ? window : this);

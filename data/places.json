@@ -1,23 +1,15 @@
 {
- "schema": 2,
- "about": "Registry of places with data. Each election lives at data/<state>/<locality>/<date>.json.",
- "places": [
+ "schema": 3,
+ "about": "The ballots people can pick in the app's single location drop-down. Each ballot points to one election file, data/<state>/<locality>/<date>.json, and fixes the districts that ballot covers (the ids and values must exist in that file's \"districts\" list). To offer a new place or ballot type, add its data files and one entry here.",
+ "ballots": [
   {
+   "id": "ca-slo-bt26-2026-11-03",
+   "label": "San Luis Obispo, CA · Nov 3, 2026",
    "state": "ca",
    "locality": "san-luis-obispo",
-   "name": "San Luis Obispo County",
-   "elections": [
-    {
-     "date": "2026-11-03",
-     "name": "General Election"
-    }
-   ]
+   "date": "2026-11-03",
+   "districts": { "city": "slo", "cd": "24", "ad": "30" },
+   "note": "Matches San Luis Obispo County Ballot Type 26: City of San Luis Obispo, U.S. House District 24, State Assembly District 30. Check that the header of your own sample ballot matches."
   }
- ],
- "stateNames": {
-  "ca": "California",
-  "in": "Indiana",
-  "il": "Illinois",
-  "wi": "Wisconsin"
- }
+ ]
 }

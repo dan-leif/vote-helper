@@ -48,28 +48,6 @@ const board = { id: 'board', kind: 'race', voteFor: 2, candidates: [
 const rb = E.score(board, { general: { housing: { pos: 2, imp: 3 } }, specific: {} }, values);
 ok(Array.isArray(rb.pick) && rb.pick.sort().join() === 'a,b' && rb.multi && rb.seats === 2, 'multi-seat picks top two');
 
-// Audit comparison.
-ok(E.auditStatus({}).status === 'none', 'no audits');
-ok(E.auditStatus({ chatgpt: { verdict: 'agree', lean: 'none', issues: [], tags: [] } }).status === 'agree', 'one agreeing audit');
-ok(E.auditStatus({ grok: { verdict: 'minor', lean: 'none', issues: [{ severity: 'minor' }], tags: [] } }).status === 'minor', 'minor notes');
-const dis = E.auditStatus({ chatgpt: { verdict: 'agree', lean: 'none' }, grok: { verdict: 'minor', lean: 'none', tags: [{ dim: 'debt', agree: false }] } });
-ok(dis.status === 'disagree' && dis.disputes[0] === 'debt', 'disputed tag -> models disagree');
-ok(E.auditStatus({ grok: { verdict: 'agree', lean: 'left' } }).status === 'disagree', 'model sees a lean -> disagree');
-ok(E.auditStatus({ a: { verdict: 'agree', lean: 'none' }, b: { verdict: 'minor', lean: 'none', issues: [{ severity: 'minor' }] } }).status === 'split-minor', 'split between models');
-
-// Blind comparison: another model's own mapping vs Claude's.
-const p1 = byId('p1');
-const same = E.compareBlind(p1, { tags: [{ dim: 'debt', yes: -1, w: 3 }, { dim: 'housing', yes: 1, w: 2 }, { dim: 'tax_level', yes: -1, w: 1 }] });
-ok(E.auditStatus({ grok: same }).status === 'agree', 'blind: same mapping -> agree');
-const flipped = E.compareBlind(p1, { tags: [{ dim: 'debt', yes: 1, w: 3 }, { dim: 'housing', yes: 1, w: 2 }] });
-ok(E.auditStatus({ grok: flipped }).status === 'disagree' && E.auditStatus({ grok: flipped }).disputes.includes('debt'), 'blind: opposite direction -> models disagree');
-const extra = E.compareBlind(p1, { tags: [{ dim: 'debt', yes: -1, w: 3 }, { dim: 'housing', yes: 1, w: 2 }, { dim: 'savings', yes: -1, w: 3 }] });
-ok(extra.tags.some(t => t.dim === 'savings' && t.agree === false), 'blind: belief Claude left out is reported');
-const missed = E.compareBlind(p1, { tags: [{ dim: 'housing', yes: 1, w: 2 }] });
-ok(E.auditStatus({ grok: missed }).status === 'minor', 'blind: missing a mapping is a minor note');
-const stance = E.compareBlind(byId('gov'), { stances: [{ candidate: 'hilton', dim: 'climate', stance: -1 }] });
-ok(E.auditStatus({ grok: stance }).status === 'disagree', 'blind: candidate stance on the other side -> disagree');
-
 // Another model's own logic runs through the same engine.
 const grok = read('data/ca/san-luis-obispo/2026-11-03.logic.grok.json');
 const gm = E.logicToModel(contests, grok);

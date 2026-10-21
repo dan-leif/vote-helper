@@ -2,11 +2,13 @@
 
 ## `data/places.json`
 ```jsonc
-{ "stateNames": { "ca": "California" },
-  "places": [ { "state": "ca", "locality": "san-luis-obispo", "name": "San Luis Obispo County",
-                "elections": [ { "date": "2026-11-03", "name": "General Election" } ] } ] }
+{ "schema": 3,
+  "ballots": [ { "id": "ca-slo-bt26-2026-11-03", "label": "San Luis Obispo, CA · Nov 3, 2026",
+                 "state": "ca", "locality": "san-luis-obispo", "date": "2026-11-03",
+                 "districts": { "city": "slo", "cd": "24", "ad": "30" },
+                 "note": "Matches San Luis Obispo County Ballot Type 26 …" } ] }
 ```
-The election file for each entry is `data/<state>/<locality>/<date>.json`.
+Each ballot is one entry in the app's drop-down. It loads `data/<state>/<locality>/<date>.json` and fixes that ballot type's districts; voters don't pick districts. Every district id and value must exist in the election file's `districts` list.
 
 ## `data/<state>/state.json`
 ```jsonc
@@ -31,6 +33,7 @@ The election file for each entry is `data/<state>/<locality>/<date>.json`.
   "name": "November 3, 2026 General Election", "area": "San Luis Obispo County, California",
   "researched": "2026-10-20", "method": "how facts were gathered",
   "include": ["statewide"],                       // other localities' files for the same date
+  "logics": [ { "id": "grok", "label": "Grok" } ],  // other models' logic files to load (see below)
   "districts": [ { "id": "cd", "label": "U.S. House district", "default": "24",
                    "options": [ { "v": "24", "l": "District 24", "covered": true },
                                 { "v": "19", "l": "District 19", "covered": false, "missing": "U.S. House District 19" } ] } ],
@@ -105,20 +108,6 @@ Listed in the election file as `"logics": [ { "id": "grok", "label": "Grok" } ]`
 ```
 `yes` may be fractional (−1…1): the sign is the direction, the size scales the effect. Tiebreaker questions count at half weight. Follow-up options without a `v` get positional ids (`o0`, `o1`, …). Answers to a model's questions are stored in the beliefs file under `logics.<id>`, separate from Vote Helper's.
 
-## Bias-check replies (browser only, exportable; no personal views)
-```jsonc
-{ "app": "vote-helper-audits", "audits": { "ca/san-luis-obispo/2026-11-03": {
-  "p1": {
-    "grok":       { "mode": "critique", "date": "...", "verdict": "agree|minor|major|unparsed", "lean": "none|left|right|yes|no|unclear",
-                    "issues": [ { "area": "...", "severity": "minor|major", "detail": "...", "fix": "..." } ],
-                    "tags": [ { "dim": "housing", "agree": false, "direction": 1, "weight": 1, "note": "..." } ] },
-    "grok~blind": { "mode": "blind", "verdict": "...", "issues": [], "tags": [], "blindRaw": { "tags": [ { "dim": "debt", "yes": -1, "w": 3 } ] } } },
-  "_app": { "chatgpt": { "beliefQuestions": [ { "id": "housing", "verdict": "minor", "issue": "...", "fix": "..." } ], "missingBeliefs": [ { "label": "...", "why": "..." } ] } }
-} } }
-```
-A blind reply is converted to the critique shape by `compareBlind()` in `engine.js`: an opposite direction, an opposite candidate stance, or a weight-2+ belief Claude left out counts as a dispute; a missed mapping or a weight off by 2 is a minor note.
-"Models disagree" shows when any model reports a major problem, sees a lean, or disputes a mapping.
-
 ## Beliefs file (private; never commit publicly)
 ```jsonc
 {
@@ -126,7 +115,7 @@ A blind reply is converted to the critique shape by `compareBlind()` in `engine.
   "general":  { "debt": { "pos": 1, "imp": 2, "date": "2026-10-20", "note": "" } },
   "logics":   { "grok": { "general": { "tax_progressivity": { "pos": 2, "imp": 3, "date": "..." } }, "specific": {} } },
   "specific": { "q_recall": { "v": "same_ballot", "date": "2026-10-20", "election": "ca/san-luis-obispo/2026-11-03" } },
-  "place": { "key": "ca/san-luis-obispo", "date": "2026-11-03" },
+  "place": { "ballot": "ca-slo-bt26-2026-11-03", "key": "ca/san-luis-obispo", "date": "2026-11-03" },
   "elections": { "ca/san-luis-obispo/2026-11-03": { "districts": { "cd": "24" }, "effort": "quick", "choices": { "p1": { "v": "yes", "date": "...", "suggested": "no", "agreed": false } }, "ai": {} } },
   "decisions": [ { "date": "...", "election": "...", "contest": "p1", "suggested": "no", "chose": "yes", "agreed": false, "reasonKey": "less:debt", "note": "...", "change": { "dim": "debt", "field": "imp", "from": 2, "to": 1 } } ],
   "history":   [ { "date": "...", "change": {}, "because": "Prop 1: ...", "note": "..." } ]

@@ -10,17 +10,29 @@ const places = read('places.json');
 let errors = 0;
 const err = m => { errors++; console.error('ERROR', m); };
 
-for (const p of places.places) {
+// Group ballots by election file; check each ballot's fixed districts exist in that file.
+const elections = {};
+for (const b of places.ballots) {
+  const k = `${b.state}/${b.locality}/${b.date}`;
+  (elections[k] = elections[k] || { state: b.state, locality: b.locality, date: b.date, ballots: [] }).ballots.push(b);
+}
+const ballotIds = new Set();
+for (const b of places.ballots) { ballotIds.has(b.id) && err('duplicate ballot id ' + b.id); ballotIds.add(b.id); }
+for (const p of Object.values(elections)) {
   const statePath = p.state + '/state.json';
   if (!existsSync(new URL(statePath, root))) { err('missing ' + statePath); continue; }
   const state = read(statePath);
   const stateSrc = new Set(Object.keys(state.sources || {}));
   const endorserIds = new Set((state.endorsers || []).map(e => e.id));
   (state.endorsers || []).forEach(e => stateSrc.has(e.src) || err(statePath + ' endorser ' + e.id + ' has unknown source'));
-  for (const e of p.elections) {
+  for (const e of [{ date: p.date }]) {
     const path = `${p.state}/${p.locality}/${e.date}.json`;
     if (!existsSync(new URL(path, root))) { err('missing ' + path); continue; }
     const main = read(path);
+    for (const b of p.ballots) for (const [id, val] of Object.entries(b.districts || {})) {
+      const d = (main.districts || []).find(x => x.id === id);
+      if (!d || !d.options.some(o => o.v === val)) err('ballot ' + b.id + ': district ' + id + '=' + val + ' is not in ' + path);
+    }
     const files = [[path, main], ...(main.include || []).map(inc => {
       const ip = `${p.state}/${typeof inc === 'string' ? inc : inc.locality}/${typeof inc === 'string' ? e.date : inc.date}.json`;
       if (!existsSync(new URL(ip, root))) { err(path + ' includes missing ' + ip); return null; }
@@ -72,4 +84,4 @@ for (const p of places.places) {
   }
 }
 if (errors) { console.error(errors + ' errors'); process.exit(1); }
-console.log('data valid (' + places.places.length + ' place(s))');
+console.log('data valid (' + places.ballots.length + ' ballot(s))');
