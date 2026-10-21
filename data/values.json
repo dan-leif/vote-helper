@@ -1,6 +1,10 @@
 {
   "schema": 2,
-  "about": "Part 1 belief questions shared by every place and election. Item-specific (Part 2) questions live in each election data file, and retention defaults in each state's state.json.",
+  "about": "Part 1 belief questions shared by every place and election. This is Vote Helper's single, merged set: questions written by Claude, plus ones merged in from other models' independent logic (\"by\" lists who asked each). Item-specific (Part 2) questions live in each election file, and retention defaults in each state's state.json.",
+  "author": {
+    "id": "claude",
+    "label": "Claude"
+  },
   "scale": {
     "position": "-2 = strongly agree with side A, 0 = in between or no view, +2 = strongly agree with side B",
     "importance": "0 = doesn't matter to me, 1 = a little, 2 = matters (default), 3 = one of my top issues"
@@ -11,35 +15,77 @@
       "label": "Taxes and public services",
       "q": "When your state or local government wants more money for services, where do you lean?",
       "a": "Pay more in taxes to fund more or better services",
-      "b": "Keep taxes and spending lower, even if services shrink"
+      "b": "Keep taxes and spending lower, even if services shrink",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "government_size"
+      }
     },
     {
       "id": "tax_wealthy",
       "label": "Taxing high earners and the very wealthy",
       "q": "How should California treat its highest earners and wealthiest residents?",
       "a": "They should pay a larger share, including new or higher taxes",
-      "b": "Don't single them out; high taxes on them drive people and jobs away"
+      "b": "Don't single them out; high taxes on them drive people and jobs away",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "tax_progressivity"
+      }
     },
     {
       "id": "debt",
       "label": "State borrowing (bonds)",
       "q": "How do you feel about the state borrowing money through bonds?",
       "a": "Borrowing is fine for long-term investments like housing or research",
-      "b": "Avoid new debt; pay as we go or don't do it"
+      "b": "Avoid new debt; pay as we go or don't do it",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "bond_debt"
+      }
     },
     {
       "id": "savings",
-      "label": "Saving for downturns",
-      "q": "When the state has extra money in good years, what should it do?",
-      "a": "Spend it on current needs and programs",
-      "b": "Put more into reserves for recessions"
+      "label": "Saving and spending limits",
+      "q": "When the state takes in extra money in good years, what should happen to it?",
+      "a": "Spend it on current needs, with flexibility to expand services",
+      "b": "Save more in reserves and keep firm limits on spending",
+      "before": {
+        "label": "Saving for downturns",
+        "q": "When the state has extra money in good years, what should it do?",
+        "a": "Spend it on current needs and programs",
+        "b": "Put more into reserves for recessions"
+      },
+      "reworded": true,
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "spending_limits"
+      }
     },
     {
       "id": "tax_votes",
       "label": "Vote needed to pass taxes",
       "q": "What share of voters should it take to pass a local special tax?",
       "a": "A simple majority should be enough",
-      "b": "Taxes should need a two-thirds supermajority"
+      "b": "Taxes should need a two-thirds supermajority",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "local_tax_threshold"
+      }
     },
     {
       "id": "direct_dem",
@@ -60,7 +106,14 @@
       "label": "Environmental review vs. speed",
       "q": "When big projects (housing, water, energy, transit) are proposed, what matters more?",
       "a": "Thorough environmental review and the public's right to challenge it",
-      "b": "Faster, cheaper approvals, even with less review"
+      "b": "Faster, cheaper approvals, even with less review",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "ceqa_process"
+      }
     },
     {
       "id": "climate",
@@ -74,14 +127,28 @@
       "label": "Voting rules",
       "q": "How should California balance easy voting and verification?",
       "a": "Make voting as easy as possible, including mail ballots for everyone",
-      "b": "Require ID and stricter verification, even if it adds steps"
+      "b": "Require ID and stricter verification, even if it adds steps",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "voting_id"
+      }
     },
     {
       "id": "campaign_money",
       "label": "Money in campaigns",
       "q": "Should public money ever go to candidates' campaigns?",
       "a": "Yes, public financing can reduce big-donor influence",
-      "b": "No, taxpayer money shouldn't fund campaigns"
+      "b": "No, taxpayer money shouldn't fund campaigns",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "campaign_finance"
+      }
     },
     {
       "id": "regulation",
@@ -123,7 +190,14 @@
       "label": "Party lean",
       "q": "In partisan races, which party's approach do you generally prefer? (Pick the middle if you don't lean.)",
       "a": "Democratic",
-      "b": "Republican"
+      "b": "Republican",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "party_lean"
+      }
     },
     {
       "id": "outsider",
@@ -132,7 +206,27 @@
       "a": "Experienced officeholders and incumbents",
       "b": "Newcomers and outsiders",
       "tiebreaker": true,
-      "weight": 0.5
+      "weight": 0.5,
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": "experience"
+      }
+    },
+    {
+      "id": "housing_approach",
+      "label": "How to get more housing built",
+      "q": "To bring down housing costs, what should government focus on?",
+      "a": "Removing rules and delays so more homes of all kinds get built",
+      "b": "Public money and requirements for homes reserved as affordable",
+      "by": [
+        "grok"
+      ],
+      "from": {
+        "grok": "housing_supply"
+      }
     }
   ]
 }

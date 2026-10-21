@@ -1,5 +1,5 @@
-/* Vote Helper scoring engine. Pure functions, no DOM. Scores any logic (Vote Helper's own or another
-   model's, see logicToModel) the same way. Maintainer steps are in CLAUDE.md.
+/* Vote Helper scoring engine. Pure functions, no DOM. Mappings the merged models disagree on
+   ("disputed") count for nothing. Maintainer steps are in CLAUDE.md.
    Works in the browser (window.VHEngine) and in Node (module.exports). */
 (function (root) {
   'use strict';
@@ -74,6 +74,7 @@
     var reasons = [];
     var score = 0, max = 0, pro = 0, con = 0;
     (contest.tags || []).forEach(function (tag) {
+      if (tag.disputed) return;   // the models disagree on this mapping, so it counts for nothing
       var b = generalBelief(beliefs, tag.dim);
       if (!b) return;
       var f = impFactor(b);
@@ -108,6 +109,7 @@
     var cands = (contest.candidates || []).map(function (cand) {
       var score = 0, reasons = [], pro = 0, con = 0;
       (cand.positions || []).forEach(function (p) {
+        if (p.disputed) return;
         var b = generalBelief(beliefs, p.dim);
         if (!b) return;
         var w = (typeof p.w === 'number' ? p.w : 2) * dimWeight(values, p.dim);
@@ -185,9 +187,9 @@
   function dimsTouched(contests) {
     var set = {};
     contests.forEach(function (c) {
-      (c.tags || []).forEach(function (t) { set[t.dim] = (set[t.dim] || 0) + t.w; });
+      (c.tags || []).forEach(function (t) { if (!t.disputed) set[t.dim] = (set[t.dim] || 0) + t.w; });
       (c.candidates || []).forEach(function (cand) {
-        (cand.positions || []).forEach(function (p) { if (p.stance) set[p.dim] = (set[p.dim] || 0) + Math.abs(p.stance); });
+        (cand.positions || []).forEach(function (p) { if (p.stance && !p.disputed) set[p.dim] = (set[p.dim] || 0) + Math.abs(p.stance); });
       });
     });
     return set;
@@ -230,11 +232,8 @@
   }
 
   // ---------- another model's own logic ----------
-  // A model's "own logic" reply (see prompts/own-logic.txt) holds its own belief questions,
-  // mappings and follow-up questions for a ballot. These helpers turn it into the same shapes
-  // the engine scores, so the app can run it in parallel with Vote Helper's own logic.
-
-  // Apply a follow-up reply (corrected items, questions, or quick picks) on top of a logic.
+  // Apply a follow-up reply (corrected items, questions, or quick picks) on top of a model's own
+  // logic reply (see prompts/own-logic.txt). Used by tools/add-model-logic.js before merging.
   function mergeLogic(base, update) {
     var out = JSON.parse(JSON.stringify(base || {}));
     var byId = function (arr) { var m = {}; (arr || []).forEach(function (x, i) { m[x.id] = i; }); return m; };
@@ -248,43 +247,6 @@
     if (update && update.model && !out.model) out.model = update.model;
     if (update && update.changes) out.revisions = (out.revisions || []).concat([{ changes: update.changes, date: update.date || null }]);
     return out;
-  }
-
-  // Build { values, contests } from a logic and the ballot's own contests (for names, kinds, order).
-  function logicToModel(baseContests, logic) {
-    var general = (logic.general || []).map(function (d) {
-      return { id: d.id, label: d.label, q: d.q, a: d.a, b: d.b, tiebreaker: !!d.tiebreaker, weight: d.tiebreaker ? 0.5 : 1 };
-    });
-    var specific = (logic.specific || []).map(function (q) {
-      return { id: q.id, for: q.for || [], q: q.q, options: (q.options || []).map(function (o, i) { return { v: o.v || ('o' + i), l: o.l, fx: o.fx || {} }; }) };
-    });
-    var items = {};
-    (logic.items || []).forEach(function (it) { items[it.id] = it; });
-    var contests = baseContests.map(function (c) {
-      var it = items[c.id] || {};
-      var o = { id: c.id, kind: c.kind, order: c.order, level: c.level, num: c.num, title: c.title, office: c.office,
-        voteFor: c.voteFor, unopposed: c.unopposed, appliesTo: c.appliesTo, covered: !!items[c.id],
-        note: it.note || '', quality: it.quality || [],
-        specific: specific.filter(function (q) { return q.for.indexOf(c.id) >= 0; }).map(function (q) { return q.id; }) };
-      if (c.kind === 'measure') o.tags = (it.tags || []).map(function (t) { return { dim: t.dim, yes: +t.yes || 0, w: +t.w || 1, why: t.why || '' }; });
-      if (c.candidates) o.candidates = c.candidates.map(function (k) {
-        return { id: k.id, name: k.name, party: k.party, designation: k.designation,
-          positions: (it.stances || []).filter(function (s) { return s.candidate === k.id; }).map(function (s) { return { dim: s.dim, stance: +s.stance || 0, t: s.why || '', source: s.source || '' }; }) };
-      });
-      if (c.judges) o.judges = c.judges;
-      return o;
-    });
-    var dimIds = {}; general.forEach(function (d) { dimIds[d.id] = true; });
-    var quickPicks = (logic.quickPicks || []).slice().sort(function (a, b) { return (a.rank || 0) - (b.rank || 0); })
-      .filter(function (q) { return dimIds[q.id]; });
-    return { values: { general: general, specific: specific }, contests: contests, quickPicks: quickPicks, model: logic.model || {} };
-  }
-
-  // Do two matches for the same contest point different ways? Only counts when both make a pick.
-  function picksDiffer(a, b) {
-    if (!a || !b || !a.pick || !b.pick) return false;
-    var norm = function (p) { return Array.isArray(p) ? p.slice().sort().join(',') : p; };
-    return norm(a.pick) !== norm(b.pick);
   }
 
   // Pick the contests worth a closer look: strongest internal conflict first.
@@ -308,7 +270,7 @@
 
   var api = {
     IMPORTANCE: IMPORTANCE, score: score, swing: swing, specificFor: specificFor,
-    conflicts: conflicts, applies: applies, mergeLogic: mergeLogic, logicToModel: logicToModel, picksDiffer: picksDiffer, dimsTouched: dimsTouched, labelFor: labelFor
+    conflicts: conflicts, applies: applies, mergeLogic: mergeLogic, dimsTouched: dimsTouched, labelFor: labelFor
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.VHEngine = api;

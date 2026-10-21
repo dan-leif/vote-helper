@@ -10,12 +10,20 @@ function loadBallot(id) {
   if (!ballot) throw new Error('No ballot "' + id + '" in data/places.json. Options: ' + places.ballots.map(b => b.id).join(', '));
   const state = read(ballot.state, 'state.json');
   const main = read(ballot.state, ballot.locality, ballot.date + '.json');
-  const files = [...(main.include || []).map(inc => read(ballot.state, typeof inc === 'string' ? inc : inc.locality, (typeof inc === 'string' ? ballot.date : inc.date) + '.json')), main];
+  const incPaths = (main.include || []).map(inc => [ballot.state, typeof inc === 'string' ? inc : inc.locality, (typeof inc === 'string' ? ballot.date : inc.date) + '.json']);
+  const files = [...incPaths.map(p => Object.defineProperty(read(...p), '_path', { value: path.join(DATA, ...p) })),
+    Object.defineProperty(main, '_path', { value: path.join(DATA, ballot.state, ballot.locality, ballot.date + '.json') })];
   const contests = files.flatMap(f => f.contests || []).filter(c => E.applies(c, ballot.districts)).sort((a, b) => a.order - b.order);
   const sources = Object.assign({}, state.sources, ...files.map(f => f.sources || {}));
   const values = { general: read('values.json').general, specific: [...(state.questions || []), ...files.flatMap(f => f.questions || [])] };
   const dir = path.join(DATA, ballot.state, ballot.locality);
-  return { ballot, state, main, files, contests, sources, values, dir, read };
+  // Merge records (another model's logic merged into Vote Helper's) and the logic each one merged.
+  const ROOT = path.join(__dirname, '..');
+  const merges = files.flatMap(f => f.merged || []).map(m => {
+    const record = JSON.parse(fs.readFileSync(path.join(ROOT, m.record), 'utf8'));
+    return { model: m.model, label: m.label, record, logic: JSON.parse(fs.readFileSync(path.join(ROOT, record.logic), 'utf8')) };
+  });
+  return { ballot, state, main, files, contests, sources, values, dir, read, merges, author: read('values.json').author };
 }
 // Pull JSON out of a pasted chat reply: the whole text if it's JSON, otherwise every {...} block
 // that contains one of the marker keys.

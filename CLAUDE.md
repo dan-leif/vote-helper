@@ -1,12 +1,12 @@
 # Vote Helper: maintainer guide
 
-This is how to add a ballot and fill in both sets of logic: Vote Helper's own logic (written by Claude) and a second, independent logic written by another model (Grok so far). It's written for whoever maintains the data, including Claude Code sessions working in this repo.
+This is how to add a ballot and build its logic. Vote Helper has one set of questions and mappings per ballot, made by merging two independent sets: one written by Claude from research, and one written by another model (Grok so far) from the official ballot text alone. Where the two disagree, the app shows both readings and that mapping counts for nothing. This guide is for whoever maintains the data, including Claude Code sessions working in this repo.
 
 ## Ground rules
 
 - **Judgments live in data files, never in code.** Summaries, pros and cons, belief questions, mappings, quality flags, section names, measure names, party names and voting instructions all come from `data/`. `test/engine.test.mjs` fails if place-specific text appears in `app.js` or `engine.js`.
 - **Every claim cites a source** with a confidence level (`h`/`m`/`l`). See [RESEARCH.md](RESEARCH.md).
-- **Keep models independent.** A prompt to another model never contains your beliefs, never names a model, and never contains another model's answers. The one exception is the critique prompt, which deliberately shows Vote Helper's own logic, and only that. Use a fresh private or incognito chat for every prompt.
+- **Keep models independent until the merge.** The own-logic prompt never contains Vote Helper's logic, any model's answers, or anyone's beliefs, and never names a model. Only the critique prompt (after the merge) shows the merged logic, with the systems named by number. Use a fresh private or incognito chat for every prompt.
 - **Never commit a beliefs file** to this repo. People keep their own in the browser or in a private repo (see `private-template/`).
 
 ## Layout
@@ -16,10 +16,10 @@ data/places.json                                 the ballots in the app's single
 data/values.json                                 Vote Helper's general belief questions (shared everywhere)
 data/<state>/state.json                          state settings: measure names, retention, parties, endorsers
 data/<state>/statewide/<date>.json               statewide contests, shared by every locality in the state
-data/<state>/<locality>/<date>.json              local contests, districts, Part 2 questions, "include", "logics"
-data/<state>/<locality>/<date>.logic.<model>.json   another model's own logic for that ballot
-prompts/replies/<state>-<locality>-<date>/       raw replies from other models, and the prompts they saw
-tools/                                           prompt builders and the logic importer
+data/<state>/<locality>/<date>.json              local contests, districts, Part 2 questions, "include", "merged"
+data/<state>/<locality>/<date>.merge.<model>.json   how another model's logic was merged in (question matches and reasons)
+prompts/replies/<state>-<locality>-<date>/       other models' raw replies, their combined logic (<model>-logic.json), prompts sent
+tools/                                           prompt builders, the logic importer and the merge tool
 ```
 
 Formats are in [SCHEMA.md](SCHEMA.md).
@@ -45,25 +45,37 @@ Research and tagging follow [RESEARCH.md](RESEARCH.md). In short, for each ballo
 
 The app works out Quick, Standard and Deep from these mappings; nothing extra is needed.
 
-## 3. A second logic from another model (Grok)
+## 3. Get another model's own logic (Grok)
 
 1. **Build the prompt.** `node tools/build-own-logic-prompt.js <ballot-id>` writes `prompts/own-logic.txt`. It contains only the official ballot text and the rules; none of Vote Helper's logic.
 2. **Ask the model.** Paste it into a new private chat (free Grok works). If the reply ends with CONTINUE, reply "continue" and keep every part. Save each reply to a file, either the JSON or the whole chat text.
-3. **Import it.** `node tools/add-model-logic.js <ballot-id> grok "Grok" reply-1.txt` writes the logic file, adds it to the election's `logics` list so the app loads it, copies the raw reply to `prompts/replies/`, and prints a review sheet.
+3. **Import it.** `node tools/add-model-logic.js <ballot-id> grok "Grok" reply-1.txt` writes `prompts/replies/<state>-<locality>-<date>/grok-logic.json`, copies the raw reply next to it, and prints a review sheet.
 4. **Review it.** The sheet lists mechanical problems: undefined questions, unknown candidates, unused questions, missing source links, same-party candidates scored differently, and races matched on party alone. It also prints every mapping next to the side its number points to. Read each one: does the model's own "why" agree with that side?
 5. **Send one follow-up.** In the same chat, list only internal contradictions and breaks of the prompt's own rules, quoting the model's own text. Don't add your own opinions, Vote Helper's logic, or other models' answers. Ask for corrected items plus a `changes` list. See `prompts/replies/ca-san-luis-obispo-2026-11-03/` for the Grok example.
-6. **Merge the corrections.** Run `node tools/add-model-logic.js <ballot-id> grok "Grok" reply-2.txt`; it merges into the existing file and logs the changes under `revisions`.
-7. **Don't fix the model's judgments yourself.** If its logic still disagrees with Vote Helper's after its own corrections, leave it. Showing that disagreement is the point.
-8. **Check and commit.** `node test/validate-data.mjs`, `node test/engine.test.mjs`.
+6. **Import the corrections.** `node tools/add-model-logic.js <ballot-id> grok "Grok" reply-2.txt` merges them into `grok-logic.json` and logs them under `revisions`.
+
+## 4. Merge it into Vote Helper's logic
+
+1. **Write the merge record** `data/<state>/<locality>/<date>.merge.grok.json` (copy the SLO one). For each of the model's questions, say what happens to it, with a reason:
+   - `"to": "<question>", "orient": 1 or -1`: same disagreement as an existing question (`-1` if the sides are swapped). Add `"reword"` if the existing wording should change to cover both.
+   - `"to": "<new id>", "new": {label, q, a, b}`: a disagreement Vote Helper doesn't ask about yet; it's added to `data/values.json`.
+   - `"toSpecific": "<follow-up id>"`: same as one of Vote Helper's follow-up questions.
+   - `"drop": true`: leave it out (for example, a question about a single measure that general questions already cover).
+   Also list which of its follow-up questions to keep, which of its quality flags match Vote Helper's or should be added, and the rule for party stances.
+   Match questions on what voters actually disagree about, not on topic. Two housing questions that measure different splits stay separate.
+2. **Run the merge.** `node tools/merge-logic.js <ballot-id> grok`. For every mapping on the same question: same direction → kept and marked by both (weights averaged); opposite directions → marked `disputed`, both views kept, counts for nothing; only the model made it → added and marked as the model's. It's safe to re-run after editing the merge record.
+3. **Read its summary**: agreements, disputes, additions and what was left out. A dispute you didn't expect usually means two questions were matched that shouldn't have been.
+4. **Don't settle disputes yourself.** If the models still disagree after the model's own corrections, leave the dispute. The critique step is where it gets a second look.
+5. **Check.** `node test/validate-data.mjs`, `node test/engine.test.mjs`.
 
 Other models work the same way: use a different `<model-id>` and label (for example `chatgpt "ChatGPT"`).
 
-## 4. Another model critiques Vote Helper's logic
+## 5. Have the other model critique the merged logic
 
-1. **Build the prompt.** `node tools/build-critique-prompt.js <ballot-id>` writes `prompts/critique-<ballot-id>.txt`, plus two self-contained halves (`.part1-of-2`, `.part2-of-2`) for chat apps that reject long messages. It describes Vote Helper's belief questions, mappings, follow-ups, Quick picks and quality flags, with the rules they were written under, and asks for the same checks used on other models' logic.
-2. **Ask the model.** Use a new private chat. If the full prompt is too long, send each half in its own new chat.
+1. **Build the prompt.** `node tools/build-critique-prompt.js <ballot-id>` writes `prompts/critique-<ballot-id>.txt` plus self-contained parts (`.partN-of-3`) for chat apps that reject long messages. It shows the merged belief questions, mappings, follow-ups, Quick picks, quality flags and the merge notes, with the authors named only as system 1 and system 2. It asks for the same checks used on the model's own logic, plus whether the questions were matched correctly and which reading is right in each dispute.
+2. **Ask the model.** Use a new private chat. If the full prompt is too long, send each part in its own new chat.
 3. **Save the reply** to `prompts/replies/<state>-<locality>-<date>/<model>-critique-<n>.txt`.
-4. **Weigh each issue** against the sources. Apply the ones that hold up to the data files (re-checking any fact it raises), and leave the rest.
+4. **Weigh each issue** against the sources. Apply the ones that hold up: Vote Helper's own mappings and wording in the data files, question matches in the merge record (then re-run the merge). Leave the rest.
 5. **Record the decisions** in `prompts/replies/<state>-<locality>-<date>/critique-decisions.md`: issue, accepted or not, and why.
 6. **Check and commit.**
 
@@ -75,5 +87,6 @@ node test/engine.test.mjs                            # scoring and logic tests
 node test/validate-data.mjs                          # every claim sourced, ids resolve, ballots valid
 node tools/build-own-logic-prompt.js [ballot-id]     # prompt for another model's own logic
 node tools/add-model-logic.js <ballot-id> <model-id> "<Label>" <reply files...>
-node tools/build-critique-prompt.js [ballot-id]      # prompt for a critique of Vote Helper's logic
+node tools/merge-logic.js <ballot-id> <model-id>     # merge that model's logic into Vote Helper's
+node tools/build-critique-prompt.js [ballot-id]      # prompt for a critique of the merged logic
 ```

@@ -2,7 +2,7 @@
    data/<state>/state.json and its data/<state>/<locality>/<date>.json election file.
    Keeps the person's beliefs in localStorage and never sends them anywhere.
    All judgments about ballot items live in the data files; this file only displays and does arithmetic.
-   To add a ballot, Vote Helper's own logic, or another model's logic (e.g. Grok's), follow CLAUDE.md;
+   To add a ballot, write its logic, or merge in another model's independent logic, follow CLAUDE.md;
    it takes data files only, no changes here. */
 (function () {
   'use strict';
@@ -16,7 +16,6 @@
   var S = {
     values: null, baseValues: null, places: null, place: null, state: null, election: null, contests: [], sources: {},
     results: {}, beliefs: null, view: 'home', itemId: null,
-    logics: {}, lres: {},
     queue: [], queuePos: 0, walk: [], walkPos: 0, disagree: null, aiScope: null
   };
 
@@ -24,23 +23,8 @@
   function $(sel, el) { return (el || document).querySelector(sel); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function today() { return new Date().toISOString().slice(0, 10); }
-  function dimById(id, lid) { return ctx(lid).values.general.filter(function (d) { return d.id === id; })[0]; }
-  function specById(id, lid) { return ctx(lid).values.specific.filter(function (q) { return q.id === id; })[0]; }
-  // A "logic" is a full set of belief questions and mappings. The default (no id) is Vote Helper's own;
-  // others were written independently by another AI model (e.g. "grok"). Answers to each are kept apart.
-  function ctx(lid) {
-    if (!lid || !S.logics[lid]) return { lid: null, values: S.values, store: S.beliefs, contests: S.contests, results: S.results, label: 'Vote Helper' };
-    var L = S.logics[lid];
-    S.beliefs.logics = S.beliefs.logics || {};
-    var store = S.beliefs.logics[lid] = S.beliefs.logics[lid] || { general: {}, specific: {} };
-    store.general = store.general || {}; store.specific = store.specific || {};
-    var visible = {}; S.contests.forEach(function (c) { visible[c.id] = true; });
-    return { lid: lid, values: L.values, store: store, contests: L.contests.filter(function (c) { return visible[c.id]; }),
-      results: S.lres[lid] || {}, label: L.label, quickPicks: L.quickPicks, L: L };
-  }
-  function logicIds() { return Object.keys(S.logics); }
-  function hasAnswers(lid) { var c = ctx(lid); return Object.keys(c.store.general).length + Object.keys(c.store.specific).length > 0; }
-  function logicContest(lid, id) { return ctx(lid).contests.filter(function (c) { return c.id === id; })[0]; }
+  function dimById(id) { return S.values.general.filter(function (d) { return d.id === id; })[0]; }
+  function specById(id) { return S.values.specific.filter(function (q) { return q.id === id; })[0]; }
   function contestById(id) { return S.contests.filter(function (c) { return c.id === id; })[0]; }
   function toast(msg) {
     var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
@@ -49,7 +33,7 @@
 
   // ---------- storage ----------
   function blankBeliefs() {
-    return { schema: 2, app: 'vote-helper', created: today(), updated: today(), general: {}, specific: {}, logics: {}, elections: {}, decisions: [], history: [] };
+    return { schema: 2, app: 'vote-helper', created: today(), updated: today(), general: {}, specific: {}, elections: {}, decisions: [], history: [] };
   }
   function load() {
     try { var raw = localStorage.getItem(STORE_KEY); if (raw) return normalize(JSON.parse(raw)); } catch (e) {}
@@ -121,22 +105,51 @@
         // The ballot fixes its districts; there's nothing for the voter to pick.
         eState().districts = Object.assign({}, ballot.districts || {});
         save();
-        return loadLogics(place, date, main);
-      }).then(function () { applyDistricts(); });
+        migrateMergedAnswers(files);
+        applyDistricts();
+      });
     });
   }
-  // Other models' logic: files listed in the election file, plus any pasted in this browser.
-  function loadLogics(place, date, main) {
-    S.logics = {}; S.lres = {};
-    var base = DATA + place.state + '/' + place.locality + '/' + date + '.logic.';
-    var listed = (main.logics || []).map(function (l) {
-      return fetchJSON(base + l.id + '.json').then(function (raw) { addLogic(l.id, l.label || l.id, raw, 'data'); }).catch(function () {});
-    });
-    return Promise.all(listed);
+  // ---------- merged logic: which model made each mapping ----------
+  // Vote Helper's logic is one merged set. Mappings carry "by" (which models made them); "disputed"
+  // ones (the models pointed opposite ways) carry both views and count for nothing.
+  function modelLabel(id) {
+    if (S.baseValues.author && id === S.baseValues.author.id) return S.baseValues.author.label;
+    var m = (S.election.merged || []).filter(function (x) { return x.model === id; })[0];
+    return m ? m.label : id;
   }
-  function addLogic(id, label, raw, origin) {
-    var m = E.logicToModel(S.allContests, raw);
-    S.logics[id] = { id: id, label: label, raw: raw, origin: origin, values: m.values, contests: m.contests, quickPicks: m.quickPicks, model: m.model };
+  function mergedModels() { return (S.election.merged || []).map(function (m) { return m.model; }); }
+  function byChip(x) {
+    if (!mergedModels().length || !x) return '';
+    var by = x.by || [S.baseValues.author ? S.baseValues.author.id : 'author'];
+    var text = by.length > 1 ? 'Both models' : modelLabel(by[0]) + ' only';
+    return ' <span class="by-chip' + (by.length > 1 ? ' both' : '') + '">' + esc(text) + '</span>';
+  }
+  function disputedIn(c) {
+    var out = [];
+    (c.tags || []).forEach(function (t) { if (t.disputed) out.push({ dim: t.dim, x: t }); });
+    (c.candidates || []).forEach(function (k) { (k.positions || []).forEach(function (p) { if (p.disputed) out.push({ dim: p.dim, x: p, cand: k }); }); });
+    return out;
+  }
+  // Answers given to another model's own questions (from the earlier side-by-side version) carry over
+  // to the merged questions they were matched to, when the merged question hasn't been answered yet.
+  function migrateMergedAnswers(files) {
+    var changed = false, logics = S.beliefs.logics || {};
+    files.forEach(function (f) {
+      (f.merged || []).forEach(function (m) {
+        var theirs = logics[m.model]; if (!theirs) return;
+        Object.keys(m.questions || {}).forEach(function (from) {
+          var a = (theirs.general || {})[from], to = m.questions[from][0], orient = m.questions[from][1];
+          if (!a || S.beliefs.general[to]) return;
+          S.beliefs.general[to] = { pos: Math.max(-2, Math.min(2, a.pos * orient)), imp: a.imp == null ? 2 : a.imp, date: a.date || today(), note: 'Carried over from your answer to ' + m.label + '\'s question' };
+          changed = true;
+        });
+        Object.keys(theirs.specific || {}).forEach(function (q) {
+          if (!S.beliefs.specific[q] && S.values.specific.some(function (x) { return x.id === q; })) { S.beliefs.specific[q] = theirs.specific[q]; changed = true; }
+        });
+      });
+    });
+    if (changed) save();
   }
   function applyDistricts() {
     var st = eState();
@@ -147,14 +160,6 @@
   function rescore() {
     S.results = {};
     S.contests.forEach(function (c) { S.results[c.id] = E.score(c, S.beliefs, S.values); });
-    logicIds().forEach(function (lid) {
-      var c = ctx(lid), res = {};
-      c.contests.forEach(function (x) { res[x.id] = E.score(x, c.store, c.values); });
-      S.lres[lid] = res;
-    });
-  }
-  function differs(cid) {
-    return logicIds().filter(function (lid) { return hasAnswers(lid) && E.picksDiffer(S.results[cid], (S.lres[lid] || {})[cid]); });
   }
   // District choices the data marks as not researched yet.
   function uncovered() {
@@ -208,9 +213,6 @@
     }
     return '<span class="verdict ' + cls + (lean ? ' lean' : '') + '"><span class="dot"></span>' + esc(text) + '</span>';
   }
-  function verdictText(c, r) {
-    var tmp = document.createElement('div'); tmp.innerHTML = verdictHTML(c, r); return esc(tmp.textContent);
-  }
   function contestTitle(c) {
     if (c.kind === 'measure') return (c.numLabel || measureShort()) + ' ' + c.num + ': ' + c.title;
     return c.office;
@@ -228,7 +230,7 @@
     if (wq >= 2) out.push('<span class="flag quality">⚠ ' + (wq === 3 ? 'Serious' : 'Some') + ' drafting concerns</span>');
     if (c.conf === 'l') out.push('<span class="flag low">Thin information</span>');
     if (st.ai[c.id]) out.push('<span class="flag low">AI note</span>');
-    differs(c.id).forEach(function (lid) { out.push('<span class="flag quality">≠ ' + esc(ctx(lid).label) + ' differs</span>'); });
+    if (disputedIn(c).length) out.push('<span class="flag quality">≠ Models disagree</span>');
     return out.join('');
   }
   function choiceFor(c) {
@@ -306,60 +308,41 @@
         '<div class="row"><button type="button" class="btn" data-act="start">Start</button>' +
         (Object.keys(S.beliefs.general).length ? '<button type="button" class="btn ghost" data-nav="slate">Go to my ballot</button>' : '') +
         '<button type="button" class="btn ghost" data-nav="data">Import beliefs</button></div>' +
-      '</div></section>' + logicHomeHTML();
-  }
-  function logicHomeHTML() {
-    return logicIds().map(function (lid) {
-      var c = ctx(lid), L = c.L;
-      var touched = Object.keys(E.dimsTouched(c.contests));
-      var ans = touched.filter(function (d) { return c.store.general[d]; }).length;
-      return '<section class="panel"><div class="band"><h2>Second opinion: ' + esc(L.label) + '</h2><span class="votefor">' + esc(L.model.name ? L.model.name + ' ' + (L.model.version || '') : '') + '</span></div><div class="panel-body">' +
-        '<p>' + esc(L.label) + ' wrote its own belief questions and mappings for this ballot, working only from the official ballot text, without seeing Vote Helper\'s. Answer its questions to see its match next to Vote Helper\'s on every item.</p>' +
-        '<p class="small muted">Uses the same Quick / Standard / Deep choice. Quick asks ' + esc(L.label) + '\'s own top ' + (c.quickPicks.length || 3) + ' questions. You\'ve answered ' + ans + ' of ' + touched.length + '. These answers are kept separate from your Vote Helper answers.</p>' +
-        '<div class="row"><button type="button" class="btn" data-start-logic="' + esc(lid) + '">Answer ' + esc(L.label) + '\'s questions</button></div>' +
       '</div></section>';
-    }).join('');
   }
 
   // ---------- question queue ----------
-  function buildQueue(effort, lid) {
-    var c = ctx(lid), q = [];
-    var sw = E.swing(c.contests, c.store, c.values);
+  function buildQueue(effort) {
+    var q = [];
+    var sw = E.swing(S.contests, S.beliefs, S.values);
     var useful = sw.filter(function (x) { return x.moved > 0; });
     var nGeneral = effort === 'quick' ? 3 : effort === 'standard' ? 8 : sw.length;
-    var gen = (effort === 'deep' ? sw : useful).map(function (x) { return x.dim; });
-    if (lid && c.quickPicks.length) {
-      // Another model's logic: its own Quick picks come first (and are all Quick asks).
-      var picks = c.quickPicks.map(function (x) { return x.id; }).filter(function (d) { return !c.store.general[d]; });
-      gen = effort === 'quick' ? picks : picks.concat(gen.filter(function (d) { return picks.indexOf(d) < 0; }));
-      if (effort === 'quick') nGeneral = picks.length;
-    }
-    gen.slice(0, nGeneral).forEach(function (d) { q.push({ type: 'general', id: d, logic: lid || null }); });
-    if (effort !== 'quick') q.push({ type: 'specific-batch', logic: lid || null });
+    var gen = (effort === 'deep' ? sw : useful).slice(0, nGeneral);
+    gen.forEach(function (x) { q.push({ type: 'general', id: x.dim }); });
+    if (effort !== 'quick') q.push({ type: 'specific-batch' });
     return q;
   }
-  function expandSpecific(lid) {
+  function expandSpecific() {
     // Called after general answers: decide which Part 2 questions to ask.
     rescore();
-    var c = ctx(lid), effort = eState().effort;
-    var target = c.contests.filter(function (x) {
-      var r = c.results[x.id] || {};
+    var effort = eState().effort;
+    var target = S.contests.filter(function (c) {
+      var r = S.results[c.id];
       if (effort === 'deep') return true;
-      return r.label === 'call' || r.label === 'none' || r.conflict || x.kind === 'retention';
+      return r.label === 'call' || r.label === 'none' || r.conflict || c.kind === 'retention';
     });
-    return E.specificFor(target, c.values)
-      .filter(function (q) { return !c.store.specific[q.id]; })
-      .map(function (q) { return { type: 'specific', id: q.id, logic: lid || null }; });
+    return E.specificFor(target, S.values)
+      .filter(function (q) { return !S.beliefs.specific[q.id]; })
+      .map(function (q) { return { type: 'specific', id: q.id }; });
   }
-  function startFlow(lid) {
+  function startFlow() {
     var st = eState();
-    S.flowLogic = lid || null;
-    S.queue = buildQueue(st.effort, lid); S.queuePos = 0;
+    S.queue = buildQueue(st.effort); S.queuePos = 0;
     advanceQueue();
   }
   function advanceQueue() {
     while (S.queuePos < S.queue.length && S.queue[S.queuePos].type === 'specific-batch') {
-      var more = expandSpecific(S.queue[S.queuePos].logic);
+      var more = expandSpecific();
       S.queue.splice.apply(S.queue, [S.queuePos, 1].concat(more));
     }
     if (S.queuePos >= S.queue.length) { finishQuestions(); return; }
@@ -368,14 +351,6 @@
   function finishQuestions() {
     rescore();
     var effort = eState().effort;
-    if (S.flowLogic) {
-      // After another model's questions: walk through the items where it and Vote Helper differ.
-      var lid = S.flowLogic; S.flowLogic = null;
-      S.walk = effort === 'quick' ? [] : S.contests.filter(function (c) { return E.picksDiffer(S.results[c.id], S.lres[lid][c.id]); }).map(function (c) { return c.id; });
-      S.walkPos = 0;
-      if (S.walk.length) setView('item', { item: S.walk[0] }); else setView('slate');
-      return;
-    }
     if (effort === 'quick') { setView('slate'); return; }
     S.walk = S.contests.filter(function (c) {
       if (effort === 'deep') return true;
@@ -399,13 +374,13 @@
       return '<button type="button" data-imp="' + i + '" aria-pressed="' + (imp === i) + '">' + n + '</button>';
     }).join('') + '</div>';
   }
-  function generalQuestionHTML(d, cur, opts, lid) {
-    var touches = ctx(lid).contests.filter(function (c) {
+  function generalQuestionHTML(d, cur, opts) {
+    var touches = S.contests.filter(function (c) {
       return (c.tags || []).some(function (t) { return t.dim === d.id; }) ||
         (c.candidates || []).some(function (k) { return (k.positions || []).some(function (p) { return p.dim === d.id && p.stance; }); });
-    }).map(function (c) { return contestTitle(contestById(c.id) || c); });
-    return '<div class="panel-body">' +
-      (lid ? '<p class="small muted">' + esc(ctx(lid).label) + ' wrote this question. Your answer is kept separate from your Vote Helper answers.</p>' : '') +
+    }).map(contestTitle);
+    var from = mergedModels().length && d.by ? '<p class="small muted">Question from: ' + esc(d.by.map(modelLabel).join(' and ')) + (d.by.length > 1 ? ' (both asked it independently)' : '') + '</p>' : '';
+    return '<div class="panel-body">' + from +
       '<h4>' + esc(d.label) + '</h4>' +
       '<p style="font-size:var(--step-1);font-weight:600">' + esc(d.q) + '</p>' +
       '<div class="poles"><div class="pole"><b>A</b>' + esc(d.a) + '</div><div class="pole"><b>B</b>' + esc(d.b) + '</div></div>' +
@@ -421,22 +396,20 @@
     var pct = Math.round((S.queuePos / Math.max(1, total)) * 100);
     var head = '<div class="progress" aria-hidden="true"><i style="width:' + pct + '%"></i></div>';
     var body;
-    var cx = ctx(item.logic), who = item.logic ? cx.label + '\'s questions · ' : '';
-    var dl = item.logic ? ' data-logic="' + esc(item.logic) + '"' : '';
     if (item.type === 'general') {
-      var d = dimById(item.id, item.logic), cur = S.draft || cx.store.general[item.id];
-      body = '<section class="panel" data-q="general" data-id="' + d.id + '"' + dl + '><div class="band"><h2>' + esc(who) + 'Part 1 · Values</h2><span class="votefor">Question ' + pos + ' of ' + total + '</span></div>' + generalQuestionHTML(d, cur, null, item.logic) + '</section>';
+      var d = dimById(item.id), cur = S.draft || S.beliefs.general[item.id];
+      body = '<section class="panel" data-q="general" data-id="' + d.id + '"><div class="band"><h2>Part 1 · Your values</h2><span class="votefor">Question ' + pos + ' of ' + total + '</span></div>' + generalQuestionHTML(d, cur) + '</section>';
     } else {
-      var q = specById(item.id, item.logic), a = S.draft || cx.store.specific[item.id];
+      var q = specById(item.id), a = S.draft || S.beliefs.specific[item.id];
       var forTitles = (q.for || []).map(contestById).filter(Boolean).concat(S.contests.filter(function (c) { return q.appliesToKind && c.kind === q.appliesToKind; })).map(contestTitle);
-      body = '<section class="panel" data-q="specific" data-id="' + q.id + '"' + dl + '><div class="band"><h2>' + esc(who) + 'Part 2 · A specific question</h2><span class="votefor">Question ' + pos + ' of ' + total + '</span></div><div class="panel-body">' +
+      body = '<section class="panel" data-q="specific" data-id="' + q.id + '"><div class="band"><h2>Part 2 · A specific question</h2><span class="votefor">Question ' + pos + ' of ' + total + '</span></div><div class="panel-body">' +
         '<p class="small muted">Your general values don\'t settle ' + esc(forTitles.join(' / ')) + ', so here\'s a direct question.</p>' +
         '<p style="font-size:var(--step-1);font-weight:600">' + esc(q.q) + '</p>' +
         '<div class="choices">' + q.options.map(function (o) {
           return '<button type="button" class="choice" data-opt="' + esc(o.v) + '" aria-pressed="' + (a && a.v === o.v) + '"><span class="oval"></span><span class="c-main"><span>' + esc(o.l) + '</span></span></button>';
         }).join('') + '</div></div></section>';
     }
-    var canNext = item.type === 'general' ? (S.draft && typeof S.draft.pos === 'number') || !!cx.store.general[item.id] : (S.draft && S.draft.v) || !!cx.store.specific[item.id];
+    var canNext = item.type === 'general' ? (S.draft && typeof S.draft.pos === 'number') || !!S.beliefs.general[item.id] : (S.draft && S.draft.v) || !!S.beliefs.specific[item.id];
     return head + body +
       '<div class="pager"><div class="row"><button type="button" class="btn ghost" data-act="q-back"' + (S.queuePos === 0 ? ' disabled' : '') + '>Back</button>' +
       '<button type="button" class="btn ghost" data-act="q-skip">Skip</button></div>' +
@@ -446,17 +419,16 @@
   function commitDraft() {
     var item = S.queue[S.queuePos];
     if (!S.draft) return;
-    var store = ctx(item.logic).store;
     if (item.type === 'general') {
-      var prev = store.general[item.id] || {};
+      var prev = S.beliefs.general[item.id] || {};
       var noteEl = $('#q-note');
-      store.general[item.id] = {
+      S.beliefs.general[item.id] = {
         pos: typeof S.draft.pos === 'number' ? S.draft.pos : prev.pos,
         imp: typeof S.draft.imp === 'number' ? S.draft.imp : (typeof prev.imp === 'number' ? prev.imp : 2),
         date: today(), note: noteEl ? noteEl.value : prev.note
       };
     } else {
-      store.specific[item.id] = { v: S.draft.v, date: today(), election: S.election.key };
+      S.beliefs.specific[item.id] = { v: S.draft.v, date: today(), election: S.election.key };
     }
     S.draft = null; save();
   }
@@ -494,23 +466,11 @@
       return '<section class="panel"><h3 class="section-head">' + esc(g.name) + '</h3>' + g.items.map(function (c) {
         var ch = st.choices[c.id];
         var right = ch ? '<span class="verdict v-cand"><span class="dot"></span>' + esc(choiceText(c, ch.v)) + '</span>' : verdictHTML(c);
-        var second = logicIds().filter(hasAnswers).map(function (lid) {
-          var r2 = S.lres[lid][c.id]; if (!r2) return '';
-          return '<span class="small muted second-op">' + esc(ctx(lid).label) + ': ' + verdictText(c, r2) + '</span>';
-        }).join('');
         return '<button type="button" class="slate-row" data-open="' + c.id + '"><span class="s-title">' + esc(contestTitle(c)) + '</span>' + right +
-          (second ? '<span class="s-second">' + second + '</span>' : '') +
           '<span class="s-flags">' + flagsHTML(c) + '</span></button>';
       }).join('') + '</section>';
     }).join('');
-    var nDiff = S.contests.filter(function (c) { return differs(c.id).length; }).length;
-    var logicNote = logicIds().map(function (lid) {
-      var lab = ctx(lid).label;
-      return hasAnswers(lid) ? '<p class="small">' + esc(lab) + '\'s logic differs from Vote Helper\'s on <b>' + nDiff + '</b> item' + (nDiff === 1 ? '' : 's') + '. <button type="button" class="linkish" data-start-logic="' + esc(lid) + '">Answer more of ' + esc(lab) + '\'s questions</button></p>'
-        : '<p class="small">' + esc(lab) + ' wrote its own logic for this ballot. <button type="button" class="linkish" data-start-logic="' + esc(lid) + '">Answer its questions</button> to see its match next to each item.</p>';
-    }).join('');
     return '<section class="stack"><div class="summary-line"><span><b>' + S.contests.length + '</b> contests</span><span><b>' + matched + '</b> matched</span><span><b>' + call + '</b> your call</span><span><b>' + decided + '</b> decided</span></div>' +
-      logicNote +
       (miss.length ? '<p class="small muted">Not covered: ' + esc(miss.join(', ')) + '.</p>' : '') +
       '<div class="row no-print"><button type="button" class="btn" data-act="walk">Walk me through</button><button type="button" class="btn ghost" data-act="more-q">Answer more questions</button><button type="button" class="btn ghost" data-act="ai-all">Ask your AI</button><button type="button" class="btn ghost" data-nav="sheet">Cheat sheet</button></div></section>' +
       (call > 3 ? '<p class="small muted">' + call + ' items need more of your answers before Vote Helper can match them. <button type="button" class="linkish" data-act="more-q">Answer a few more questions</button></p>' : '') +
@@ -535,11 +495,13 @@
       else if (c.kind === 'race') dir = x.contrib > 0 ? 'fits' : 'cuts against';
       else dir = '';
       if (x.kind === 'specific') return '<li><b>You said:</b> "' + esc(x.why) + '" ' + (dir ? '→ ' + dir : '') + '</li>';
+      var src = c.kind === 'measure' ? (c.tags || []).filter(function (t) { return t.dim === x.dim; })[0]
+        : (function () { var k = (c.candidates || []).filter(function (k) { return r.ranked && r.ranked[0] && k.id === r.ranked[0].id; })[0]; return k && (k.positions || []).filter(function (p) { return p.dim === x.dim; })[0]; })();
       var d = dimById(x.dim), b = x.belief;
       var side = b.pos < 0 ? d.a : b.pos > 0 ? d.b : 'in between';
       var strength = Math.abs(b.pos) === 2 ? 'strongly' : 'lean';
       var imp = ['doesn\'t matter', 'a little', 'matters', 'top issue'][typeof b.imp === 'number' ? b.imp : 2];
-      return '<li><b>' + esc(d.label) + '</b> (you ' + strength + ': "' + esc(side) + '"; ' + imp + '). ' + esc(x.why) + ' → ' + dir + '</li>';
+      return '<li><b>' + esc(d.label) + '</b>' + byChip(src) + ' (you ' + strength + ': "' + esc(side) + '"; ' + imp + '). ' + esc(x.why) + ' → ' + dir + '</li>';
     }).join('') + '</ul>';
   }
   function endorseHTML(c) {
@@ -557,7 +519,8 @@
     var qs = c.quality || [];
     var sevName = { high: 'Serious', med: 'Moderate', low: 'Minor', info: 'Note' };
     var lines = qs.map(function (q) {
-      return '<div class="q-flag"><span class="sev">' + esc(sevName[q.sev] || q.sev) + ' · ' + esc(q.type.replace(/-/g, ' ')) + '</span><span>' + claim(c, q) + '</span></div>';
+      var also = q.alsoSaid ? Object.keys(q.alsoSaid).map(function (m) { return '<span class="small muted">' + esc(modelLabel(m)) + ': ' + esc(q.alsoSaid[m]) + '</span>'; }).join('') : '';
+      return '<div class="q-flag"><span class="sev">' + esc(sevName[q.sev] || q.sev) + ' · ' + esc(q.type.replace(/-/g, ' ')) + '</span><span>' + claim(c, q) + (q.by ? byChip(q) : '') + '</span>' + also + '</div>';
     }).join('');
     if (c.constitutional && S.state.constitutionalNote) lines += '<div class="q-flag"><span class="sev">Note · constitutional</span><span>' + esc(S.state.constitutionalNote) + '</span></div>';
     if (c.qualityNote) lines += '<p class="small muted">' + esc(c.qualityNote) + '</p>';
@@ -565,6 +528,20 @@
     var mismatch = '';
     if (r.pick === 'yes' && worstQuality(c) >= 2) mismatch = '<p><b>Matches your values, but has drafting concerns.</b> Read these before deciding.</p>';
     return '<div class="callout warn"><h4>Drafting and policy quality</h4><p class="small">Separate from your values match. Each concern names a specific problem and its source.</p>' + mismatch + lines + '</div>';
+  }
+  function disputedHTML(c) {
+    var list = disputedIn(c); if (!list.length) return '';
+    var side = function (d, v) { return v > 0 ? d.b : v < 0 ? d.a : 'neither side'; };
+    return '<div class="callout warn"><h4>≠ Models disagree</h4><p class="small">The models that built this guide read part of this item in opposite ways, so that part doesn\'t count toward your match.</p>' +
+      list.map(function (x) {
+        var d = dimById(x.dim); if (!d) return '';
+        var v = x.x.views || {};
+        return '<div class="stack"><b>' + esc(d.label) + (x.cand ? ' · ' + esc(x.cand.name) : '') + '</b><ul class="claims small">' + Object.keys(v).map(function (m) {
+          var val = x.cand ? v[m].stance : v[m].yes;
+          var what = x.cand ? 'Places ' + esc(x.cand.name) + ' toward "' + esc(side(d, val)) + '"' : 'A Yes vote moves toward "' + esc(side(d, val)) + '"';
+          return '<li><b>' + esc(modelLabel(m)) + ':</b> ' + what + '. ' + esc(v[m].why || v[m].t || '') + '</li>';
+        }).join('') + '</ul></div>';
+      }).join('') + '</div>';
   }
   function aiNoteHTML(c) {
     var a = eState().ai[c.id]; if (!a) return '';
@@ -644,42 +621,13 @@
         (c.kind === 'measure' ? '<p style="font-size:var(--step-1);font-weight:700">' + esc(c.title) + '</p>' : '') +
         '<div class="stack"><div class="row"><h4>Your match</h4>' + verdictHTML(c, r) + '</div>' + reasonsHTML(c, r) + '</div>' +
         conflictBox +
-        secondOpinionHTML(c) +
+        disputedHTML(c) +
         (c.kind === 'measure' ? qualityHTML(c, r) : '') +
         aiNoteHTML(c) +
         body +
         '<div class="row no-print"><button type="button" class="btn ghost small" data-act="ai-one">Ask your AI about this</button></div>' +
       '</div></section>' +
       decisionHTML(c, r) + walkNav;
-  }
-
-  // ---------- other models' logic on an item ----------
-  function secondOpinionHTML(c) {
-    return logicIds().map(function (lid) {
-      var cx = ctx(lid), lc = logicContest(lid, c.id), r = cx.results[c.id];
-      if (!lc) return '';
-      var head = '<h4>' + esc(cx.label) + '\'s logic</h4>';
-      var notes = (lc.note ? '<p class="small">' + esc(lc.note) + '</p>' : '') +
-        (lc.quality && lc.quality.length ? '<div class="stack"><span class="small" style="font-weight:600">Drafting concerns it raised</span><ul class="claims small">' + lc.quality.map(function (q) {
-          var src = /^https?:/.test(q.source || '') ? ' <a class="src" href="' + esc(q.source) + '" target="_blank" rel="noopener">source</a>' : '';
-          return '<li>' + esc(q.detail || '') + src + '</li>';
-        }).join('') + '</ul></div>' : '');
-      if (!hasAnswers(lid)) {
-        return '<div class="callout">' + head + '<p class="small">' + esc(cx.label) + ' wrote its own questions and mappings for this ballot without seeing Vote Helper\'s. <button type="button" class="linkish" data-start-logic="' + esc(lid) + '">Answer its questions</button> to see its match here.</p>' + notes + '</div>';
-      }
-      var diff = E.picksDiffer(S.results[c.id], r);
-      var rs = (r.reasons || []).slice(0, 4).map(function (x) {
-        if (x.kind === 'specific') return '<li><b>You said:</b> "' + esc(x.why) + '"</li>';
-        var d = dimById(x.dim, lid); if (!d) return '';
-        var side = x.belief.pos < 0 ? d.a : x.belief.pos > 0 ? d.b : 'in between';
-        var dir = c.kind === 'measure' ? (x.contrib > 0 ? 'points Yes' : 'points No') : (x.contrib > 0 ? 'fits' : 'cuts against');
-        return '<li><b>' + esc(d.label) + '</b> (you: "' + esc(side) + '"). ' + esc(x.why || '') + ' → ' + dir + '</li>';
-      }).join('');
-      return '<div class="callout' + (diff ? ' warn' : '') + '"><div class="row">' + head + verdictHTML(c, r) + (diff ? '<span class="flag quality">≠ differs from Vote Helper</span>' : '') + '</div>' +
-        (rs ? '<ul class="claims small">' + rs + '</ul>' : '<p class="small muted">None of your answers to ' + esc(cx.label) + '\'s questions touch this item. <button type="button" class="linkish" data-start-logic="' + esc(lid) + '">Answer more</button></p>') +
-        (diff ? '<p class="small">Vote Helper and ' + esc(cx.label) + ' read your values differently here. Compare the two lists of reasons before deciding.</p>' : '') +
-        notes + '</div>';
-    }).join('');
   }
 
   // ---------- disagreement ----------
@@ -859,16 +807,7 @@
       var c = contestById(d.contest);
       return '<li>' + esc(d.date) + ': ' + esc(c ? contestTitle(c) : d.contest) + ', chose ' + esc(c ? choiceText(c, d.chose) : d.chose) + (d.note ? ': "' + esc(d.note) + '"' : '') + '</li>';
     }).join('');
-    var other = logicIds().map(function (lid) {
-      var cx = ctx(lid);
-      var rows = cx.values.general.map(function (d) {
-        var b = cx.store.general[d.id];
-        var val = b ? ['Strongly A', 'Lean A', 'In between', 'Lean B', 'Strongly B'][b.pos + 2] + ' · ' + ['doesn\'t matter', 'a little', 'matters', 'top issue'][b.imp == null ? 2 : b.imp] + ' · ' + b.date : 'Not answered';
-        return '<div class="sh-row"><span class="sh-office">' + esc(d.label) + '<br><span class="small muted">A: ' + esc(d.a) + ' / B: ' + esc(d.b) + '</span></span><span class="sh-pick small">' + esc(val) + ' <button type="button" class="btn ghost small" data-edit="' + esc(d.id) + '" data-edit-logic="' + esc(lid) + '">' + (b ? 'Edit' : 'Answer') + '</button></span></div>';
-      }).join('');
-      return '<section class="panel"><div class="band"><h2>' + esc(cx.label) + '\'s questions</h2><span class="votefor">Kept separate</span></div>' + rows + '</section>';
-    }).join('');
-    return '<section class="panel"><div class="band"><h2>Part 1 · General values</h2><span class="votefor">Carry across elections</span></div>' + g + '</section>' + other +
+    return '<section class="panel"><div class="band"><h2>Part 1 · General values</h2><span class="votefor">Carry across elections</span></div>' + g + '</section>' +
       '<section class="panel"><div class="band"><h2>Part 2 · Specific positions</h2></div>' + sp + '</section>' +
       '<section class="panel"><div class="band"><h2>How your profile has changed</h2></div><div class="panel-body">' +
         (hist ? '<ul class="claims">' + hist + '</ul>' : '<p class="small muted">No changes yet. When you disagree with a match and give a reason, the change shows here.</p>') +
@@ -999,6 +938,7 @@
       '<div class="stack"><h4>1. Research</h4><p>Each election is a data file. Every ballot item lists what it does, fiscal impact, arguments for and against, endorsements, and drafting-quality concerns, each with a source. Claims marked <span class="lowconf">low conf.</span> rest on thin, opinion or advocacy sources. During research, each item is also tagged with which beliefs it touches and which way a Yes vote points.</p></div>' +
       '<div class="stack"><h4>2. Your beliefs</h4><p>Part 1 asks general values that carry across elections. Part 2 asks specific questions only when an item doesn\'t map cleanly onto your values. Quick mode asks only the questions that change the most suggestions on this ballot.</p></div>' +
       '<div class="stack"><h4>3. Matching</h4><p>The page adds up your answers against each item\'s tags: your position (−2 to +2) × the direction a Yes vote moves × how strongly the item touches that belief × how much it matters to you. No AI runs and nothing is sent anywhere. When answers point both ways with similar weight, the item is flagged as a conflict.</p></div>' +
+      (mergedModels().length ? '<div class="stack"><h4>' + (mergedModels().length + 1) + ' models, one set of questions</h4><p class="small">The belief questions and mappings were written independently by ' + esc(modelLabel(S.baseValues.author.id)) + ' (from research) and ' + esc(mergedModels().map(modelLabel).join(', ')) + ' (from the official ballot text only, without seeing the other\'s work), then merged into one set. Each mapping is labeled with which model made it. Where they made the same mapping it\'s labeled "Both models"; where they pointed in opposite directions, the item is flagged "Models disagree", both readings are shown, and that mapping doesn\'t count toward your match.</p></div>' : '') +
       '<div class="stack"><h4>4. Learning</h4><p>When you pick differently from your match, you can say why. Choosing a reason updates your profile (with your OK), and the history is kept with dates.</p></div>' +
       '<div class="stack"><h4>Optional: your own AI</h4><p>"Ask your AI" builds a prompt with your beliefs and the sourced data that you can paste into your own assistant. Its reply can be pasted back as notes.</p></div>' +
       '<div class="stack"><h4>Research method for this election</h4><p class="small">' + esc(S.election.method || '') + ' Researched ' + esc(S.election.researched || '') + '.</p></div>' +
@@ -1019,8 +959,7 @@
     if (ds.nav) { S.importMsg = ''; return setView(ds.nav); }
     if (ds.open) { S.disagree = null; return setView('item', { item: ds.open }); }
     if (ds.effort) { eState().effort = ds.effort; save(); return render(); }
-    if (ds.startLogic) { S.returnTo = null; return startFlow(ds.startLogic); }
-    if (ds.edit) { S.queue = [{ type: 'general', id: ds.edit, logic: ds.editLogic || null }]; S.queuePos = 0; S.draft = null; S.returnTo = 'profile'; return setView('ask'); }
+    if (ds.edit) { S.queue = [{ type: 'general', id: ds.edit }]; S.queuePos = 0; S.draft = null; S.returnTo = 'profile'; return setView('ask'); }
     if (ds.editSpec) { S.queue = [{ type: 'specific', id: ds.editSpec }]; S.queuePos = 0; S.draft = null; S.returnTo = 'profile'; return setView('ask'); }
     if (ds.askFor) {
       var c0 = contestById(ds.askFor);
@@ -1039,8 +978,7 @@
     var qbox = t.closest('[data-q]');
     if (qbox && (ds.pos != null || ds.imp != null || ds.opt != null)) {
       var target = S.disagree ? S.disagree : S;
-      var qstore = ctx(qbox.dataset.logic).store;
-      var curBase = qbox.dataset.q === 'general' ? qstore.general[qbox.dataset.id] : qstore.specific[qbox.dataset.id];
+      var curBase = qbox.dataset.q === 'general' ? S.beliefs.general[qbox.dataset.id] : S.beliefs.specific[qbox.dataset.id];
       target.draft = target.draft || (curBase ? JSON.parse(JSON.stringify(curBase)) : {});
       if (ds.pos != null) target.draft.pos = +ds.pos;
       if (ds.imp != null) target.draft.imp = +ds.imp;
@@ -1052,18 +990,18 @@
     }
     if (ds.choose) { var c = contestById(S.itemId); return choose(c, ds.choose); }
     switch (ds.act) {
-      case 'start': S.returnTo = null; return startFlow(null);
+      case 'start': S.returnTo = null; return startFlow();
       case 'q-next': commitDraft(); S.queuePos++; if (S.returnTo && S.queuePos >= S.queue.length) { var rt = S.returnTo; S.returnTo = null; rescore(); return setView(rt); } return advanceQueue();
       case 'q-skip': S.draft = null; S.queuePos++; if (S.returnTo && S.queuePos >= S.queue.length) { var rt2 = S.returnTo; S.returnTo = null; return setView(rt2); } return advanceQueue();
       case 'q-back': S.draft = null; S.queuePos = Math.max(0, S.queuePos - 1); return setView('ask');
-      case 'q-stop': commitDraft(); S.returnTo = null; S.flowLogic = null; rescore(); return setView('slate');
+      case 'q-stop': commitDraft(); S.returnTo = null; rescore(); return setView('slate');
       case 'walk':
         S.walk = S.contests.map(function (c) { return c.id; });
         var firstOpen = S.walk.filter(function (id) { return !eState().choices[id]; })[0] || S.walk[0];
         S.walkPos = S.walk.indexOf(firstOpen); return setView('item', { item: firstOpen });
       case 'walk-next': var i = S.walk.indexOf(S.itemId); S.disagree = null; if (i >= S.walk.length - 1) { S.walk = []; return setView('sheet'); } return setView('item', { item: S.walk[i + 1] });
       case 'walk-prev': var j = S.walk.indexOf(S.itemId); S.disagree = null; return setView('item', { item: S.walk[Math.max(0, j - 1)] });
-      case 'more-q': { var st = eState(); var prevE = st.effort; st.effort = prevE === 'quick' ? 'standard' : 'deep'; save(); S.returnTo = null; return startFlow(null); }
+      case 'more-q': { var st = eState(); var prevE = st.effort; st.effort = prevE === 'quick' ? 'standard' : 'deep'; save(); S.returnTo = null; return startFlow(); }
       case 'clear-choice': delete eState().choices[S.itemId]; S.disagree = null; save(); return render();
       case 'dg-save': return saveDisagree();
       case 'dg-skip': S.disagree = null; return render();

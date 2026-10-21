@@ -35,6 +35,10 @@
      "l": "No preference",
      "fx": {}
     }
+   ],
+   "by": [
+    "claude",
+    "grok"
    ]
   },
   {
@@ -165,6 +169,46 @@
      "l": "Not sure",
      "fx": {}
     }
+   ]
+  },
+  {
+   "id": "q_p40_flight",
+   "for": [
+    "p40"
+   ],
+   "q": "How concerned are you that a one-time wealth tax on billionaires could cause some high-net-worth residents or businesses to leave California, reducing future income-tax revenue?",
+   "options": [
+    {
+     "v": "o0",
+     "l": "Very concerned — the risk outweighs the one-time revenue",
+     "fx": {
+      "p40": -2
+     }
+    },
+    {
+     "v": "o1",
+     "l": "Somewhat concerned but still worth trying",
+     "fx": {
+      "p40": -1
+     }
+    },
+    {
+     "v": "o2",
+     "l": "Not very concerned — the tax is one-time and targeted",
+     "fx": {
+      "p40": 1
+     }
+    },
+    {
+     "v": "o3",
+     "l": "Not concerned at all — fairness and health-care needs come first",
+     "fx": {
+      "p40": 2
+     }
+    }
+   ],
+   "by": [
+    "grok"
    ]
   }
  ],
@@ -693,6 +737,34 @@
    "url": "https://laist.com/news/politics/voter-guides/2026-election-california-general-courts-appeal-justice-la-orange-county",
    "type": "news",
    "short": "LAist"
+  },
+  "model_grok": {
+   "title": "Grok's own logic for this ballot, written from the official ballot text",
+   "pub": "Grok",
+   "short": "Grok",
+   "url": "https://github.com/dan-leif/vote-helper/blob/main/prompts/replies/ca-san-luis-obispo-2026-11-03/grok-logic.json",
+   "type": "model"
+  },
+  "model_grok_1": {
+   "title": "Cited by Grok (not checked by Vote Helper)",
+   "pub": "dailynews.com",
+   "short": "dailynews",
+   "url": "https://www.dailynews.com/2026/10/09/candidates-for-california-governor-differ-on-many-issues-but-both-dislike-proposition-40s-billionaire-tax/",
+   "type": "via-model"
+  },
+  "model_grok_2": {
+   "title": "Cited by Grok (not checked by Vote Helper)",
+   "pub": "calmatters.org",
+   "short": "calmatters",
+   "url": "https://calmatters.org/politics/2026/10/california-billionaire-tax-explainer/",
+   "type": "via-model"
+  },
+  "model_grok_3": {
+   "title": "Cited by Grok (not checked by Vote Helper)",
+   "pub": "calmatters.org",
+   "short": "calmatters",
+   "url": "https://calmatters.org/environment/2026/10/prop-45-california-ceqa-explained/",
+   "type": "via-model"
   }
  },
  "contests": [
@@ -726,7 +798,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "tax_wealthy",
@@ -736,7 +824,23 @@
         "gov_where",
         "laist_p40"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": -0.5,
+         "t": "Backs a progressive income tax and higher rates on high earners for schools, but opposes Prop 40, calling it \"sketchy policy\"."
+        },
+        "grok": {
+         "stance": -0.6,
+         "t": "Supports progressive income taxes and extending higher rates on high earners for schools; opposes the billionaire wealth tax.",
+         "question": "tax_wealthy",
+         "source": "https://calmatters.org/california-voter-guide-2026/governor/"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "housing",
@@ -755,6 +859,19 @@
         "gov_where"
        ],
        "c": "m"
+      },
+      {
+       "dim": "tax_level",
+       "stance": -0.7,
+       "t": "Emphasizes active state role on housing, utilities, and health coverage including for undocumented residents.",
+       "s": [
+        "model_grok",
+        "model_grok_1"
+       ],
+       "c": "l",
+       "by": [
+        "grok"
+       ]
       }
      ],
      "notes": [
@@ -780,25 +897,73 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "tax_level",
-       "stance": 1,
+       "stance": 0.9,
        "t": "Would end state income tax on the first $150,000 of earnings, use a flat rate above that, and halve the gas tax.",
        "s": [
         "gov_where"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Would end state income tax on the first $150,000 of earnings, use a flat rate above that, and halve the gas tax."
+        },
+        "grok": {
+         "stance": 0.8,
+         "t": "Calls for deregulation, lower gas taxes, more housing on undeveloped land, and cuts to state agencies.",
+         "question": "tax_level",
+         "source": "https://calmatters.org/politics/2026/09/california-general-election-gubernatorial-debate-cnn/"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "tax_wealthy",
-       "stance": 0.5,
+       "stance": 0.7,
        "t": "Flat income tax above $150,000; opposes Prop 40.",
        "s": [
         "gov_where"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": 0.5,
+         "t": "Flat income tax above $150,000; opposes Prop 40."
+        },
+        "grok": {
+         "stance": 0.8,
+         "t": "Proposes eliminating state income tax on first $150k and a flatter rate above; opposes wealth tax and further tax increases.",
+         "question": "tax_wealthy",
+         "source": "https://calmatters.org/california-voter-guide-2026/governor/"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "climate",
@@ -871,7 +1036,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic nominee, current State Treasurer.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -906,7 +1087,23 @@
        "s": [
         "nbc_ltg"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican; former Democratic state Senate majority leader who switched parties in 2024."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "school_choice",
@@ -961,7 +1158,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat; incumbent."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic incumbent.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "voting",
@@ -1006,7 +1219,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "voting",
@@ -1053,7 +1282,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -1080,7 +1325,23 @@
         "ballot",
         "cm_ctrl"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat; incumbent seeking a second term."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic incumbent.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -1141,7 +1402,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic nominee, current Lieutenant Governor.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -1176,7 +1453,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -1237,7 +1530,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "public_safety",
@@ -1281,7 +1590,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat; incumbent."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic incumbent.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "federal",
@@ -1652,6 +1977,23 @@
      "why": "Yes means $11.25B of new state borrowing.",
      "s": [
       "lao1"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes means $11.25B of new state borrowing.",
+       "w": 3
+      },
+      "grok": {
+       "yes": -1,
+       "w": 3,
+       "why": "Authorizes $11.25B general-obligation bonds repaid from the General Fund.",
+       "question": "bond_debt"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
@@ -1666,10 +2008,40 @@
     {
      "dim": "tax_level",
      "yes": -1,
-     "w": 1,
+     "w": 0.8,
      "why": "Repayment comes from the General Fund for 25 years.",
      "s": [
       "lao1"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Repayment comes from the General Fund for 25 years.",
+       "w": 1
+      },
+      "grok": {
+       "yes": -1,
+       "w": 0.6,
+       "why": "Expands state role in housing finance.",
+       "question": "government_size"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
+     ]
+    },
+    {
+     "dim": "housing_approach",
+     "yes": 1,
+     "w": 1,
+     "why": "Funds construction and preservation of affordable and veteran housing, increasing subsidized supply.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -1772,6 +2144,37 @@
      "why": "Yes doubles how much the state can save for downturns.",
      "s": [
       "lao2"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes doubles how much the state can save for downturns.",
+       "w": 3
+      },
+      "grok": {
+       "yes": -1,
+       "w": 1.4,
+       "why": "Raises rainy-day fund cap and changes how deposits interact with the spending limit, giving more flexibility.",
+       "question": "spending_limits"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
+     ],
+     "disputed": true
+    },
+    {
+     "dim": "tax_level",
+     "yes": -1,
+     "w": 0.4,
+     "why": "Larger reserves support continued program spending in downturns.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -1878,15 +2281,49 @@
      "why": "Yes keeps higher rates on the top ~2% of earners.",
      "s": [
       "laist_p3"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes keeps higher rates on the top ~2% of earners.",
+       "w": 3
+      },
+      "grok": {
+       "yes": -1,
+       "w": 3,
+       "why": "Makes temporary higher income-tax rates on high earners permanent.",
+       "question": "tax_progressivity"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
      "dim": "tax_level",
      "yes": -1,
-     "w": 2,
+     "w": 1.7,
      "why": "Yes keeps $5–15B a year of revenue for schools and health care.",
      "s": [
       "lao3"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes keeps $5–15B a year of revenue for schools and health care.",
+       "w": 2
+      },
+      "grok": {
+       "yes": -1,
+       "w": 1.4,
+       "why": "Prevents a scheduled tax cut, keeping revenue higher.",
+       "question": "government_size"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     }
    ],
@@ -1988,6 +2425,23 @@
      "why": "Yes allows public money in campaigns.",
      "s": [
       "lao4"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes allows public money in campaigns.",
+       "w": 3
+      },
+      "grok": {
+       "yes": -1,
+       "w": 3,
+       "why": "Repeals the ban so state and local governments may create public financing programs.",
+       "question": "campaign_finance"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     }
    ],
@@ -2210,6 +2664,32 @@
      "s": [
       "laist_p37"
      ]
+    },
+    {
+     "dim": "housing_approach",
+     "yes": 1,
+     "w": 1.2,
+     "why": "Creates a large loan program to help middle-income buyers of new homes.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
+     ]
+    },
+    {
+     "dim": "debt",
+     "yes": 1,
+     "w": 0.4,
+     "why": "Uses revenue bonds repaid by borrowers, not general-fund debt.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
+     ]
     }
    ],
    "quality": [
@@ -2329,6 +2809,36 @@
      "why": "Yes means $8.4B of new state borrowing.",
      "s": [
       "lao38"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes means $8.4B of new state borrowing.",
+       "w": 3
+      },
+      "grok": {
+       "yes": -1,
+       "w": 3,
+       "why": "Authorizes $8.4B general-obligation bonds for immunology research.",
+       "question": "bond_debt"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
+     ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": -1,
+     "w": 0.5,
+     "why": "Directs substantial public capital to a specific research institute and grants.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -2344,7 +2854,14 @@
       "laist_p38",
       "hoover_p38"
      ],
-     "c": "m"
+     "c": "m",
+     "by": [
+      "claude",
+      "grok"
+     ],
+     "alsoSaid": {
+      "grok": "Half the bond proceeds are directed to a single University of California-affiliated nonprofit institute, raising questions about competitive allocation and long-term oversight."
+     }
     }
    ],
    "conf": "m",
@@ -2437,6 +2954,23 @@
      "why": "Yes adds ID requirements to every ballot.",
      "s": [
       "laist_p39"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes adds ID requirements to every ballot.",
+       "w": 3
+      },
+      "grok": {
+       "yes": 1,
+       "w": 3,
+       "why": "Requires government-issued ID for in-person voting and matching ID digits on mail ballots.",
+       "question": "voting_id"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     }
    ],
@@ -2562,15 +3096,62 @@
      "why": "Yes taxes billionaires' wealth.",
      "s": [
       "lao40"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes taxes billionaires' wealth.",
+       "w": 3
+      },
+      "grok": {
+       "yes": -1,
+       "w": 3,
+       "why": "Imposes a one-time 5% tax on net worth of billionaires.",
+       "question": "tax_progressivity"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
      "dim": "tax_level",
      "yes": -1,
-     "w": 1,
+     "w": 1.3,
      "why": "Yes raises tens of billions for health care.",
      "s": [
       "lao40"
+     ],
+     "views": {
+      "claude": {
+       "yes": -1,
+       "why": "Yes raises tens of billions for health care.",
+       "w": 1
+      },
+      "grok": {
+       "yes": -1,
+       "w": 1.6,
+       "why": "Raises tens of billions for health care and related programs outside normal spending rules.",
+       "question": "government_size"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
+     ]
+    },
+    {
+     "dim": "savings",
+     "yes": -1,
+     "w": 1.2,
+     "why": "Exempts the new revenue from the constitutional spending limit and school-funding guarantee.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -2585,7 +3166,14 @@
      "s": [
       "lapp_40"
      ],
-     "c": "h"
+     "c": "h",
+     "by": [
+      "claude",
+      "grok"
+     ],
+     "alsoSaid": {
+      "grok": "Props 41 and 42 were written in part to constrain or nullify effects of a wealth tax of this type."
+     }
     },
     {
      "type": "fiscal-uncertainty",
@@ -2595,6 +3183,19 @@
       "nbc_p40"
      ],
      "c": "m"
+    },
+    {
+     "type": "implementation-risk",
+     "sev": "med",
+     "t": "Requires the state to value a wide range of hard-to-price assets (private business interests, art, IP, etc.) on a short timeline; likely litigation and valuation disputes.",
+     "s": [
+      "model_grok",
+      "model_grok_2"
+     ],
+     "c": "l",
+     "by": [
+      "grok"
+     ]
     }
    ],
    "conf": "m",
@@ -2697,10 +3298,40 @@
     {
      "dim": "tax_wealthy",
      "yes": 1,
-     "w": 2,
+     "w": 1.3,
      "why": "Yes would void Prop 40's billionaire tax.",
      "s": [
       "lapp_40"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes would void Prop 40's billionaire tax.",
+       "w": 2
+      },
+      "grok": {
+       "yes": 1,
+       "w": 0.5,
+       "why": "Makes it harder to enact taxes that bypass existing fiscal constraints.",
+       "question": "tax_progressivity"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
+     ]
+    },
+    {
+     "dim": "savings",
+     "yes": 1,
+     "w": 3,
+     "why": "Forces new special-tax revenues into the spending limit and requires audits.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -2827,10 +3458,27 @@
     {
      "dim": "tax_wealthy",
      "yes": 1,
-     "w": 3,
+     "w": 2.3,
      "why": "Yes bans wealth taxes and would void Prop 40.",
      "s": [
       "cm_p42"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes bans wealth taxes and would void Prop 40.",
+       "w": 3
+      },
+      "grok": {
+       "yes": 1,
+       "w": 1.6,
+       "why": "Prohibits new state personal-property (wealth-like) taxes and certain retroactive taxes.",
+       "question": "tax_progressivity"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
@@ -2840,6 +3488,19 @@
      "why": "Yes narrows future tax options.",
      "s": [
       "cbpc_p42"
+     ]
+    },
+    {
+     "dim": "savings",
+     "yes": 1,
+     "w": 0.4,
+     "why": "Limits future revenue tools that could expand spending.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -2970,15 +3631,49 @@
      "why": "Yes raises the threshold to two-thirds.",
      "s": [
       "laist_p43"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes raises the threshold to two-thirds.",
+       "w": 3
+      },
+      "grok": {
+       "yes": 1,
+       "w": 3,
+       "why": "Raises the vote threshold for voter-proposed local special taxes from majority to two-thirds.",
+       "question": "local_tax_threshold"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
      "dim": "tax_level",
      "yes": 1,
-     "w": 1,
+     "w": 0.8,
      "why": "Yes makes local tax increases harder.",
      "s": [
       "laist_p43"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes makes local tax increases harder.",
+       "w": 1
+      },
+      "grok": {
+       "yes": 1,
+       "w": 0.5,
+       "why": "Makes it harder for local governments to raise new revenue.",
+       "question": "government_size"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
@@ -3093,6 +3788,19 @@
      "s": [
       "cm_p44"
      ]
+    },
+    {
+     "dim": "tax_level",
+     "yes": -1,
+     "w": 0.3,
+     "why": "Adds state oversight and penalties on nonprofit community clinics’ spending.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
+     ]
     }
    ],
    "specific": [
@@ -3106,7 +3814,14 @@
      "s": [
       "cm_p44"
      ],
-     "c": "m"
+     "c": "m",
+     "by": [
+      "claude",
+      "grok"
+     ],
+     "alsoSaid": {
+      "grok": "“Program services” advancing charitable purpose is broadly defined; opponents argue it could penalize legitimate administrative, research, or facility costs and disrupt care."
+     }
     },
     {
      "type": "one-sided-record",
@@ -3215,6 +3930,23 @@
      "why": "Yes speeds approvals with less review and fewer lawsuits.",
      "s": [
       "laist_p45"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes speeds approvals with less review and fewer lawsuits.",
+       "w": 3
+      },
+      "grok": {
+       "yes": 1,
+       "w": 3,
+       "why": "Sets hard deadlines, narrows alternatives analysis, and limits lawsuit remedies for most housing and infrastructure projects.",
+       "question": "ceqa_process"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
      ]
     },
     {
@@ -3224,6 +3956,19 @@
      "why": "Yes aims to speed housing approvals.",
      "s": [
       "laist_p45"
+     ]
+    },
+    {
+     "dim": "housing_approach",
+     "yes": -1,
+     "w": 1.6,
+     "why": "Designed to accelerate housing and related infrastructure by reducing process delays (moves toward removing barriers / speeding overall supply).",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -3245,6 +3990,19 @@
       "sfc_p45"
      ],
      "c": "m"
+    },
+    {
+     "type": "scope",
+     "sev": "low",
+     "t": "Applies to a very broad set of “essential” projects; environmental groups argue it reduces public comment windows and court oversight more than necessary.",
+     "s": [
+      "model_grok",
+      "model_grok_3"
+     ],
+     "c": "l",
+     "by": [
+      "grok"
+     ]
     }
    ],
    "conf": "m",

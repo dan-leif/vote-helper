@@ -38,22 +38,18 @@ for (const p of Object.values(elections)) {
       if (!existsSync(new URL(ip, root))) { err(path + ' includes missing ' + ip); return null; }
       return [ip, read(ip)];
     }).filter(Boolean)];
-    // Other models' logic files listed by the election.
-    for (const l of main.logics || []) {
-      const lp = `${p.state}/${p.locality}/${e.date}.logic.${l.id}.json`;
-      if (!existsSync(new URL(lp, root))) { err(path + ' lists missing logic ' + lp); continue; }
-      const L = read(lp);
-      const ld = new Set((L.general || []).map(d => d.id));
-      const contestIds = new Set(files.flatMap(([, f]) => (f.contests || []).map(c => c.id)));
-      const cands = {}; files.forEach(([, f]) => (f.contests || []).forEach(c => cands[c.id] = new Set((c.candidates || []).map(k => k.id))));
-      (L.items || []).forEach(it => {
-        contestIds.has(it.id) || err(lp + ' unknown item ' + it.id);
-        (it.tags || []).forEach(t => ld.has(t.dim) || err(lp + ' ' + it.id + ' tag uses undefined question ' + t.dim));
-        (it.stances || []).forEach(x => { ld.has(x.dim) || err(lp + ' ' + it.id + ' stance uses undefined question ' + x.dim); (cands[it.id] && cands[it.id].has(x.candidate)) || err(lp + ' ' + it.id + ' unknown candidate ' + x.candidate); });
-      });
-      (L.quickPicks || []).forEach(q => ld.has(q.id) || err(lp + ' quick pick ' + q.id + ' is not one of its questions'));
-      [...contestIds].forEach(id => (L.items || []).some(i => i.id === id) || console.warn('note: ' + lp + ' has no entry for ' + id));
-    }
+    // Merged logic: every model named in "by" is the author or a merged model, and its merge record exists.
+    const models = new Set([values.author && values.author.id, ...files.flatMap(([, f]) => (f.merged || []).map(m => m.model))]);
+    files.forEach(([fp, f]) => (f.merged || []).forEach(m => existsSync(new URL('../' + m.record, root)) || err(fp + ' merge record missing: ' + m.record)));
+    const checkBy = (where, x) => {
+      (x.by || []).forEach(m => models.has(m) || err(where + ' "by" names unknown model ' + m));
+      if (x.disputed && !(x.views && Object.keys(x.views).length >= 2)) err(where + ' is disputed but lacks both models\' views');
+    };
+    files.forEach(([fp, f]) => (f.contests || []).forEach(c => {
+      (c.tags || []).forEach(t => checkBy(fp + ' ' + c.id + ' tag ' + t.dim, t));
+      (c.candidates || []).forEach(k => (k.positions || []).forEach(p => checkBy(fp + ' ' + c.id + '/' + k.id + ' ' + p.dim, p)));
+      (c.quality || []).forEach(q => checkBy(fp + ' ' + c.id + ' quality', q));
+    }));
     const questions = new Set([...(state.questions || []), ...files.flatMap(([, f]) => f.questions || [])].map(q => q.id));
     const ids = new Set();
     for (const [f, d] of files) {
@@ -65,7 +61,7 @@ for (const p of Object.values(elections)) {
           if ('t' in o && !('s' in o) && !/flags\[\d+\]$/.test(at)) err(f + ' ' + at + ' claim has no source');
           if (o.s) o.s.forEach(s => known(s) || err(f + ' ' + at + ' unknown source ' + s));
           if (o.c && !['h', 'm', 'l'].includes(o.c)) err(f + ' ' + at + ' bad confidence ' + o.c);
-          for (const [k, v] of Object.entries(o)) if (k !== 's') walk(v, at + '.' + k);
+          for (const [k, v] of Object.entries(o)) if (k !== 's' && k !== 'views') walk(v, at + '.' + k);
         }
       };
       for (const c of d.contests || []) {

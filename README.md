@@ -15,7 +15,7 @@ Places are data, not code: pick a place and an election, and the app loads that 
 5. **Learning.** When you pick differently from your match, you choose a reason ("this matters less to me", "my view is different", "special case", "drafting concern"…). The page shows the profile change, applies it, and keeps a dated history.
 6. **Optional AI.** "Ask your AI" builds a prompt with your beliefs and the sourced data to paste into your own assistant (Claude, Claude Code, etc.). Paste its reply back to attach notes and review suggested profile changes. The page never calls an AI itself.
 
-7. **Second opinion from another model.** Grok (or any model) can write its own belief questions and mappings for the ballot from the official ballot text alone, using `prompts/own-logic.txt`, without seeing Vote Helper's logic. That logic is stored as a data file (`data/<state>/<locality>/<date>.logic.<model>.json`, listed under `logics` in the election file) and runs through the same engine. You answer its questions separately (Quick asks the model's own top 3 picks), and every item shows Vote Helper's match and the model's match side by side, with a **differs** flag where they point different ways. The raw replies and the exact prompt sent are kept in `prompts/replies/`. Other models can also be asked to critique Vote Helper's own logic (`tools/build-critique-prompt.js`).
+7. **Two models, one set of questions.** Each ballot's questions and mappings come from two independent sets merged into one: Claude's (from research) and Grok's (written from the official ballot text alone, without seeing Claude's). Each mapping is labeled with which model made it. Where both made the same mapping it's labeled "Both models"; where they point opposite ways, the item is flagged **Models disagree**, both readings are shown, and that mapping counts for nothing. How Grok's questions were matched to Vote Helper's is recorded, with reasons, in `data/<state>/<locality>/<date>.merge.grok.json`, and Grok can review the merged result with `tools/build-critique-prompt.js`.
 
 Drafting and policy quality is shown separately from the values match, so you can see "matches your values, but poorly drafted."
 
@@ -43,7 +43,7 @@ data/
 
 ## Add a ballot, or a model's logic
 
-See [CLAUDE.md](CLAUDE.md), the maintainer guide. It covers adding a ballot, writing Vote Helper's own logic, importing another model's logic (Grok so far), and having another model critique Vote Helper's logic. Adding a place takes data files and one entry in `data/places.json`; no code changes.
+See [CLAUDE.md](CLAUDE.md), the maintainer guide. It covers adding a ballot, writing Vote Helper's own logic, getting and merging another model's independent logic (Grok so far), and having that model critique the merged result. Adding a place takes data files and one entry in `data/places.json`; no code changes.
 
 ## Keeping your beliefs private
 

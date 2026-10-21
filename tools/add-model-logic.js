@@ -1,12 +1,11 @@
 // Run: node tools/add-model-logic.js <ballot-id> <model-id> "<Label>" <reply-file> [more reply files...]
 //
-// Adds (or updates) another AI model's own logic for a ballot. Each reply file is the model's
+// Saves another AI model's own logic for a ballot, ready to merge. Each reply file is the model's
 // answer to prompts/own-logic.txt, or a later follow-up, saved as .json or as the full chat text.
-// Replies are merged in order (a follow-up replaces the items it returns), then:
-//   - writes data/<state>/<locality>/<date>.logic.<model-id>.json
-//   - lists it under "logics" in the election file, so the app loads it
-//   - copies the raw replies to prompts/replies/<state>-<locality>-<date>/
-//   - prints a review sheet for the consistency check (see CLAUDE.md, "Another model's logic")
+// Replies are combined in order (a follow-up replaces the items it returns), then:
+//   - writes prompts/replies/<state>-<locality>-<date>/<model-id>-logic.json (input to tools/merge-logic.js)
+//   - copies the raw replies next to it
+//   - prints a review sheet for the consistency check (see CLAUDE.md, step 3)
 const fs = require('fs');
 const path = require('path');
 const E = require('../engine.js');
@@ -14,7 +13,7 @@ const { loadBallot, extractJSON } = require('./lib.js');
 const [ballotId, modelId, label, ...replies] = process.argv.slice(2);
 if (!ballotId || !modelId || !label || !replies.length) { console.error('Usage: node tools/add-model-logic.js <ballot-id> <model-id> "<Label>" <reply-file> [...]'); process.exit(1); }
 const b = loadBallot(ballotId);
-const logicPath = path.join(b.dir, b.ballot.date + '.logic.' + modelId + '.json');
+const logicPath = path.join(__dirname, '..', 'prompts', 'replies', b.ballot.state + '-' + b.ballot.locality + '-' + b.ballot.date, modelId + '-logic.json');
 let logic = fs.existsSync(logicPath) ? JSON.parse(fs.readFileSync(logicPath, 'utf8')) : {};
 const replyDir = path.join(__dirname, '..', 'prompts', 'replies', b.ballot.state + '-' + b.ballot.locality + '-' + b.ballot.date);
 fs.mkdirSync(replyDir, { recursive: true });
@@ -25,7 +24,7 @@ replies.forEach(file => {
   const parts = extractJSON(text, ['voteHelperLogic', 'items', 'changes']);
   if (!parts.length) { console.error('No logic JSON found in ' + file); process.exit(1); }
   parts.forEach(p => { p.date = p.date || today; logic = E.mergeLogic(logic, p); });
-  const n = fs.readdirSync(replyDir).filter(f => f.startsWith(modelId + '-')).length + 1;
+  const n = fs.readdirSync(replyDir).filter(f => f.startsWith(modelId + '-') && f !== modelId + '-logic.json').length + 1;
   const saved = modelId + '-' + n + '-' + path.basename(file);
   fs.copyFileSync(file, path.join(replyDir, saved));
   logic.received.push({ date: today, file: 'prompts/replies/' + path.basename(replyDir) + '/' + saved });
@@ -34,11 +33,6 @@ const out = Object.assign({ voteHelperLogic: 1,
   about: 'Belief questions and mappings written independently by another AI model from the official ballot text, using prompts/own-logic.txt. Stored as the model wrote it; the only edits are the model\'s own follow-up corrections (see "revisions").' },
   { id: modelId, label, model: logic.model, received: logic.received, general: logic.general, items: logic.items, specific: logic.specific, quickPicks: logic.quickPicks, revisions: logic.revisions });
 fs.writeFileSync(logicPath, JSON.stringify(out, null, 1));
-const electionPath = path.join(b.dir, b.ballot.date + '.json');
-const election = JSON.parse(fs.readFileSync(electionPath, 'utf8'));
-election.logics = election.logics || [];
-if (!election.logics.some(l => l.id === modelId)) election.logics.push({ id: modelId, label });
-fs.writeFileSync(electionPath, JSON.stringify(election, null, 1));
 console.log('wrote', path.relative(process.cwd(), logicPath));
 
 // ---- review sheet ----

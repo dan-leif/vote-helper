@@ -1,0 +1,37 @@
+{
+ "about": "How another model's own logic was merged into Vote Helper's single set of questions and mappings. These are judgment calls made when merging (by Claude, 2026-10-21), meant to be reviewed by the other model in the critique step. tools/merge-logic.js applies this file.",
+ "model": "grok",
+ "label": "Grok",
+ "logic": "prompts/replies/ca-san-luis-obispo-2026-11-03/grok-logic.json",
+ "decided": { "by": "claude", "date": "2026-10-21" },
+ "questions": {
+  "tax_progressivity": { "to": "tax_wealthy", "orient": -1, "why": "Same disagreement: whether the highest earners and wealthiest should pay more. The sides are swapped (Grok's side B is Vote Helper's side A)." },
+  "government_size": { "to": "tax_level", "orient": -1, "why": "Same core trade-off: more taxes and services, or less. Grok's version also mentions regulation, which Vote Helper asks about separately." },
+  "bond_debt": { "to": "debt", "orient": -1, "why": "Same question about state borrowing; sides swapped." },
+  "spending_limits": { "to": "savings", "orient": -1, "why": "Both ask whether good-year revenue should be locked away (reserves, limits) or kept flexible for services. Vote Helper's question is reworded to cover spending limits as well as reserves.",
+   "reword": { "label": "Saving and spending limits", "q": "When the state takes in extra money in good years, what should happen to it?", "a": "Spend it on current needs, with flexibility to expand services", "b": "Save more in reserves and keep firm limits on spending" } },
+  "housing_supply": { "to": "housing_approach", "orient": 1, "why": "A different question from Vote Helper's housing question (neighborhood scale vs. building more): Grok's asks how to get homes built (remove barriers vs. fund subsidized units). Both are real splits among voters, so both are kept.",
+   "new": { "label": "How to get more housing built", "q": "To bring down housing costs, what should government focus on?", "a": "Removing rules and delays so more homes of all kinds get built", "b": "Public money and requirements for homes reserved as affordable" } },
+  "voting_id": { "to": "voting", "orient": 1, "why": "Same question about ID and verification." },
+  "campaign_finance": { "to": "campaign_money", "orient": -1, "why": "Same question about public campaign financing; sides swapped." },
+  "ceqa_process": { "to": "environment", "orient": 1, "why": "Same question: thorough environmental review vs. faster approvals." },
+  "local_tax_threshold": { "to": "tax_votes", "orient": -1, "why": "Same question about majority vs. two-thirds for local taxes; sides swapped." },
+  "party_lean": { "to": "party", "orient": -1, "why": "Same question; sides swapped. Vote Helper's wording is kept because Grok's side A grouped independents with Republicans." },
+  "experience": { "to": "outsider", "orient": -1, "why": "Same question; sides swapped." },
+  "recall_process": { "toSpecific": "q_recall", "why": "Same question. Vote Helper asks it only as a follow-up for Prop 5, since it concerns one measure. Grok's mapping (Yes on Prop 5 moves toward filling vacancies later) matches Vote Helper's." },
+  "education_funding": { "drop": true, "why": "Asks about one measure (Prop 3: make the temporary rates permanent) rather than a general value. Prop 3 is already mapped through taxing the wealthy and taxes vs. services, where both models agree." }
+ },
+ "specific": {
+  "q_p40_flight": { "keep": true, "why": "A distinct consideration for Prop 40 (whether wealthy residents would leave) that Vote Helper's follow-up doesn't ask." },
+  "q_p45_tradeoff": { "drop": true, "why": "Asks the same thing as the environmental review question." },
+  "q_ins_race": { "drop": true, "why": "Asks which candidate's background you prefer, which the experience question and the public-insurance follow-up already cover." }
+ },
+ "quality": {
+  "p38#0": { "same": "narrow-beneficiary", "why": "Same concern: half the bond goes to one institute." },
+  "p40#0": { "add": true, "sev": "med", "type": "implementation-risk", "why": "New: valuing hard-to-price assets invites valuation disputes and lawsuits." },
+  "p40#1": { "same": "conflicting-measures", "why": "Same concern: Props 41 and 42 can cancel it." },
+  "p44#0": { "same": "vague-language", "why": "Same concern: what counts as qualifying spending is open-ended." },
+  "p45#0": { "add": true, "sev": "low", "type": "scope", "why": "New: covers a very broad set of projects and narrows public comment and court review." }
+ },
+ "stances": { "skipEqual": true, "why": "Where a model gives every candidate in a race the same value on a question (e.g. two Democrats on party lean), it has no effect and is left out." }
+}

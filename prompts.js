@@ -79,20 +79,40 @@ Include every item id listed above. If your reply would get cut off, stop after 
     var srcTable = {}, srcIds = {}, n = 0;
     var url = function (ids) { return (ids || []).map(function (id) {
       var s = o.sources[id]; if (!s) return null;
-      if (!srcIds[s.url]) { srcIds[s.url] = 'S' + (++n); srcTable[srcIds[s.url]] = s.url; }
+      if (!srcIds[s.url]) { srcIds[s.url] = 'S' + (++n); srcTable[srcIds[s.url]] = s.type === 'model' ? 'the logic written by system ' + L(modelOf(id)) + ' (not a published source)' : s.url; }
       return srcIds[s.url];
     }).filter(Boolean); };
     var pick = o.part ? o.part.items : null;
+    // Authors are named only by number: system 1 wrote the original logic, systems 2, 3, … were merged in.
+    var letters = {}; letters[(o.author && o.author.id) || 'author'] = '1';
+    (o.merges || []).forEach(function (m, i) { letters[m.model] = String(i + 2); });
+    var L = function (id) { return letters[id] || id; };
+    var modelOf = function (srcId) { var m = /^model_([^_]+)/.exec(srcId); return m ? m[1] : ''; };
+    // Merge notes were written with model and app names; refer to the systems only by letter.
+    var anon = function (text, from) {
+      var out = String(text || '');
+      (o.merges || []).forEach(function (m) { out = out.replace(new RegExp(m.label + '\'s', 'g'), 'system ' + L(m.model) + '\'s').replace(new RegExp(m.label, 'g'), 'system ' + L(m.model)); });
+      return out.replace(/Vote Helper's/g, 'system 1\'s').replace(/Vote Helper/g, 'system 1');
+    };
+    var prov = function (x, out, fields) {
+      out.by = (x.by || [(o.author && o.author.id) || 'author']).map(L);
+      if (x.disputed) {
+        out.disputed = true;
+        out.views = {};
+        Object.keys(x.views || {}).forEach(function (m) { var v = {}; fields.forEach(function (f) { if (x.views[m][f] !== undefined) v[f] = x.views[m][f]; }); out.views[L(m)] = v; });
+      }
+      return out;
+    };
     var items = ballotItems(o.contests.filter(function (c) { return !pick || pick.indexOf(c.id) >= 0; }), o.state).map(function (it) {
       var c = o.contests.filter(function (x) { return x.id === it.id; })[0];
       if (c.kind === 'measure') {
-        it.mappings = (c.tags || []).map(function (t) { return { belief: t.dim, yes: t.yes, w: t.w, why: t.why, sources: url(t.s) }; });
-        it.qualityFlags = (c.quality || []).map(function (q) { return { type: q.type, severity: q.sev, detail: q.t, sources: url(q.s) }; });
+        it.mappings = (c.tags || []).map(function (t) { return prov(t, { belief: t.dim, yes: t.yes, w: t.w, why: t.why, sources: url(t.s) }, ['yes', 'w', 'why']); });
+        it.qualityFlags = (c.quality || []).map(function (q) { return prov(q, { type: q.type, severity: q.sev, detail: q.t, sources: url(q.s) }, []); });
         if (c.constitutional) it.constitutional = true;
       } else if (c.kind === 'race') {
         it.candidates.forEach(function (k) {
           var cand = (c.candidates || []).filter(function (x) { return x.id === k.id; })[0] || {};
-          k.stances = (cand.positions || []).map(function (p) { return { belief: p.dim, stance: p.stance, why: p.t, sources: url(p.s) }; });
+          k.stances = (cand.positions || []).map(function (p) { return prov(p, { belief: p.dim, stance: p.stance, why: p.t, sources: url(p.s) }, ['stance', 't']); });
         });
       }
       var qs = o.values.specific.filter(function (q) { return (q.for || []).indexOf(c.id) >= 0 || q.appliesToKind === c.kind; });
@@ -100,8 +120,9 @@ Include every item id listed above. If your reply would get cut off, stop after 
       return it;
     });
     var beliefs = o.values.general.map(function (d) {
-      var b = { id: d.id, label: d.label, q: d.q, a: d.a, b: d.b };
+      var b = { id: d.id, label: d.label, q: d.q, a: d.a, b: d.b, by: (d.by || [(o.author && o.author.id) || 'author']).map(L) };
       if (d.tiebreaker) b.tiebreaker = true;
+      if (d.before) b.wordingBeforeMerge = d.before;
       return b;
     });
     var followUps = o.values.specific.filter(function (q) { return items.some(function (it) { return (it.followUpQuestions || []).indexOf(q.id) >= 0; }); }).map(function (q) {
@@ -116,8 +137,22 @@ Include every item id listed above. If your reply would get cut off, stop after 
       var opt = (d.options || []).filter(function (x) { return x.v === v; })[0];
       return opt ? d.label + ': ' + opt.l : null;
     }).filter(Boolean).join('; ');
+    // How each merged logic's questions, follow-ups and quality flags were handled.
+    var mergeNotes = (o.merges || []).map(function (m) {
+      var qs = {}; (m.logic.general || []).forEach(function (d) { qs[d.id] = d; });
+      return { from: L(m.model),
+        questions: Object.keys(m.record.questions || {}).map(function (id) {
+          var r = m.record.questions[id], d = qs[id] || {};
+          var result = r.drop ? 'left out' : r.toSpecific ? 'same as follow-up question ' + r.toSpecific : r.new ? 'added as new question ' + r.to : 'matched to ' + r.to + (r.orient < 0 ? ' (sides swapped)' : '') + (r.reword ? ', and ' + r.to + ' reworded' : '');
+          return { question: id, label: d.label, q: d.q, a: d.a, b: d.b, result: result, why: anon(r.why) };
+        }),
+        followUps: Object.keys(m.record.specific || {}).map(function (id) { var r = m.record.specific[id]; return { question: id, result: r.keep ? 'kept' : 'left out', why: anon(r.why) }; }),
+        rule: anon(m.record.stances && m.record.stances.why)
+      };
+    });
+    var merged = mergeNotes.length > 0;
     return [
-      'I\'m testing a free, nonpartisan ballot advisor for mistakes and bias. A voter answers values questions on a 5-point scale between two sides, A and B, and simple arithmetic matches the answers to each item on their ballot. The logic below was written by another AI system. Please critique it carefully and specifically. Work from your own judgment and research; don\'t rely on any other review of this guide. Don\'t tell anyone how to vote.',
+      'I\'m testing a free, nonpartisan ballot advisor for mistakes and bias. A voter answers values questions on a 5-point scale between two sides, A and B, and simple arithmetic matches the answers to each item on their ballot. ' + (merged ? 'The logic below was written independently by ' + (mergeNotes.length + 1) + ' AI systems, labeled 1' + mergeNotes.map(function (m) { return ' and ' + m.from; }).join('') + ', and then merged into one set. "by" lists which system(s) made each question or mapping (system 1 wrote it from research; the others worked only from the official ballot text, without seeing system 1\'s work). Where they pointed in opposite directions, the mapping is marked "disputed", shows both views, and counts for nothing.' : 'The logic below was written by another AI system.') + ' Please critique it carefully and specifically. Work from your own judgment and research; don\'t rely on any other review of this guide. Don\'t tell anyone how to vote.',
       '',
       'BALLOT: ' + o.election.name + ', ' + o.election.area + (where ? ' (' + where + ')' : '') + '.' +
         (o.part ? ' This is part ' + o.part.index + ' of ' + o.part.total + ' of the ballot; review only the items included here, plus the belief and follow-up questions.' : ''),
@@ -144,9 +179,11 @@ Include every item id listed above. If your reply would get cut off, stop after 
       '6. Follow-up questions: are the options balanced, and does each answer move the item the right way?',
       '7. Quick mode: are those 3 the best questions for sorting this particular ballot? If not, which 3?',
       '8. Quality flags: unsupported, one-sided or missing ones.',
+      (merged ? '10. The merge: were the questions matched correctly (right question, right way round)? Should anything left out have been kept? For each disputed mapping, which reading is right, and why?\n' : '') +
       '9. Facts: anything wrong or out of date. Use web search to check candidate positions and sources, and cite what you find. If you can\'t search in this chat, say so at the top of your reply.',
       'Be specific. If something is fine, say so briefly instead of rewriting it.',
       '',
+      (merged ? 'HOW THE LOGICS WERE MERGED (JSON):\n' + JSON.stringify(mergeNotes) + '\n\n' : '') +
       'BELIEF QUESTIONS (JSON):',
       JSON.stringify(beliefs),
       '',
@@ -164,7 +201,7 @@ Include every item id listed above. If your reply would get cut off, stop after 
       '{"voteHelperCritique": 1,',
       ' "model": {"name": "<your model name>", "version": "<version, or unknown>", "maker": "<company>", "webSearch": true, "date": "YYYY-MM-DD"},',
       ' "overall": "fair | minor problems | major problems",',
-      ' "issues": [{"item": "<item id, or empty for a belief question>", "belief": "<belief id>", "candidate": "<candidate id, or empty>", "kind": "direction | rule | weight | missing-mapping | coverage | wording | follow-up | quick-mode | quality-flag | fact | other", "severity": "minor | major", "current": "what it says now", "suggested": "what it should say", "reason": "...", "source": "url or empty"}],',
+      ' "issues": [{"item": "<item id, or empty for a belief question>", "belief": "<belief id>", "candidate": "<candidate id, or empty>", "kind": "direction | rule | weight | missing-mapping | coverage | wording | follow-up | quick-mode | quality-flag | fact | merge | dispute | other", "severity": "minor | major", "current": "what it says now", "suggested": "what it should say", "reason": "...", "source": "url or empty"}],',
       ' "missingBeliefs": [{"label": "...", "a": "side A", "b": "side B", "why": "..."}],',
       ' "quickPicks": [{"rank": 1, "id": "<belief id>", "why": "..."}]}',
       '```',

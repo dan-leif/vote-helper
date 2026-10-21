@@ -133,12 +133,6 @@
    ]
   }
  ],
- "logics": [
-  {
-   "id": "grok",
-   "label": "Grok"
-  }
- ],
  "sources": {
   "ballot": {
    "title": "Official Ballot, Nov 3 2026, San Luis Obispo County (Ballot Type 26)",
@@ -375,7 +369,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic incumbent Member of Congress.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "climate",
@@ -419,7 +429,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee, defense systems engineer and retired Navy officer.",
+         "question": "party",
+         "source": "https://ballotpedia.org/Bob_Smith_(California%27s_24th_Congressional_District)"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -480,7 +506,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee; founder of local Save Girls’ Sports group.",
+         "question": "party",
+         "source": "https://www.sanluisobispo.com/news/politics-government/election/voter-guide/article317271523.html"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "social",
@@ -515,7 +557,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat; incumbent."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic incumbent Assemblymember.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "climate",
@@ -898,6 +956,60 @@
    "conf": "m",
    "instructions": "Pick only one. The two candidates with the most votes win.",
    "sheetNote": "Mark only ONE."
+  }
+ ],
+ "merged": [
+  {
+   "model": "grok",
+   "label": "Grok",
+   "date": "2026-10-21",
+   "record": "data/ca/san-luis-obispo/2026-11-03.merge.grok.json",
+   "questions": {
+    "tax_progressivity": [
+     "tax_wealthy",
+     -1
+    ],
+    "government_size": [
+     "tax_level",
+     -1
+    ],
+    "bond_debt": [
+     "debt",
+     -1
+    ],
+    "spending_limits": [
+     "savings",
+     -1
+    ],
+    "housing_supply": [
+     "housing_approach",
+     1
+    ],
+    "voting_id": [
+     "voting",
+     1
+    ],
+    "campaign_finance": [
+     "campaign_money",
+     -1
+    ],
+    "ceqa_process": [
+     "environment",
+     1
+    ],
+    "local_tax_threshold": [
+     "tax_votes",
+     -1
+    ],
+    "party_lean": [
+     "party",
+     -1
+    ],
+    "experience": [
+     "outsider",
+     -1
+    ]
+   }
   }
  ]
 }
