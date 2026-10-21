@@ -1,0 +1,795 @@
+{
+  "voteHelperLogic": 1,
+  "model": {
+    "name": "Grok",
+    "version": "4.5",
+    "maker": "xAI",
+    "webSearch": true,
+    "date": "2026-10-20"
+  },
+  "general": [
+    {
+      "id": "tax_progressivity",
+      "label": "Taxes on high incomes and wealth",
+      "q": "When the state needs more revenue for schools or health care, should the additional burden fall more heavily on high-income earners and the very wealthy, or should tax rates stay more uniform so that successful people and businesses are not driven away?",
+      "a": "More uniform rates that avoid driving away high earners and businesses",
+      "b": "Higher rates or new taxes focused on high incomes and large fortunes",
+      "tiebreaker": false
+    },
+    {
+      "id": "spending_limits",
+      "label": "State spending discipline",
+      "q": "Should California keep strict constitutional limits on how much the state can spend in good years (returning excess revenue to taxpayers or schools), or should the state be freer to expand programs when revenue is high?",
+      "a": "Keep or strengthen firm spending limits and rainy-day rules that force restraint",
+      "b": "Allow more flexibility so high-revenue years can fund expanded services",
+      "tiebreaker": false
+    },
+    {
+      "id": "housing_supply",
+      "label": "Housing production",
+      "q": "To address high housing costs, should the state prioritize removing regulatory and environmental barriers so more homes of all kinds can be built faster, or prioritize targeted subsidies and requirements that guarantee affordability for lower-income households?",
+      "a": "Remove barriers and speed approvals so the overall supply of homes rises",
+      "b": "Focus public money and rules on subsidized or restricted affordable units",
+      "tiebreaker": false
+    },
+    {
+      "id": "voting_id",
+      "label": "Voter identification",
+      "q": "Should every voter be required to show government-issued identification (or provide matching ID digits on a mail ballot) to cast a counted vote, or should California continue relying primarily on signature verification without ID presentation?",
+      "a": "Continue current rules that do not require presenting ID at the polls or on mail envelopes",
+      "b": "Require government-issued ID for in-person voting and matching ID digits for mail ballots",
+      "tiebreaker": false
+    },
+    {
+      "id": "campaign_finance",
+      "label": "Public campaign funding",
+      "q": "Should state and local governments be allowed to use public money to fund candidate campaigns (with safeguards that education, transportation, and public-safety funds cannot be used), or should campaign funding remain private?",
+      "a": "Keep the current ban on public funding of candidate campaigns",
+      "b": "Allow carefully limited public financing programs",
+      "tiebreaker": false
+    },
+    {
+      "id": "ceqa_process",
+      "label": "Environmental review speed",
+      "q": "For housing, water, transportation, and clean-energy projects, should California keep the current open-ended environmental review and lawsuit process, or set firm deadlines and narrower lawsuit rules so projects finish faster?",
+      "a": "Keep broad environmental review and lawsuit rights even if projects take longer",
+      "b": "Impose strict deadlines and limit lawsuit scope so essential projects move faster",
+      "tiebreaker": false
+    },
+    {
+      "id": "bond_debt",
+      "label": "Borrowing for social programs",
+      "q": "When California wants to fund large housing, research, or social programs, should it generally use general-obligation bonds that must be repaid from the state budget, or prefer pay-as-you-go or user-fee financing that does not increase long-term state debt service?",
+      "a": "Prefer financing that does not add long-term general-fund debt service",
+      "b": "Accept general-obligation bonds when the programs serve clear public needs",
+      "tiebreaker": false
+    },
+    {
+      "id": "education_funding",
+      "label": "Permanent school funding",
+      "q": "Should temporary higher income-tax rates that currently fund schools and community colleges be made permanent so the revenue stream does not expire, or should those rates be allowed to sunset so overall tax levels can fall?",
+      "a": "Allow the temporary higher rates to expire as scheduled",
+      "b": "Make the higher rates permanent to lock in school and college funding",
+      "tiebreaker": false
+    },
+    {
+      "id": "local_tax_threshold",
+      "label": "Local tax approval",
+      "q": "Should local special taxes proposed by voters continue to pass with a simple majority, or should they require a two-thirds vote the way many other local tax increases already do?",
+      "a": "Raise the threshold to two-thirds for voter-proposed local special taxes",
+      "b": "Keep the simple-majority threshold for voter-proposed local special taxes",
+      "tiebreaker": false
+    },
+    {
+      "id": "government_size",
+      "label": "Size and role of government",
+      "q": "In general, does California need a larger, more active state government that taxes and spends more to solve housing, health, and climate problems, or a leaner government that lowers taxes and regulation so the private sector can solve more of them?",
+      "a": "Leaner government, lower taxes and regulation",
+      "b": "More active government with higher taxes and more programs",
+      "tiebreaker": false
+    },
+    {
+      "id": "recall_process",
+      "label": "Recall elections",
+      "q": "When a statewide officer is recalled, should voters choose the replacement on the same ballot, or should the vacancy be filled later by special election or appointment?",
+      "a": "Keep the current system of choosing a replacement on the same ballot",
+      "b": "Fill the vacancy later by special election or appointment",
+      "tiebreaker": true
+    },
+    {
+      "id": "party_lean",
+      "label": "Overall political direction",
+      "q": "On balance, do you prefer candidates and policies associated with the Democratic Party or the Republican Party in California?",
+      "a": "Republican-leaning or independent of Democratic priorities",
+      "b": "Democratic-leaning",
+      "tiebreaker": true
+    },
+    {
+      "id": "experience",
+      "label": "Experience vs. outsider",
+      "q": "When choosing office-holders, do you place more weight on proven experience inside government or on fresh perspectives from outside career politics?",
+      "a": "Fresh perspectives and outsiders",
+      "b": "Proven government experience",
+      "tiebreaker": true
+    }
+  ],
+  "items": [
+    {
+      "id": "gov",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "becerra",
+          "dim": "tax_progressivity",
+          "stance": 0.6,
+          "why": "Supports progressive income taxes and extending higher rates on high earners for schools; opposes the billionaire wealth tax.",
+          "source": "https://calmatters.org/california-voter-guide-2026/governor/"
+        },
+        {
+          "candidate": "becerra",
+          "dim": "government_size",
+          "stance": 0.7,
+          "why": "Emphasizes active state role on housing, utilities, and health coverage including for undocumented residents.",
+          "source": "https://www.dailynews.com/2026/10/09/candidates-for-california-governor-differ-on-many-issues-but-both-dislike-proposition-40s-billionaire-tax/"
+        },
+        {
+          "candidate": "becerra",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "hilton",
+          "dim": "tax_progressivity",
+          "stance": -0.8,
+          "why": "Proposes eliminating state income tax on first $150k and a flatter rate above; opposes wealth tax and further tax increases.",
+          "source": "https://calmatters.org/california-voter-guide-2026/governor/"
+        },
+        {
+          "candidate": "hilton",
+          "dim": "government_size",
+          "stance": -0.8,
+          "why": "Calls for deregulation, lower gas taxes, more housing on undeveloped land, and cuts to state agencies.",
+          "source": "https://calmatters.org/politics/2026/09/california-general-election-gubernatorial-debate-cnn/"
+        },
+        {
+          "candidate": "hilton",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "ltgov",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "ma",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic nominee, current State Treasurer.",
+          "source": ""
+        },
+        {
+          "candidate": "romero",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "sos",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "weber",
+          "dim": "voting_id",
+          "stance": -0.7,
+          "why": "Current Secretary of State; party and officeholders generally oppose Prop 39-style ID requirements.",
+          "source": ""
+        },
+        {
+          "candidate": "weber",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic incumbent.",
+          "source": ""
+        },
+        {
+          "candidate": "wagner",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "ctrl",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "cohen",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic incumbent.",
+          "source": ""
+        },
+        {
+          "candidate": "morgan",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "treas",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "kounalakis",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic nominee, current Lieutenant Governor.",
+          "source": ""
+        },
+        {
+          "candidate": "hawks",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "ag",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "bonta",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic incumbent.",
+          "source": ""
+        },
+        {
+          "candidate": "gates",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "ins",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "allen",
+          "dim": "party_lean",
+          "stance": 0.8,
+          "why": "Democratic State Senator.",
+          "source": ""
+        },
+        {
+          "candidate": "kim",
+          "dim": "party_lean",
+          "stance": 0.9,
+          "why": "Democratic attorney/consumer advocate; progressive positioning.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Both candidates are Democrats; race is intra-party."
+    },
+    {
+      "id": "boe2",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "lieber",
+          "dim": "party_lean",
+          "stance": 0.8,
+          "why": "Democratic incumbent.",
+          "source": ""
+        },
+        {
+          "candidate": "pimentel",
+          "dim": "party_lean",
+          "stance": 0.7,
+          "why": "Democratic candidate.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Both candidates are Democrats."
+    },
+    {
+      "id": "ca24",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "carbajal",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic incumbent Member of Congress.",
+          "source": ""
+        },
+        {
+          "candidate": "smith",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee, defense systems engineer and retired Navy officer.",
+          "source": "https://ballotpedia.org/Bob_Smith_(California%27s_24th_Congressional_District)"
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "ad30",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "addis",
+          "dim": "party_lean",
+          "stance": 1,
+          "why": "Democratic incumbent Assemblymember.",
+          "source": ""
+        },
+        {
+          "candidate": "kessler",
+          "dim": "party_lean",
+          "stance": -1,
+          "why": "Republican nominee; founder of local Save Girls’ Sports group.",
+          "source": "https://www.sanluisobispo.com/news/politics-government/election/voter-guide/article317271523.html"
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "judges-sc",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "No specific, sourced reasons for concern found for Joshua Groban or Kelli M. Evans."
+    },
+    {
+      "id": "judges-coa",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "No specific, sourced reasons for concern found for the listed Court of Appeal justices."
+    },
+    {
+      "id": "spi",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "Limited public record on policy differences available in current searches; treat as low-information race."
+    },
+    {
+      "id": "slo-mayor",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "Only one candidate listed (incumbent); no contested mapping needed."
+    },
+    {
+      "id": "slo-council",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "Local race; limited statewide-policy stances available. Voters should weigh local records."
+    },
+    {
+      "id": "p1",
+      "tags": [
+        {
+          "dim": "housing_supply",
+          "yes": 0.5,
+          "w": 2,
+          "why": "Funds construction and preservation of affordable and veteran housing, increasing subsidized supply."
+        },
+        {
+          "dim": "bond_debt",
+          "yes": 1,
+          "w": 3,
+          "why": "Authorizes $11.25B general-obligation bonds repaid from the General Fund."
+        },
+        {
+          "dim": "government_size",
+          "yes": 0.6,
+          "w": 1,
+          "why": "Expands state role in housing finance."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p2",
+      "tags": [
+        {
+          "dim": "spending_limits",
+          "yes": -0.7,
+          "w": 2,
+          "why": "Raises rainy-day fund cap and changes how deposits interact with the spending limit, giving more flexibility."
+        },
+        {
+          "dim": "government_size",
+          "yes": 0.4,
+          "w": 1,
+          "why": "Larger reserves support continued program spending in downturns."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p3",
+      "tags": [
+        {
+          "dim": "tax_progressivity",
+          "yes": 1,
+          "w": 3,
+          "why": "Makes temporary higher income-tax rates on high earners permanent."
+        },
+        {
+          "dim": "education_funding",
+          "yes": 1,
+          "w": 3,
+          "why": "Locks in the revenue stream for K-12 and community colleges."
+        },
+        {
+          "dim": "government_size",
+          "yes": 0.7,
+          "w": 2,
+          "why": "Prevents a scheduled tax cut, keeping revenue higher."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p4",
+      "tags": [
+        {
+          "dim": "campaign_finance",
+          "yes": 1,
+          "w": 3,
+          "why": "Repeals the ban so state and local governments may create public financing programs."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p5",
+      "tags": [
+        {
+          "dim": "recall_process",
+          "yes": 1,
+          "w": 3,
+          "why": "Changes replacement of recalled statewide officers to later special election or appointment."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p37",
+      "tags": [
+        {
+          "dim": "housing_supply",
+          "yes": 0.6,
+          "w": 2,
+          "why": "Creates a large loan program to help middle-income buyers of new homes."
+        },
+        {
+          "dim": "bond_debt",
+          "yes": 0.3,
+          "w": 1,
+          "why": "Uses revenue bonds repaid by borrowers, not general-fund debt."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p38",
+      "tags": [
+        {
+          "dim": "bond_debt",
+          "yes": 1,
+          "w": 3,
+          "why": "Authorizes $8.4B general-obligation bonds for immunology research."
+        },
+        {
+          "dim": "government_size",
+          "yes": 0.5,
+          "w": 1,
+          "why": "Directs substantial public capital to a specific research institute and grants."
+        }
+      ],
+      "stances": [],
+      "quality": [
+        {
+          "type": "allocation concentration",
+          "detail": "Half the bond proceeds are directed to a single University of California-affiliated nonprofit institute, raising questions about competitive allocation and long-term oversight.",
+          "source": "Official ballot text and LAO analysis"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "p39",
+      "tags": [
+        {
+          "dim": "voting_id",
+          "yes": 1,
+          "w": 3,
+          "why": "Requires government-issued ID for in-person voting and matching ID digits on mail ballots."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p40",
+      "tags": [
+        {
+          "dim": "tax_progressivity",
+          "yes": 1,
+          "w": 3,
+          "why": "Imposes a one-time 5% tax on net worth of billionaires."
+        },
+        {
+          "dim": "government_size",
+          "yes": 0.8,
+          "w": 2,
+          "why": "Raises tens of billions for health care and related programs outside normal spending rules."
+        },
+        {
+          "dim": "spending_limits",
+          "yes": -0.6,
+          "w": 2,
+          "why": "Exempts the new revenue from the constitutional spending limit and school-funding guarantee."
+        }
+      ],
+      "stances": [],
+      "quality": [
+        {
+          "type": "implementation risk",
+          "detail": "Requires the state to value a wide range of hard-to-price assets (private business interests, art, IP, etc.) on a short timeline; likely litigation and valuation disputes.",
+          "source": "https://calmatters.org/politics/2026/10/california-billionaire-tax-explainer/"
+        },
+        {
+          "type": "interaction with other measures",
+          "detail": "Props 41 and 42 were written in part to constrain or nullify effects of a wealth tax of this type.",
+          "source": "https://www.sfchronicle.com/election/article/prop-40-41-42-california-22476000.php"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "p41",
+      "tags": [
+        {
+          "dim": "spending_limits",
+          "yes": 1,
+          "w": 3,
+          "why": "Forces new special-tax revenues into the spending limit and requires audits."
+        },
+        {
+          "dim": "tax_progressivity",
+          "yes": -0.5,
+          "w": 1,
+          "why": "Makes it harder to enact taxes that bypass existing fiscal constraints."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p42",
+      "tags": [
+        {
+          "dim": "tax_progressivity",
+          "yes": -0.8,
+          "w": 2,
+          "why": "Prohibits new state personal-property (wealth-like) taxes and certain retroactive taxes."
+        },
+        {
+          "dim": "spending_limits",
+          "yes": 0.4,
+          "w": 1,
+          "why": "Limits future revenue tools that could expand spending."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p43",
+      "tags": [
+        {
+          "dim": "local_tax_threshold",
+          "yes": 1,
+          "w": 3,
+          "why": "Raises the vote threshold for voter-proposed local special taxes from majority to two-thirds."
+        },
+        {
+          "dim": "government_size",
+          "yes": -0.5,
+          "w": 1,
+          "why": "Makes it harder for local governments to raise new revenue."
+        }
+      ],
+      "stances": [],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "p44",
+      "tags": [
+        {
+          "dim": "government_size",
+          "yes": 0.3,
+          "w": 1,
+          "why": "Adds state oversight and penalties on nonprofit community clinics’ spending."
+        }
+      ],
+      "stances": [],
+      "quality": [
+        {
+          "type": "vague definition",
+          "detail": "“Program services” advancing charitable purpose is broadly defined; opponents argue it could penalize legitimate administrative, research, or facility costs and disrupt care.",
+          "source": "Official opponent list (medical associations)"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "p45",
+      "tags": [
+        {
+          "dim": "ceqa_process",
+          "yes": 1,
+          "w": 3,
+          "why": "Sets hard deadlines, narrows alternatives analysis, and limits lawsuit remedies for most housing and infrastructure projects."
+        },
+        {
+          "dim": "housing_supply",
+          "yes": 0.8,
+          "w": 2,
+          "why": "Designed to accelerate housing and related infrastructure by reducing process delays."
+        }
+      ],
+      "stances": [],
+      "quality": [
+        {
+          "type": "scope and trade-offs",
+          "detail": "Applies to a very broad set of “essential” projects; environmental groups argue it reduces public comment windows and court oversight more than necessary.",
+          "source": "https://calmatters.org/environment/2026/10/prop-45-california-ceqa-explained/"
+        }
+      ],
+      "note": ""
+    }
+  ],
+  "specific": [
+    {
+      "id": "q_p40_flight",
+      "for": ["p40"],
+      "q": "How concerned are you that a one-time wealth tax on billionaires could cause some high-net-worth residents or businesses to leave California, reducing future income-tax revenue?",
+      "options": [
+        {
+          "l": "Very concerned — the risk outweighs the one-time revenue",
+          "fx": {"p40": -2}
+        },
+        {
+          "l": "Somewhat concerned but still worth trying",
+          "fx": {"p40": -1}
+        },
+        {
+          "l": "Not very concerned — the tax is one-time and targeted",
+          "fx": {"p40": 1}
+        },
+        {
+          "l": "Not concerned at all — fairness and health-care needs come first",
+          "fx": {"p40": 2}
+        }
+      ]
+    },
+    {
+      "id": "q_p45_tradeoff",
+      "for": ["p45"],
+      "q": "For housing and infrastructure projects, which matters more to you: faster completion even if environmental review is shortened, or fuller environmental analysis and lawsuit rights even if projects take longer?",
+      "options": [
+        {
+          "l": "Speed and certainty of completion",
+          "fx": {"p45": 2}
+        },
+        {
+          "l": "Slight preference for speed",
+          "fx": {"p45": 1}
+        },
+        {
+          "l": "Slight preference for fuller review",
+          "fx": {"p45": -1}
+        },
+        {
+          "l": "Fuller review and lawsuit rights",
+          "fx": {"p45": -2}
+        }
+      ]
+    },
+    {
+      "id": "q_ins_race",
+      "for": ["ins"],
+      "q": "In the Insurance Commissioner race (both Democrats), do you lean toward the state senator with legislative experience or the attorney/consumer-advocate profile?",
+      "options": [
+        {
+          "l": "Legislative experience (Ben Allen)",
+          "fx": {"ins": {"allen": 1.5}}
+        },
+        {
+          "l": "Consumer-advocate background (Jane Kim)",
+          "fx": {"ins": {"kim": 1.5}}
+        },
+        {
+          "l": "No strong preference",
+          "fx": {}
+        }
+      ]
+    }
+  ],
+  "quickPicks": [
+    {
+      "rank": 1,
+      "id": "tax_progressivity",
+      "why": "Directly sorts the cluster of tax measures (Props 3, 40, 41, 42) and the major statewide candidate races."
+    },
+    {
+      "rank": 2,
+      "id": "voting_id",
+      "why": "Prop 39 is a high-salience, binary constitutional change that most cleanly separates voters."
+    },
+    {
+      "rank": 3,
+      "id": "ceqa_process",
+      "why": "Prop 45 is one of the largest process changes on the ballot and interacts strongly with housing goals."
+    }
+  ]
+}

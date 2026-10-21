@@ -15,11 +15,8 @@ Places are data, not code: pick a place and an election, and the app loads that 
 5. **Learning.** When you pick differently from your match, you choose a reason ("this matters less to me", "my view is different", "special case", "drafting concern"…). The page shows the profile change, applies it, and keeps a dated history.
 6. **Optional AI.** "Ask your AI" builds a prompt with your beliefs and the sourced data to paste into your own assistant (Claude, Claude Code, etc.). Paste its reply back to attach notes and review suggested profile changes. The page never calls an AI itself.
 
-7. **Cross-model bias check.** Every judgment (summaries, pros and cons, belief tags, quality flags, and the belief questions themselves) is written by Claude and stored in the data files, never in code. The **Bias check** tab audits the whole app, in parts sized for free tiers or as one paste, in two rounds:
-   - **Blind:** the model gets only the official ballot text and the belief list, maps each item itself, and the app compares its mapping with Claude's.
-   - **Critique:** the model reviews Claude's full write-up and the belief questions for slant, missing arguments and wrong mappings.
-
-   Prompts are built only from the data files. They never include another model's replies or your beliefs, and the app suggests a fresh temporary chat per part. Replies are saved per item and per model (blind and critique separately). Items where any model disagrees are flagged **Models disagree**. Each item also has its own blind and critique prompts.
+7. **Second opinion from another model.** Grok (or any model) can write its own belief questions and mappings for the ballot from the official ballot text alone, using `prompts/own-logic.txt`, without seeing Vote Helper's logic. That logic is stored as a data file (`data/<state>/<locality>/<date>.logic.<model>.json`, listed under `logics` in the election file) and runs through the same engine. You answer its questions separately (Quick asks the model's own top 3 picks), and every item shows Vote Helper's match and the model's match side by side, with a **differs** flag where they point different ways. Other models' replies can be pasted in the Bias check tab; follow-up corrections are merged in. The raw replies and the exact prompt sent are kept in `prompts/replies/`.
+8. **Cross-model bias check.** The Bias check tab can also send Vote Helper's own write-up to other models, in a blind round (official text only) and a critique round. Prompts never include another model's replies or your beliefs.
 
 Drafting and policy quality is shown separately from the values match, so you can see "matches your values, but poorly drafted."
 

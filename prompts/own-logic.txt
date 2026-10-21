@@ -1,6 +1,6 @@
 I'm building a free, nonpartisan ballot advisor. A voter answers a short set of values questions, and simple arithmetic matches their answers to each item on their ballot. I'd like you to design that logic yourself, from scratch, for the ballot below. Work only from your own judgment and research; don't base it on any other voter guide or AI tool. Don't tell anyone how to vote.
 
-BALLOT: November 3, 2026 General Election, San Luis Obispo County, California (City of San Luis Obispo; U.S. House District 24; Assembly District 30). The items below are copied from the official ballot.
+BALLOT: November 3, 2026 General Election, San Luis Obispo County, California (City: City of San Luis Obispo; U.S. House district: District 24; State Assembly district: District 30). The items below are copied from the official ballot.
 
 Please produce five things:
 

@@ -90,6 +90,21 @@ A **claim** is `{ "t": "text", "s": ["sourceId", ...], "c": "h|m|l" }`.
 ## Part 2 questions (in election files and `state.json`)
 `{ id, for: [contestIds] | appliesToKind: "retention", q, options: [ { v, l, fx } ] }`. `fx` maps a contest id (or `"*<kind>"`, e.g. `"*retention"`) to a number −2…+2 (measures: + means Yes), or for races to `{ candidateId: number }`, or `"skip"`.
 
+## Another model's logic: `data/<state>/<locality>/<date>.logic.<id>.json`
+Listed in the election file as `"logics": [ { "id": "grok", "label": "Grok" } ]`. It's the model's own reply to `prompts/own-logic.txt`, with its follow-up corrections merged in:
+```jsonc
+{ "voteHelperLogic": 1, "id": "grok", "label": "Grok",
+  "model": { "name": "Grok", "version": "4.5", "maker": "xAI", "webSearch": true, "date": "2026-10-20" },
+  "general":  [ { "id": "tax_progressivity", "label": "...", "q": "...", "a": "side A", "b": "side B", "tiebreaker": false } ],
+  "items":    [ { "id": "p3", "tags": [ { "dim": "tax_progressivity", "yes": 1, "w": 3, "why": "..." } ],
+                  "stances": [ { "candidate": "becerra", "dim": "...", "stance": 0.6, "why": "...", "source": "url" } ],
+                  "quality": [ { "type": "...", "detail": "...", "source": "url" } ], "note": "" } ],
+  "specific": [ { "id": "q_...", "for": ["p40"], "q": "...", "options": [ { "l": "answer", "fx": { "p40": -2 } } ] } ],
+  "quickPicks": [ { "rank": 1, "id": "<question id>", "why": "..." } ],
+  "revisions": [ { "date": "...", "changes": [ { "id": "p41", "dim": "spending_limits", "from": "yes +1", "to": "yes -1", "reason": "..." } ] } ] }
+```
+`yes` may be fractional (−1…1): the sign is the direction, the size scales the effect. Tiebreaker questions count at half weight. Follow-up options without a `v` get positional ids (`o0`, `o1`, …). Answers to a model's questions are stored in the beliefs file under `logics.<id>`, separate from Vote Helper's.
+
 ## Bias-check replies (browser only, exportable; no personal views)
 ```jsonc
 { "app": "vote-helper-audits", "audits": { "ca/san-luis-obispo/2026-11-03": {
@@ -109,6 +124,7 @@ A blind reply is converted to the critique shape by `compareBlind()` in `engine.
 {
   "schema": 1, "app": "vote-helper", "created": "2026-10-20", "updated": "2026-10-20",
   "general":  { "debt": { "pos": 1, "imp": 2, "date": "2026-10-20", "note": "" } },
+  "logics":   { "grok": { "general": { "tax_progressivity": { "pos": 2, "imp": 3, "date": "..." } }, "specific": {} } },
   "specific": { "q_recall": { "v": "same_ballot", "date": "2026-10-20", "election": "ca/san-luis-obispo/2026-11-03" } },
   "place": { "key": "ca/san-luis-obispo", "date": "2026-11-03" },
   "elections": { "ca/san-luis-obispo/2026-11-03": { "districts": { "cd": "24" }, "effort": "quick", "choices": { "p1": { "v": "yes", "date": "...", "suggested": "no", "agreed": false } }, "ai": {} } },

@@ -133,6 +133,12 @@
    ]
   }
  ],
+ "logics": [
+  {
+   "id": "grok",
+   "label": "Grok"
+  }
+ ],
  "sources": {
   "ballot": {
    "title": "Official Ballot, Nov 3 2026, San Luis Obispo County (Ballot Type 26)",

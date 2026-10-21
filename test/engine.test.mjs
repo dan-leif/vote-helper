@@ -70,6 +70,21 @@ ok(E.auditStatus({ grok: missed }).status === 'minor', 'blind: missing a mapping
 const stance = E.compareBlind(byId('gov'), { stances: [{ candidate: 'hilton', dim: 'climate', stance: -1 }] });
 ok(E.auditStatus({ grok: stance }).status === 'disagree', 'blind: candidate stance on the other side -> disagree');
 
+// Another model's own logic runs through the same engine.
+const grok = read('data/ca/san-luis-obispo/2026-11-03.logic.grok.json');
+const gm = E.logicToModel(contests, grok);
+ok(gm.contests.length === contests.length && gm.values.general.length === grok.general.length, 'logicToModel builds contests and questions');
+ok(gm.quickPicks.length === 3 && gm.quickPicks[0].id === 'tax_progressivity', 'quick picks kept in rank order');
+const g41 = gm.contests.find(c => c.id === 'p41');
+const limitsFan = { general: { spending_limits: { pos: -2, imp: 3 } }, specific: {} };
+ok(E.score(g41, limitsFan, gm.values).pick === 'yes', 'Grok logic (corrected): spending-limits fan -> Yes on 41');
+ok(E.score(gm.contests.find(c => c.id === 'p40'), limitsFan, gm.values).pick === 'no', 'Grok logic (corrected): spending-limits fan -> No on 40');
+ok(E.score(gm.contests.find(c => c.id === 'gov'), { general: { party_lean: { pos: 2, imp: 2 } }, specific: {} }, gm.values).pick === 'becerra', 'Grok party_lean B (Democratic) -> Becerra');
+ok(E.score(gm.contests.find(c => c.id === 'ins'), { general: { party_lean: { pos: 2, imp: 3 } }, specific: {} }, gm.values).label === 'call', 'equal party stances among two Democrats -> your call');
+const merged = E.mergeLogic({ items: [{ id: 'p1', tags: [] }, { id: 'p2', tags: [] }] }, { items: [{ id: 'p2', tags: [{ dim: 'x', yes: 1, w: 1 }] }], changes: [{ id: 'p2' }] });
+ok(merged.items.length === 2 && merged.items[1].tags.length === 1 && merged.revisions.length === 1, 'mergeLogic replaces items by id and logs changes');
+ok(E.picksDiffer({ pick: 'yes' }, { pick: 'no' }) && !E.picksDiffer({ pick: 'yes' }, { pick: null }) && !E.picksDiffer({ pick: ['a', 'b'] }, { pick: ['b', 'a'] }), 'picksDiffer only when both pick and differ');
+
 // No place-specific logic in code.
 const code = readFileSync(new URL('../app.js', import.meta.url), 'utf8') + readFileSync(new URL('../engine.js', import.meta.url), 'utf8');
 const banned = ['slo-council', "'slo'", 'cadem', 'cagop', 'lwvc', 'Proposition ', "'Prop '", 'California', 'San Luis'];

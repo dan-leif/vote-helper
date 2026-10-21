@@ -1,0 +1,71 @@
+{
+  "items": [
+    {"id": "sos", "tags": [], "stances": [
+      {"candidate": "weber", "dim": "party_lean", "stance": 1, "why": "Democratic incumbent.", "source": ""},
+      {"candidate": "wagner", "dim": "party_lean", "stance": -1, "why": "Republican nominee.", "source": ""}],
+      "quality": [], "note": "Removed voting_id stance for Weber; it rested only on party affiliation, which the design rules reserve for the party_lean dimension."},
+    {"id": "ins", "tags": [], "stances": [
+      {"candidate": "allen", "dim": "party_lean", "stance": 1, "why": "Democratic State Senator.", "source": ""},
+      {"candidate": "kim", "dim": "party_lean", "stance": 1, "why": "Democratic attorney/consumer advocate.", "source": ""}],
+      "quality": [], "note": "Both candidates are Democrats; equal party_lean values used because no sourced differentiation on the party-lean axis was available."},
+    {"id": "boe2", "tags": [], "stances": [
+      {"candidate": "lieber", "dim": "party_lean", "stance": 1, "why": "Democratic incumbent.", "source": ""},
+      {"candidate": "pimentel", "dim": "party_lean", "stance": 1, "why": "Democratic candidate.", "source": ""}],
+      "quality": [], "note": "Both candidates are Democrats; equal party_lean values used because no sourced differentiation on the party-lean axis was available."},
+    {"id": "p2", "tags": [
+      {"dim": "spending_limits", "yes": 0.7, "w": 2, "why": "Raises rainy-day fund cap and changes how deposits interact with the spending limit, giving more flexibility."},
+      {"dim": "government_size", "yes": 0.4, "w": 1, "why": "Larger reserves support continued program spending in downturns."}],
+      "stances": [], "quality": [], "note": ""},
+    {"id": "p37", "tags": [
+      {"dim": "housing_supply", "yes": 0.6, "w": 2, "why": "Creates a large loan program to help middle-income buyers of new homes."},
+      {"dim": "bond_debt", "yes": -0.4, "w": 1, "why": "Uses revenue bonds repaid by borrowers, not general-fund debt."}],
+      "stances": [], "quality": [], "note": ""},
+    {"id": "p38", "tags": [
+      {"dim": "bond_debt", "yes": 1, "w": 3, "why": "Authorizes $8.4B general-obligation bonds for immunology research."},
+      {"dim": "government_size", "yes": 0.5, "w": 1, "why": "Directs substantial public capital to a specific research institute and grants."}],
+      "stances": [], "quality": [
+      {"type": "allocation concentration", "detail": "Half the bond proceeds are directed to a single University of California-affiliated nonprofit institute, raising questions about competitive allocation and long-term oversight.", "source": "https://voterguide.sos.ca.gov/propositions/38/analysis.htm"}], "note": ""},
+    {"id": "p40", "tags": [
+      {"dim": "tax_progressivity", "yes": 1, "w": 3, "why": "Imposes a one-time 5% tax on net worth of billionaires."},
+      {"dim": "government_size", "yes": 0.8, "w": 2, "why": "Raises tens of billions for health care and related programs outside normal spending rules."},
+      {"dim": "spending_limits", "yes": 0.6, "w": 2, "why": "Exempts the new revenue from the constitutional spending limit and school-funding guarantee."}],
+      "stances": [], "quality": [
+      {"type": "implementation risk", "detail": "Requires the state to value a wide range of hard-to-price assets (private business interests, art, IP, etc.) on a short timeline; likely litigation and valuation disputes.", "source": "https://calmatters.org/politics/2026/10/california-billionaire-tax-explainer/"},
+      {"type": "interaction with other measures", "detail": "Props 41 and 42 were written in part to constrain or nullify effects of a wealth tax of this type.", "source": "https://www.sfchronicle.com/election/article/prop-40-41-42-california-22476000.php"}], "note": ""},
+    {"id": "p41", "tags": [
+      {"dim": "spending_limits", "yes": -1, "w": 3, "why": "Forces new special-tax revenues into the spending limit and requires audits."},
+      {"dim": "tax_progressivity", "yes": -0.5, "w": 1, "why": "Makes it harder to enact taxes that bypass existing fiscal constraints."}],
+      "stances": [], "quality": [], "note": ""},
+    {"id": "p42", "tags": [
+      {"dim": "tax_progressivity", "yes": -0.8, "w": 2, "why": "Prohibits new state personal-property (wealth-like) taxes and certain retroactive taxes."},
+      {"dim": "spending_limits", "yes": -0.4, "w": 1, "why": "Limits future revenue tools that could expand spending."}],
+      "stances": [], "quality": [], "note": ""},
+    {"id": "p43", "tags": [
+      {"dim": "local_tax_threshold", "yes": -1, "w": 3, "why": "Raises the vote threshold for voter-proposed local special taxes from majority to two-thirds."},
+      {"dim": "government_size", "yes": -0.5, "w": 1, "why": "Makes it harder for local governments to raise new revenue."}],
+      "stances": [], "quality": [], "note": ""},
+    {"id": "p44", "tags": [
+      {"dim": "government_size", "yes": 0.3, "w": 1, "why": "Adds state oversight and penalties on nonprofit community clinics’ spending."}],
+      "stances": [], "quality": [
+      {"type": "vague definition", "detail": "“Program services” advancing charitable purpose is broadly defined; opponents argue it could penalize legitimate administrative, research, or facility costs and disrupt care.", "source": "https://voterguide.sos.ca.gov/propositions/44/arguments-rebuttals.htm"}], "note": ""},
+    {"id": "p45", "tags": [
+      {"dim": "ceqa_process", "yes": 1, "w": 3, "why": "Sets hard deadlines, narrows alternatives analysis, and limits lawsuit remedies for most housing and infrastructure projects."},
+      {"dim": "housing_supply", "yes": -0.8, "w": 2, "why": "Designed to accelerate housing and related infrastructure by reducing process delays (moves toward removing barriers / speeding overall supply)."}],
+      "stances": [], "quality": [
+      {"type": "scope and trade-offs", "detail": "Applies to a very broad set of “essential” projects; environmental groups argue it reduces public comment windows and court oversight more than necessary.", "source": "https://calmatters.org/environment/2026/10/prop-45-california-ceqa-explained/"}], "note": ""}
+  ],
+  "changes": [
+    {"id": "p40", "dim": "spending_limits", "from": "yes -0.6", "to": "yes 0.6", "reason": "Exempting revenue from the spending limit increases flexibility (side B). Previous sign was inverted relative to the A/B definitions."},
+    {"id": "p41", "dim": "spending_limits", "from": "yes +1", "to": "yes -1", "reason": "Forcing new revenue into the spending limit strengthens restraint (side A). Previous sign was inverted."},
+    {"id": "p42", "dim": "spending_limits", "from": "yes +0.4", "to": "yes -0.4", "reason": "Limiting future revenue tools that expand spending strengthens restraint (side A). Previous sign was inverted."},
+    {"id": "p43", "dim": "local_tax_threshold", "from": "yes +1", "to": "yes -1", "reason": "Raising the threshold to two-thirds is exactly side A of the definition. Previous sign was inverted."},
+    {"id": "p45", "dim": "housing_supply", "from": "yes +0.8", "to": "yes -0.8", "reason": "Speeding approvals by reducing process delays moves toward side A (remove barriers / increase overall supply). Previous sign treated it as the subsidized-unit focus (side B)."},
+    {"id": "p2", "dim": "spending_limits", "from": "yes -0.7", "to": "yes 0.7", "reason": "Giving more flexibility on the rainy-day / spending-limit interaction is side B. Previous sign was inverted."},
+    {"id": "p37", "dim": "bond_debt", "from": "yes +0.3", "to": "yes -0.4", "reason": "Revenue bonds repaid by borrowers do not add general-fund debt service (side A). Previous sign treated it as accepting GO bonds (side B)."},
+    {"id": "sos", "dim": "voting_id (Weber)", "from": "stance -0.7", "to": "removed", "reason": "Stance rested only on party; design rules allow party alone only for the party_lean dimension."},
+    {"id": "ins", "dim": "party_lean", "from": "0.8 / 0.9", "to": "1 / 1", "reason": "Both candidates are Democrats; no sourced basis for differentiating the party-lean values."},
+    {"id": "boe2", "dim": "party_lean", "from": "0.8 / 0.7", "to": "1 / 1", "reason": "Both candidates are Democrats; no sourced basis for differentiating the party-lean values."},
+    {"id": "p38", "dim": "quality source", "from": "Official ballot text and LAO analysis", "to": "https://voterguide.sos.ca.gov/propositions/38/analysis.htm", "reason": "Replaced non-URL citation with official LAO analysis URL."},
+    {"id": "p44", "dim": "quality source", "from": "Official opponent list (medical associations)", "to": "https://voterguide.sos.ca.gov/propositions/44/arguments-rebuttals.htm", "reason": "Replaced non-URL citation with official arguments page URL."}
+  ]
+}
