@@ -14,6 +14,10 @@
   {
    "date": "2026-10-30",
    "file": "prompts/replies/in-elkhart-2026-11-03/grok-1-grok-reply-1.txt"
+  },
+  {
+   "date": "2026-10-30",
+   "file": "prompts/replies/in-elkhart-2026-11-03/grok-2-grok-reply-2.json"
   }
  ],
  "general": [
@@ -63,7 +67,7 @@
    "q": "All else equal, do you generally prefer Republican or Democratic leadership in state and county offices?",
    "a": "Prefer Democratic or independent leadership on balance.",
    "b": "Prefer Republican leadership on balance.",
-   "tiebreaker": true
+   "tiebreaker": false
   },
   {
    "id": "experience_vs_newcomers",
@@ -156,24 +160,17 @@
      "source": ""
     },
     {
-     "candidate": "bayh",
-     "dim": "government_transparency",
-     "stance": -0.8,
-     "why": "Pledges independent external audit as first action.",
-     "source": "https://indianacitizen.org/indiana-capital-chronicle-engling-bayh-duel-over-key-differences-in-secretary-of-state-race/"
-    },
-    {
      "candidate": "shillings",
      "dim": "party_governance",
      "stance": 0,
-     "why": "Libertarian nominee; limited public record on specific SOS priorities found.",
+     "why": "Libertarian nominee.",
      "source": ""
     },
     {
      "candidate": "ballard",
      "dim": "party_governance",
-     "stance": 0.3,
-     "why": "Running under Lincoln Party label as independent; former Republican mayor of Indianapolis.",
+     "stance": 0,
+     "why": "Appears on the ballot under the Lincoln Party label as an independent candidate.",
      "source": "https://en.wikipedia.org/wiki/2026_Indiana_Secretary_of_State_election"
     }
    ],
@@ -288,7 +285,7 @@
      "candidate": "henry",
      "dim": "party_governance",
      "stance": 0,
-     "why": "Libertarian nominee; limited specific positions located.",
+     "why": "Libertarian nominee.",
      "source": ""
     }
    ],
@@ -299,13 +296,6 @@
    "id": "hd21",
    "tags": [],
    "stances": [
-    {
-     "candidate": "wesco",
-     "dim": "criminal_justice_orientation",
-     "stance": 0.7,
-     "why": "Long-time conservative Republican with strong pro-life, traditional marriage, and limited-government record; supported election-integrity and enforcement-related measures.",
-     "source": "https://en.wikipedia.org/wiki/Timothy_Wesco"
-    },
     {
      "candidate": "wesco",
      "dim": "fiscal_restraint",
@@ -338,7 +328,7 @@
     {
      "candidate": "sup1-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -353,7 +343,7 @@
     {
      "candidate": "sup3-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -368,7 +358,7 @@
     {
      "candidate": "sup4-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -383,7 +373,7 @@
     {
      "candidate": "sup5-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -419,15 +409,8 @@
     {
      "candidate": "prosecutor-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
-     "source": ""
-    },
-    {
-     "candidate": "prosecutor-c",
-     "dim": "law_enforcement_support",
-     "stance": 0.6,
-     "why": "Running as Republican for prosecuting attorney in a county with strong GOP lean.",
      "source": ""
     }
    ],
@@ -463,7 +446,7 @@
     {
      "candidate": "auditor-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -478,7 +461,7 @@
     {
      "candidate": "recorder-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -493,16 +476,9 @@
     {
      "candidate": "sheriff-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
-    },
-    {
-     "candidate": "sheriff-c",
-     "dim": "law_enforcement_support",
-     "stance": 0.7,
-     "why": "Republican nominee for sheriff emphasizing continued enforcement and jail programming.",
-     "source": "https://www.elkhartgop.com/2026-elkhart-county-wide-republican-candidates/"
     }
    ],
    "quality": [],
@@ -515,7 +491,7 @@
     {
      "candidate": "assessor-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -544,8 +520,8 @@
     {
      "candidate": "green",
      "dim": "party_governance",
-     "stance": 0,
-     "why": "Independent candidate.",
+     "stance": -0.4,
+     "why": "Independent candidate (side A of party_governance includes preference for independent leadership).",
      "source": ""
     }
    ],
@@ -559,7 +535,7 @@
     {
      "candidate": "council4-c",
      "dim": "party_governance",
-     "stance": 0.5,
+     "stance": 1,
      "why": "Republican nominee, unopposed.",
      "source": ""
     }
@@ -596,28 +572,28 @@
     {
      "candidate": "adkins",
      "dim": "party_governance",
-     "stance": 0.6,
+     "stance": 1,
      "why": "Republican.",
      "source": ""
     },
     {
      "candidate": "beck",
      "dim": "party_governance",
-     "stance": 0.6,
+     "stance": 1,
      "why": "Republican.",
      "source": ""
     },
     {
      "candidate": "davis-k",
      "dim": "party_governance",
-     "stance": 0.6,
+     "stance": 1,
      "why": "Republican.",
      "source": ""
     },
     {
      "candidate": "turner",
      "dim": "party_governance",
-     "stance": -0.6,
+     "stance": -1,
      "why": "Democratic.",
      "source": ""
     }
@@ -686,14 +662,8 @@
     }
    ],
    "stances": [],
-   "quality": [
-    {
-     "type": "recruitment_vs_connection",
-     "detail": "Supporters (including some legislators and the Chief Justice) cite attorney shortages in rural areas; opponents argue judges should live in the communities they serve. The 'closest bordering county' calculation is defined by shortest distance from city/town limits to county line.",
-     "source": "https://ballotpedia.org/Indiana_Public_Question_2,_Residency_Requirements_for_City_and_Town_Court_Judges_Amendment_(2026)"
-    }
-   ],
-   "note": ""
+   "quality": [],
+   "note": "Supporters cite attorney shortages in rural areas that make it hard to find local candidates; opponents argue judges should live in the communities they serve. The 'closest bordering county' is calculated by shortest distance from city/town limits to the county line. Source: https://ballotpedia.org/Indiana_Public_Question_2,_Residency_Requirements_for_City_and_Town_Court_Judges_Amendment_(2026)"
   }
  ],
  "specific": [
@@ -792,8 +762,67 @@
   },
   {
    "rank": 3,
-   "id": "party_governance",
-   "why": "Efficiently sorts the many unopposed or lightly contested local Republican/Democratic races and the congressional/state house contests."
+   "id": "fiscal_restraint",
+   "why": "Useful across the congressional race, state house, and many local fiscal offices where party alone is otherwise the main signal."
+  }
+ ],
+ "revisions": [
+  {
+   "changes": [
+    {
+     "id": "specific",
+     "what": "Dropped both follow-up questions (q_school_board_focus and q_local_gov_priority). No sourced candidate records existed to map options to named candidate ids as required; plain numeric effects on race items violated the original rule."
+    },
+    {
+     "id": "prosecutor-c / law_enforcement_support",
+     "what": "Removed the stance. Reason relied solely on party label with no sourced record about detention, prosecution style, or law-enforcement policy."
+    },
+    {
+     "id": "wesco / criminal_justice_orientation",
+     "what": "Removed the stance. Cited pro-life, marriage, and limited-government positions that do not address detention, prosecution, or incarceration policy."
+    },
+    {
+     "id": "party_governance scores",
+     "what": "Standardized all Republican candidates (including unopposed and township board) to stance 1 and all Democratic candidates to stance -1. Previous variation (0.5 / 0.6 / -0.6) had no non-party justification."
+    },
+    {
+     "id": "green / party_governance",
+     "what": "Changed from 0 to -0.4 so the Independent label aligns with side A wording ('Prefer Democratic or independent leadership on balance')."
+    },
+    {
+     "id": "ballard / party_governance",
+     "what": "Changed from 0.3 to 0. Reason now rests only on the current Lincoln Party / independent ballot label, not prior Republican office."
+    },
+    {
+     "id": "party_governance",
+     "what": "Removed 'tiebreaker': true so the question carries full weight, consistent with its selection as a quick pick."
+    },
+    {
+     "id": "bayh / government_transparency",
+     "what": "Removed the stance. It restated the same independent-audit pledge already used for election_integrity_priority, causing double-counting of one fact."
+    },
+    {
+     "id": "experience_vs_newcomers",
+     "what": "Removed the unused belief question; it had no mappings to any ballot item."
+    },
+    {
+     "id": "education_local_control",
+     "what": "Removed the unused belief question; it had no mappings to any ballot item (including the nonpartisan school-board race)."
+    },
+    {
+     "id": "pq2 / quality",
+     "what": "Removed the 'recruitment_vs_connection' quality entry (it described policy arguments, not a drafting defect). Moved the substance into the item note."
+    },
+    {
+     "id": "quickPicks",
+     "what": "Replaced party_governance (now full-weight but previously a tiebreaker) with fiscal_restraint as rank 3."
+    },
+    {
+     "id": "sheriff-c / law_enforcement_support",
+     "what": "Removed the stance. The available campaign language was too thin to support a non-party mapping."
+    }
+   ],
+   "date": "2026-10-30"
   }
  ]
 }

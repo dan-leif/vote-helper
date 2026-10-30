@@ -35,6 +35,10 @@
      "l": "No view",
      "fx": {}
     }
+   ],
+   "by": [
+    "claude",
+    "grok"
    ]
   },
   {
@@ -139,6 +143,10 @@
      "l": "No view",
      "fx": {}
     }
+   ],
+   "by": [
+    "claude",
+    "grok"
    ]
   }
  ],
@@ -373,6 +381,20 @@
    "short": "Ballotpedia",
    "url": "https://ballotpedia.org/Mary_DeBoer",
    "type": "reference"
+  },
+  "model_grok": {
+   "title": "Grok's own logic for this ballot, written from the official ballot text",
+   "pub": "Grok",
+   "short": "Grok",
+   "url": "https://github.com/dan-leif/vote-helper/blob/main/prompts/replies/in-elkhart-2026-11-03/grok-logic.json",
+   "type": "model"
+  },
+  "model_grok_1": {
+   "title": "Cited by Grok (not checked by Vote Helper)",
+   "pub": "moalmahareeqlaw.com",
+   "short": "moalmahareeqlaw",
+   "url": "https://moalmahareeqlaw.com/blog/will-bail-in-indiana-change",
+   "type": "via-model"
   }
  },
  "contests": [
@@ -427,16 +449,48 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "voting",
-       "stance": 0.5,
+       "stance": 0.7,
        "t": "Backs the federal SAVE Act to verify voters' citizenship and color-coded state IDs so legal noncitizens can't use them to vote.",
        "s": [
         "icc_sos_oct"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": 0.5,
+         "t": "Backs the federal SAVE Act to verify voters' citizenship and color-coded state IDs so legal noncitizens can't use them to vote."
+        },
+        "grok": {
+         "stance": 0.8,
+         "t": "Emphasizes election integrity, fraud prevention in business filings/notaries, and conservative stewardship; supported by GOP establishment after ousting incumbent Morales.",
+         "question": "voting",
+         "source": "https://www.abc57.com/news/Secretary-of-State-race-heats-up-as-candidates-make-final-rounds-through-Hoosier-state"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -497,16 +551,48 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "voting",
-       "stance": -0.5,
+       "stance": -0.6,
        "t": "Wants more early-voting access to raise turnout.",
        "s": [
         "wthi_bayh"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": -0.5,
+         "t": "Wants more early-voting access to raise turnout."
+        },
+        "grok": {
+         "stance": -0.7,
+         "t": "Centers campaign on independent audit of the SOS office for alleged corruption/spending issues under prior Republican holder; frames office as needing outside accountability.",
+         "question": "voting",
+         "source": "https://indianacitizen.org/indiana-capital-chronicle-engling-bayh-duel-over-key-differences-in-secretary-of-state-race/"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "direct_dem",
@@ -561,6 +647,18 @@
         "icc_shillings"
        ],
        "c": "l"
+      },
+      {
+       "dim": "party",
+       "stance": 0,
+       "t": "Libertarian nominee.",
+       "s": [
+        "model_grok"
+       ],
+       "c": "m",
+       "by": [
+        "grok"
+       ]
       }
      ],
      "notes": [
@@ -596,6 +694,19 @@
         "ipm_ballard"
        ],
        "c": "m"
+      },
+      {
+       "dim": "party",
+       "stance": 0,
+       "t": "Appears on the ballot under the Lincoln Party label as an independent candidate.",
+       "s": [
+        "model_grok",
+        "wiki_sos"
+       ],
+       "c": "l",
+       "by": [
+        "grok"
+       ]
       }
      ],
      "notes": [
@@ -664,7 +775,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "savings",
@@ -707,7 +834,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -742,6 +885,18 @@
         "icc_comp"
        ],
        "c": "l"
+      },
+      {
+       "dim": "party",
+       "stance": 0,
+       "t": "Libertarian nominee.",
+       "s": [
+        "model_grok"
+       ],
+       "c": "m",
+       "by": [
+        "grok"
+       ]
       }
      ],
      "notes": [
@@ -787,7 +942,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": 1,
+         "t": "Republican."
+        },
+        "grok": {
+         "stance": 1,
+         "t": "Republican nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "tax_level",
@@ -841,7 +1012,23 @@
        "s": [
         "ballot"
        ],
-       "c": "h"
+       "c": "h",
+       "views": {
+        "claude": {
+         "stance": -1,
+         "t": "Democrat."
+        },
+        "grok": {
+         "stance": -1,
+         "t": "Democratic nominee.",
+         "question": "party",
+         "source": ""
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "tax_level",
@@ -1110,11 +1297,41 @@
     {
      "dim": "public_safety",
      "yes": 1,
-     "w": 3,
+     "w": 2.5,
      "why": "Yes widens pretrial detention, a tougher-enforcement step.",
      "s": [
       "icc_bail",
       "bp_pq1"
+     ],
+     "views": {
+      "claude": {
+       "yes": 1,
+       "why": "Yes widens pretrial detention, a tougher-enforcement step.",
+       "w": 3
+      },
+      "grok": {
+       "yes": 1,
+       "w": 2,
+       "why": "Moves system toward greater pretrial detention power based on risk prediction.",
+       "question": "criminal_justice_orientation"
+      }
+     },
+     "by": [
+      "claude",
+      "grok"
+     ]
+    },
+    {
+     "dim": "constitution",
+     "yes": 1,
+     "w": 2,
+     "why": "Amends long-standing (1851) constitutional right to bail.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
      ]
     }
    ],
@@ -1127,7 +1344,14 @@
       "bp_pq1",
       "nfts_pq1"
      ],
-     "c": "m"
+     "c": "m",
+     "by": [
+      "claude",
+      "grok"
+     ],
+     "alsoSaid": {
+      "grok": "Amendment is not limited to violent offenses; critics note it could apply to a wide range of charges (including some misdemeanors) if a judge finds the two conditions met. Companion statute (SEA 2) sets procedure but does not take effect until Jan 1 2027, creating a short window of constitutional authority without the new hearing rules."
+     }
     },
     {
      "type": "fiscal-uncertainty",
@@ -1138,6 +1362,19 @@
       "aclu_pq1"
      ],
      "c": "l"
+    },
+    {
+     "type": "implementation-timing",
+     "sev": "low",
+     "t": "If approved, the constitutional change takes effect at poll close on Election Day per Indiana precedent, while implementing statute is delayed.",
+     "s": [
+      "model_grok",
+      "model_grok_1"
+     ],
+     "c": "l",
+     "by": [
+      "grok"
+     ]
     }
    ],
    "conf": "m"
@@ -1210,7 +1447,22 @@
     "q_in_judge_residency"
    ],
    "qualityNote": "No drafting problems found.",
-   "conf": "m"
+   "conf": "m",
+   "tags": [
+    {
+     "dim": "constitution",
+     "yes": 1,
+     "w": 1,
+     "why": "Amends Article 6, Section 6 residency rule for a narrow class of judges.",
+     "s": [
+      "model_grok"
+     ],
+     "c": "m",
+     "by": [
+      "grok"
+     ]
+    }
+   ]
   }
  ]
 }

@@ -21,7 +21,10 @@
         "grok"
       ],
       "from": {
-        "grok": "government_size"
+        "grok": [
+          "government_size",
+          "fiscal_restraint"
+        ]
       }
     },
     {
@@ -133,7 +136,10 @@
         "grok"
       ],
       "from": {
-        "grok": "voting_id"
+        "grok": [
+          "voting_id",
+          "election_integrity_priority"
+        ]
       }
     },
     {
@@ -162,7 +168,17 @@
       "label": "Crime and justice",
       "q": "What's the better approach to public safety?",
       "a": "Prevention, treatment and criminal-justice reform",
-      "b": "More enforcement and tougher penalties"
+      "b": "More enforcement and tougher penalties",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": [
+          "pretrial_detention",
+          "criminal_justice_orientation"
+        ]
+      }
     },
     {
       "id": "social",
@@ -203,7 +219,10 @@
         "grok"
       ],
       "from": {
-        "grok": "party_lean"
+        "grok": [
+          "party_lean",
+          "party_governance"
+        ]
       }
     },
     {
@@ -233,6 +252,32 @@
       ],
       "from": {
         "grok": "housing_supply"
+      }
+    },
+    {
+      "id": "immigration",
+      "label": "Immigration",
+      "q": "How should the federal government handle immigration?",
+      "a": "Emphasize legal pathways and humane processing, with enforcement targeted at serious offenders",
+      "b": "Emphasize border control, broad enforcement and limits on illegal entry",
+      "by": [
+        "grok"
+      ],
+      "from": {
+        "grok": "border_immigration_enforcement"
+      }
+    },
+    {
+      "id": "constitution",
+      "label": "Changing the state constitution",
+      "q": "How readily should voters amend the state constitution?",
+      "a": "Very cautiously, only for clear and narrow needs",
+      "b": "Willingly, when lawmakers and voters see a practical problem",
+      "by": [
+        "grok"
+      ],
+      "from": {
+        "grok": "constitutional_caution"
       }
     }
   ]

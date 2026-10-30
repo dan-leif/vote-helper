@@ -89,7 +89,7 @@ A **claim** is `{ "t": "text", "s": ["sourceId", ...], "c": "h|m|l" }`.
 
 ## `data/values.json`
 - `author`: `{ id, label }` of whoever wrote Vote Helper's own logic (Claude).
-- `general[]`: `{ id, label, q, a, b, weight?, tiebreaker?, by?, from?, before? }`. `a` is side A (−2), `b` is side B (+2). `by` lists the models that asked it; `before` keeps the wording from before a merge reworded it.
+- `general[]`: `{ id, label, q, a, b, weight?, tiebreaker?, by?, from?, before? }`. `a` is side A (−2), `b` is side B (+2). `by` lists the models that asked it; `from` gives each model's own id for it (a list when the model named it differently on different ballots); `before` keeps the wording from before a merge reworded it.
 
 ## Part 2 questions (in election files and `state.json`)
 `{ id, for: [contestIds] | appliesToKind: "retention", q, options: [ { v, l, fx } ] }`. `fx` maps a contest id (or `"*<kind>"`, e.g. `"*retention"`) to a number −2…+2 (measures: + means Yes), or for races to `{ candidateId: number }`, or `"skip"`.

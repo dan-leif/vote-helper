@@ -37,7 +37,9 @@ Object.entries(M.questions).forEach(([from, q]) => {
   if (!d) throw new Error('Merge record maps ' + from + ' to unknown question ' + q.to);
   if (q.reword && !d.reworded) { d.before = { label: d.label, q: d.q, a: d.a, b: d.b }; Object.assign(d, q.reword); d.reworded = true; log.questions.push('reworded ' + q.to); }
   d.by = Array.from(new Set([...(d.by || ['claude']), model]));
-  d.from = Object.assign(d.from || {}, { [model]: from });
+  // A model can name the same question differently on different ballots; keep every name.
+  const prev = (d.from || {})[model], names = Array.from(new Set([].concat(prev || [], from)));
+  d.from = Object.assign(d.from || {}, { [model]: names.length === 1 ? names[0] : names });
 });
 fs.writeFileSync(valuesPath, JSON.stringify(values, null, 2));
 
