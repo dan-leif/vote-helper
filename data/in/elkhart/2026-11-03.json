@@ -347,6 +347,76 @@
    "short": "Elkhart Truth",
    "url": "https://news.yahoo.com/familiar-faces-newcomers-round-school-170900965.html",
    "type": "news"
+  },
+  "yahoo_ccs_forum22": {
+   "title": "Concord, Elkhart school board candidates open up (Oct. 21, 2022 League of Women Voters forum)",
+   "pub": "Elkhart Truth (via Yahoo News)",
+   "short": "Elkhart Truth",
+   "url": "https://www.yahoo.com/news/concord-elkhart-school-board-candidates-152300295.html",
+   "type": "news"
+  },
+  "wsbt_ccs22": {
+   "title": "Technical issue in Concord School Board election may have affected results",
+   "pub": "WSBT",
+   "short": "WSBT",
+   "url": "https://wsbt.com/news/local/voting-program-glitch-leaves-concord-school-board-election-results-in-the-air",
+   "type": "news"
+  },
+  "gn_clerk": {
+   "title": "Clerk's race faces competition",
+   "pub": "Goshen News",
+   "short": "Goshen News",
+   "url": "https://www.goshennews.com/news/clerks-race-faces-competition/article_b8e84e0e-d816-4f6f-be6c-cf9baa3942fe.html",
+   "type": "news"
+  },
+  "graham_site": {
+   "title": "Megan Graham for Elkhart County Clerk",
+   "pub": "Graham campaign",
+   "short": "Graham campaign",
+   "url": "https://electmegangraham.com/",
+   "type": "campaign"
+  },
+  "mww_spelbring": {
+   "title": "Ralph Eugene Spelbring",
+   "pub": "Marquis Who's Who",
+   "short": "Who's Who",
+   "url": "https://milestones.marquiswhoswho.com/milestone/ralph-eugene-spelbring/",
+   "type": "reference"
+  },
+  "ballotbrief": {
+   "title": "Elkhart County Sample Ballot & Voter Guide 2026",
+   "pub": "The Ballot Brief",
+   "short": "Ballot Brief",
+   "url": "https://theballotbrief.com/state/indiana/elkhart-county",
+   "type": "reference"
+  },
+  "gn_twpboard": {
+   "title": "PRIMARY 2026: Concord Township Board",
+   "pub": "Goshen News (via Yahoo News)",
+   "short": "Goshen News",
+   "url": "https://www.yahoo.com/news/articles/primary-2026-concord-township-board-151600515.html",
+   "type": "news"
+  },
+  "gn_twp_results": {
+   "title": "Primary election by the numbers",
+   "pub": "Goshen News (via Yahoo News)",
+   "short": "Goshen News",
+   "url": "https://www.yahoo.com/news/articles/primary-election-numbers-022200844.html",
+   "type": "news"
+  },
+  "bp_adkins22": {
+   "title": "Jerry P. Adkins (Concord Township Board Member, candidate 2022)",
+   "pub": "Ballotpedia",
+   "short": "Ballotpedia",
+   "url": "https://ballotpedia.org/Jerry_P._Adkins_(Concord_Township_Board_Member,_Elkhart_County,_Indiana,_candidate_2022)",
+   "type": "reference"
+  },
+  "bp_beck22": {
+   "title": "James D. Beck (Concord Township Board Member, candidate 2022)",
+   "pub": "Ballotpedia",
+   "short": "Ballotpedia",
+   "url": "https://ballotpedia.org/James_D._Beck_(Concord_Township_Board_Member,_Elkhart_County,_Indiana,_candidate_2022)",
+   "type": "reference"
   }
  },
  "contests": [
@@ -839,6 +909,16 @@
        ],
        "c": "m"
       }
+     ],
+     "notes": [
+      {
+       "t": "Wants to restore the office to 'trusted, professional and accountable' through clearer communication, standardized processes, updated technology, staff training and public performance reporting. Beat a longtime clerk's-office employee in the May primary.",
+       "s": [
+        "gn_clerk",
+        "wsbt_clerk"
+       ],
+       "c": "m"
+      }
      ]
     },
     {
@@ -854,26 +934,37 @@
         "ballot"
        ],
        "c": "h"
-      }
-     ],
-     "notes": [
+      },
       {
-       "t": "Ran unopposed in the Democratic primary. No platform was found.",
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Hasn't held elected office; won the Democratic nomination after her primary opponent dropped out.",
        "s": [
         "wsbt_clerk"
        ],
        "c": "m"
       }
+     ],
+     "notes": [
+      {
+       "t": "Runs on 'secure elections, reliable records, professional service': review office workflows and service breakdowns, improve election information, tighten records procedures, and start a 'Citizens First' feedback process with published service standards in her first 100 days.",
+       "s": [
+        "graham_site"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "A WSBT primary preview described her as a captain in the Elkhart County Sheriff's Office; her campaign site doesn't list her background.",
+       "s": [
+        "wsbt_clerk",
+        "graham_site"
+       ],
+       "c": "l"
+      }
      ]
     }
    ],
-   "flags": [
-    {
-     "t": "No stated plans from either candidate were found.",
-     "c": "l"
-    }
-   ],
-   "conf": "l"
+   "conf": "m"
   },
   {
    "id": "auditor",
@@ -1091,23 +1182,42 @@
       {
        "dim": "outsider",
        "stance": 0.5,
-       "t": "Hasn't held county office; ran for county council in 2024 and Congress in 2020 as a Democrat.",
+       "t": "Hasn't held county office; a frequent Democratic candidate for Congress (since 1986) and county council (2012, 2018, 2024).",
        "s": [
-        "bp_spelbring"
+        "bp_spelbring",
+        "mww_spelbring"
        ],
-       "c": "l"
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Retired chemist (Whitehall Laboratories, Apex Pharmaceutical) and former science teacher; DePauw chemistry graduate. Lives in Elkhart.",
+       "s": [
+        "mww_spelbring"
+       ],
+       "c": "m"
       }
      ]
     },
     {
      "id": "green",
      "name": "Amy Green",
-     "party": "I"
+     "party": "I",
+     "notes": [
+      {
+       "t": "Running as an independent. No campaign website, biography or public statements were found.",
+       "s": [
+        "ballotbrief"
+       ],
+       "c": "m"
+      }
+     ]
     }
    ],
    "flags": [
     {
-     "t": "No platforms were found for any of the three candidates.",
+     "t": "None of the three candidates has published positions on county issues that could be found.",
      "c": "l"
     }
    ],
@@ -1214,13 +1324,23 @@
         "ballot"
        ],
        "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Challenger; no prior office found.",
+       "s": [
+        "ec_trustee",
+        "ballot"
+       ],
+       "c": "l"
       }
      ]
     }
    ],
    "flags": [
     {
-     "t": "No information was found on Hines or on the candidates' plans.",
+     "t": "Neither candidate has published plans that could be found; nothing is known about Hines beyond her name and party.",
      "c": "l"
     }
    ],
@@ -1239,6 +1359,16 @@
     ]
    },
    "instructions": "Vote for up to three. The top three win.",
+   "about": [
+    {
+     "t": "The three-member board approves the trustee's budget. Adkins, Beck and Davis won the four-way Republican primary over former board member Kim Mansell; Turner was unopposed for the Democrats.",
+     "s": [
+      "gn_twpboard",
+      "gn_twp_results"
+     ],
+     "c": "m"
+    }
+   ],
    "candidates": [
     {
      "id": "adkins",
@@ -1253,6 +1383,15 @@
         "ballot"
        ],
        "c": "h"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Also ran for this board in 2022.",
+       "s": [
+        "bp_adkins22"
+       ],
+       "c": "m"
       }
      ]
     },
@@ -1269,6 +1408,15 @@
         "ballot"
        ],
        "c": "h"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Also ran for this board in 2022.",
+       "s": [
+        "bp_beck22"
+       ],
+       "c": "m"
       }
      ]
     },
@@ -1307,7 +1455,7 @@
    ],
    "flags": [
     {
-     "t": "No information was found on these candidates beyond party.",
+     "t": "Profiles of Adkins and Davis ran in the Goshen News print primary section (April 18) but couldn't be found online; nothing was found on Beck's or Turner's views.",
      "c": "l"
     }
    ],
@@ -1329,12 +1477,19 @@
    "instructions": "Check your ballot for how many to pick. Both District 1 incumbents' terms end this year, so this is likely two seats.",
    "about": [
     {
-     "t": "Davis and Towner hold the two District 1 seats, both ending in 2026. In 2022 they kept them against challenger Mike Malooley, who then won another board seat.",
+     "t": "Concord board members must live in a district, but everyone in the school district votes on every seat. In 2022 the ballot allowed up to three picks, at most one from District 2, which means two District 1 seats.",
+     "s": [
+      "wsbt_ccs22"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Davis and Towner hold the District 1 seats, both ending in 2026. The same three candidates faced off in 2022, when a vote-counting glitch delayed the final result.",
      "s": [
       "ccs_davis",
       "ccs_towner",
       "yahoo_ccs",
-      "ccs_malooley"
+      "wsbt_ccs22"
      ],
      "c": "l"
     }
@@ -1361,6 +1516,13 @@
         "ccs_davis"
        ],
        "c": "m"
+      },
+      {
+       "t": "At a 2022 League of Women Voters forum: 'I'm an accountant. I feel it gives me a solid background for understanding the finances and fiscal responsibilities.'",
+       "s": [
+        "yahoo_ccs_forum22"
+       ],
+       "c": "m"
       }
      ]
     },
@@ -1371,18 +1533,25 @@
       {
        "dim": "outsider",
        "stance": -0.5,
-       "t": "Current board member, elected in 2022.",
+       "t": "Concord's site lists him as a board member first elected in 2022.",
        "s": [
         "ccs_malooley"
        ],
-       "c": "m"
+       "c": "l"
       }
      ],
      "notes": [
       {
-       "t": "Training coordinator for Elkhart County Court Services (juvenile detention and probation); 15+ years in law enforcement and corrections.",
+       "t": "Training coordinator for Elkhart County Court Services (juvenile detention and probation); 15+ years in law enforcement and corrections; church deacon and youth volunteer.",
        "s": [
         "ccs_malooley"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "At the 2022 forum he stressed board accountability and showing up regularly: 'We're not just there to read objectionable passages in school books.'",
+       "s": [
+        "yahoo_ccs_forum22"
        ],
        "c": "m"
       }
@@ -1407,6 +1576,13 @@
        "t": "Bookkeeper; former South Side Elementary PTO president and substitute in Concord schools.",
        "s": [
         "ccs_towner"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "At the 2022 forum: students should be 'challenged' and leave with problem-solving and teamwork skills, 'not just academic masters'.",
+       "s": [
+        "yahoo_ccs_forum22"
        ],
        "c": "m"
       }
