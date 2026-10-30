@@ -1,0 +1,759 @@
+I am Grok 4.5, built by xAI. I used web search extensively for this answer. Today's date is 2026-10-30.
+Approach note: Belief questions are framed as neutral values trade-offs that map to real divides on this ballot (pretrial detention power, judicial localism, fiscal priorities, election administration, criminal-justice orientation, experience vs. change). Mappings rely only on sourced records or clear party signals where no better data exists; unknowns are omitted. Judicial retentions show no specific concerns in searches (bar surveys support all). Quality notes are limited to documented drafting or process issues. Quick picks prioritize the two measures plus the highest-leverage contested races.
+```json
+{
+  "voteHelperLogic": 1,
+  "model": {
+    "name": "Grok",
+    "version": "4.5",
+    "maker": "xAI",
+    "webSearch": true,
+    "date": "2026-10-30"
+  },
+  "general": [
+    {
+      "id": "pretrial_detention",
+      "label": "Pretrial detention vs. release",
+      "q": "When someone is charged with a serious crime (but not yet convicted), should judges have broader power to keep them in jail if the evidence looks strong and the person appears to pose a safety risk to others?",
+      "a": "Keep the constitutional right to bail strong; expand detention authority only with extreme caution because people are presumed innocent.",
+      "b": "Give judges clearer tools to detain high-risk defendants before trial when evidence is strong and no conditions can reasonably protect the community.",
+      "tiebreaker": false
+    },
+    {
+      "id": "local_judicial_residency",
+      "label": "Local residency for judges",
+      "q": "Should city and town court judges be required to live inside the municipality they serve, or should the residency rule be relaxed so more qualified lawyers can serve (especially in smaller communities)?",
+      "a": "Judges should live in the community they serve so they understand local people and conditions.",
+      "b": "Relax residency rules so rural and small communities can recruit from a wider pool of qualified attorneys.",
+      "tiebreaker": false
+    },
+    {
+      "id": "election_integrity_priority",
+      "label": "Election administration emphasis",
+      "q": "In running elections and business filings, which should the Secretary of State emphasize more?",
+      "a": "Broad access, participation, and independent oversight of the office itself.",
+      "b": "Strict integrity measures, fraud prevention in filings and voting, and conservative stewardship of the office.",
+      "tiebreaker": false
+    },
+    {
+      "id": "fiscal_restraint",
+      "label": "Taxes and government size",
+      "q": "In general, when state or local government faces budget pressure, which direction do you prefer?",
+      "a": "Maintain or expand services even if it means higher taxes or fees.",
+      "b": "Keep taxes and spending lower, even if some services are reduced or delayed.",
+      "tiebreaker": false
+    },
+    {
+      "id": "criminal_justice_orientation",
+      "label": "Approach to crime and prosecution",
+      "q": "Overall, should the justice system lean more toward longer detention and stricter enforcement, or toward alternatives that reduce incarceration where possible?",
+      "a": "Favor alternatives, treatment, and lower incarceration when public safety allows.",
+      "b": "Favor stronger detention tools, prosecution, and accountability for those who pose risks.",
+      "tiebreaker": false
+    },
+    {
+      "id": "party_governance",
+      "label": "Party control of government",
+      "q": "All else equal, do you generally prefer Republican or Democratic leadership in state and county offices?",
+      "a": "Prefer Democratic or independent leadership on balance.",
+      "b": "Prefer Republican leadership on balance.",
+      "tiebreaker": true
+    },
+    {
+      "id": "experience_vs_newcomers",
+      "label": "Experience vs. change",
+      "q": "In filling offices, how much weight do you give to prior experience in government or related fields versus bringing in new people?",
+      "a": "Strongly prefer experienced officeholders and continuity.",
+      "b": "Strongly prefer new voices and outsiders even if less experienced.",
+      "tiebreaker": true
+    },
+    {
+      "id": "border_immigration_enforcement",
+      "label": "Immigration and border policy",
+      "q": "How should the federal government handle border security and immigration enforcement?",
+      "a": "Emphasize pathways, humane processing, and targeted enforcement over broad crackdowns.",
+      "b": "Emphasize stronger border control, enforcement, and limits on illegal entry.",
+      "tiebreaker": false
+    },
+    {
+      "id": "economic_intervention",
+      "label": "Government role in local economy",
+      "q": "When local industries face pressure (tariffs, regulation, competition), what role should government play?",
+      "a": "More active support, targeted help, or protection for local jobs and industries.",
+      "b": "Lower taxes, less regulation, and let markets and private investment drive outcomes.",
+      "tiebreaker": false
+    },
+    {
+      "id": "education_local_control",
+      "label": "School board priorities",
+      "q": "In local school boards, which priority matters more to you?",
+      "a": "Curriculum, inclusion, and student support programs.",
+      "b": "Core academics, parental rights, and fiscal discipline in the district.",
+      "tiebreaker": false
+    },
+    {
+      "id": "law_enforcement_support",
+      "label": "Support for local law enforcement",
+      "q": "How should county government approach funding and policy for the sheriff and prosecutor?",
+      "a": "Balance enforcement with community programs and oversight of police power.",
+      "b": "Prioritize strong funding, tools, and backing for law enforcement and prosecution.",
+      "tiebreaker": false
+    },
+    {
+      "id": "constitutional_caution",
+      "label": "Amending the state constitution",
+      "q": "In general, how cautious should voters be about amending the Indiana Constitution?",
+      "a": "Very cautious; the document should change only for clear, narrow needs.",
+      "b": "Willing to update the constitution when the legislature and voters see a practical problem.",
+      "tiebreaker": false
+    },
+    {
+      "id": "government_transparency",
+      "label": "Office accountability",
+      "q": "When an elected office has faced ethics or spending questions, what is the better first step?",
+      "a": "Independent outside audit and structural reform of the office.",
+      "b": "Internal investigation by existing state mechanisms plus tighter day-to-day management.",
+      "tiebreaker": false
+    }
+  ],
+  "items": [
+    {
+      "id": "sos",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "engling",
+          "dim": "election_integrity_priority",
+          "stance": 0.8,
+          "why": "Emphasizes election integrity, fraud prevention in business filings/notaries, and conservative stewardship; supported by GOP establishment after ousting incumbent Morales.",
+          "source": "https://www.abc57.com/news/Secretary-of-State-race-heats-up-as-candidates-make-final-rounds-through-Hoosier-state"
+        },
+        {
+          "candidate": "engling",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Republican nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "bayh",
+          "dim": "election_integrity_priority",
+          "stance": -0.7,
+          "why": "Centers campaign on independent audit of the SOS office for alleged corruption/spending issues under prior Republican holder; frames office as needing outside accountability.",
+          "source": "https://indianacitizen.org/indiana-capital-chronicle-engling-bayh-duel-over-key-differences-in-secretary-of-state-race/"
+        },
+        {
+          "candidate": "bayh",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "bayh",
+          "dim": "government_transparency",
+          "stance": -0.8,
+          "why": "Pledges independent external audit as first action.",
+          "source": "https://indianacitizen.org/indiana-capital-chronicle-engling-bayh-duel-over-key-differences-in-secretary-of-state-race/"
+        },
+        {
+          "candidate": "shillings",
+          "dim": "party_governance",
+          "stance": 0,
+          "why": "Libertarian nominee; limited public record on specific SOS priorities found.",
+          "source": ""
+        },
+        {
+          "candidate": "ballard",
+          "dim": "party_governance",
+          "stance": 0.3,
+          "why": "Running under Lincoln Party label as independent; former Republican mayor of Indianapolis.",
+          "source": "https://en.wikipedia.org/wiki/2026_Indiana_Secretary_of_State_election"
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "comptroller",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "nieshalla",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Republican nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "bailey",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "schick",
+          "dim": "party_governance",
+          "stance": 0,
+          "why": "Libertarian nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Limited public record on specific fiscal stances beyond party found in searches."
+    },
+    {
+      "id": "treasurer",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "elliott",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Republican nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "kebe",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Limited specific policy record found beyond party."
+    },
+    {
+      "id": "cd2",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "yakym",
+          "dim": "fiscal_restraint",
+          "stance": 0.8,
+          "why": "Supports tax cuts, fiscal restraint, permanent extension of 2017 cuts; votes with Republican majority ~97%.",
+          "source": "https://www.predictionedge.com/elections/profile/rudy-yakym/"
+        },
+        {
+          "candidate": "yakym",
+          "dim": "border_immigration_enforcement",
+          "stance": 0.9,
+          "why": "Emphasizes border security, enforcement, Laken Riley Act support, criticism of open-border approaches.",
+          "source": "https://www.predictionedge.com/elections/profile/rudy-yakym/"
+        },
+        {
+          "candidate": "yakym",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Incumbent Republican.",
+          "source": ""
+        },
+        {
+          "candidate": "decio",
+          "dim": "fiscal_restraint",
+          "stance": -0.6,
+          "why": "Supports tax cuts for working families/small business but higher rates on top 1%; prioritizes affordability and local industry protection against tariffs.",
+          "source": "https://www.southbendtribune.com/story/news/politics/elections/2026/10/02/2nd-district-congressional-candidates-tell-where-they-stand-on-issues/92026173007/"
+        },
+        {
+          "candidate": "decio",
+          "dim": "border_immigration_enforcement",
+          "stance": -0.7,
+          "why": "Supports functional visa system, pathway to citizenship for tax-paying contributors without felonies; opposes aggressive deportation of non-criminal immigrants.",
+          "source": "https://decioforcongress.com/faq/"
+        },
+        {
+          "candidate": "decio",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "decio",
+          "dim": "economic_intervention",
+          "stance": -0.5,
+          "why": "Emphasizes protecting local industry from tariffs and federal policies that hurt regional jobs.",
+          "source": "https://ballotpedia.org/Jamee_Decio"
+        },
+        {
+          "candidate": "henry",
+          "dim": "party_governance",
+          "stance": 0,
+          "why": "Libertarian nominee; limited specific positions located.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": ""
+    },
+    {
+      "id": "hd21",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "wesco",
+          "dim": "criminal_justice_orientation",
+          "stance": 0.7,
+          "why": "Long-time conservative Republican with strong pro-life, traditional marriage, and limited-government record; supported election-integrity and enforcement-related measures.",
+          "source": "https://en.wikipedia.org/wiki/Timothy_Wesco"
+        },
+        {
+          "candidate": "wesco",
+          "dim": "fiscal_restraint",
+          "stance": 0.8,
+          "why": "Consistent low-tax, limited-government platform.",
+          "source": "https://ballotpedia.org/Timothy_Wesco"
+        },
+        {
+          "candidate": "wesco",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Incumbent Republican since 2010.",
+          "source": ""
+        },
+        {
+          "candidate": "burkley",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Limited public policy detail located for Burkley beyond party."
+    },
+    {
+      "id": "sup1",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "sup1-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed; no specific stance data located."
+    },
+    {
+      "id": "sup3",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "sup3-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed; no specific stance data located."
+    },
+    {
+      "id": "sup4",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "sup4-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed; no specific stance data located."
+    },
+    {
+      "id": "sup5",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "sup5-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed; no specific stance data located."
+    },
+    {
+      "id": "ret-coa4",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "None found. Indiana State Bar Association survey showed 89.5% support for retention of Mary A. DeBoer. No specific controversies located in searches."
+    },
+    {
+      "id": "ret-coa5",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "None found. Indiana State Bar Association survey showed 86.5% support for retention of Paul A. Felix. No specific controversies located in searches."
+    },
+    {
+      "id": "ret-tax",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "None found. Indiana State Bar Association survey showed 88% support for retention of Justin L. McAdam. No specific controversies located in searches."
+    },
+    {
+      "id": "prosecutor",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "prosecutor-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        },
+        {
+          "candidate": "prosecutor-c",
+          "dim": "law_enforcement_support",
+          "stance": 0.6,
+          "why": "Running as Republican for prosecuting attorney in a county with strong GOP lean.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed; limited individual record located."
+    },
+    {
+      "id": "clerk",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "pickens",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Republican nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "graham",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Limited specific policy positions located beyond party."
+    },
+    {
+      "id": "auditor",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "auditor-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed."
+    },
+    {
+      "id": "recorder",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "recorder-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed."
+    },
+    {
+      "id": "sheriff",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "sheriff-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        },
+        {
+          "candidate": "sheriff-c",
+          "dim": "law_enforcement_support",
+          "stance": 0.7,
+          "why": "Republican nominee for sheriff emphasizing continued enforcement and jail programming.",
+          "source": "https://www.elkhartgop.com/2026-elkhart-county-wide-republican-candidates/"
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed."
+    },
+    {
+      "id": "assessor",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "assessor-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed."
+    },
+    {
+      "id": "comm1",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "barnes",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Republican nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "spelbring",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "green",
+          "dim": "party_governance",
+          "stance": 0,
+          "why": "Independent candidate.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Limited individual policy records located beyond party/affiliation."
+    },
+    {
+      "id": "council4",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "council4-c",
+          "dim": "party_governance",
+          "stance": 0.5,
+          "why": "Republican nominee, unopposed.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Unopposed."
+    },
+    {
+      "id": "trustee",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "weeber",
+          "dim": "party_governance",
+          "stance": 1,
+          "why": "Republican nominee.",
+          "source": ""
+        },
+        {
+          "candidate": "hines",
+          "dim": "party_governance",
+          "stance": -1,
+          "why": "Democratic nominee.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Limited specific policy positions located."
+    },
+    {
+      "id": "twpboard",
+      "tags": [],
+      "stances": [
+        {
+          "candidate": "adkins",
+          "dim": "party_governance",
+          "stance": 0.6,
+          "why": "Republican.",
+          "source": ""
+        },
+        {
+          "candidate": "beck",
+          "dim": "party_governance",
+          "stance": 0.6,
+          "why": "Republican.",
+          "source": ""
+        },
+        {
+          "candidate": "davis-k",
+          "dim": "party_governance",
+          "stance": 0.6,
+          "why": "Republican.",
+          "source": ""
+        },
+        {
+          "candidate": "turner",
+          "dim": "party_governance",
+          "stance": -0.6,
+          "why": "Democratic.",
+          "source": ""
+        }
+      ],
+      "quality": [],
+      "note": "Vote for up to three; limited individual records beyond party."
+    },
+    {
+      "id": "concord-sb1",
+      "tags": [],
+      "stances": [],
+      "quality": [],
+      "note": "Nonpartisan school board race; limited specific candidate position data located in searches. Voters should review local statements if available."
+    },
+    {
+      "id": "pq1",
+      "tags": [
+        {
+          "dim": "pretrial_detention",
+          "yes": 1,
+          "w": 3,
+          "why": "Yes expands constitutional authority to deny bail beyond murder/treason when proof is evident/presumption strong and state proves by clear-and-convincing evidence that no conditions protect safety."
+        },
+        {
+          "dim": "criminal_justice_orientation",
+          "yes": 1,
+          "w": 2,
+          "why": "Moves system toward greater pretrial detention power based on risk prediction."
+        },
+        {
+          "dim": "constitutional_caution",
+          "yes": 1,
+          "w": 2,
+          "why": "Amends long-standing (1851) constitutional right to bail."
+        }
+      ],
+      "stances": [],
+      "quality": [
+        {
+          "type": "scope_ambiguity",
+          "detail": "Amendment is not limited to violent offenses; critics note it could apply to a wide range of charges (including some misdemeanors) if a judge finds the two conditions met. Companion statute (SEA 2) sets procedure but does not take effect until Jan 1 2027, creating a short window of constitutional authority without the new hearing rules.",
+          "source": "https://www.aclu-in.org/press-releases/public-question-1-puts-indianas-constitutional-right-to-bail-before-voters/"
+        },
+        {
+          "type": "process_timing",
+          "detail": "If approved, the constitutional change takes effect at poll close on Election Day per Indiana precedent, while implementing statute is delayed.",
+          "source": "https://moalmahareeqlaw.com/blog/will-bail-in-indiana-change"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "id": "pq2",
+      "tags": [
+        {
+          "dim": "local_judicial_residency",
+          "yes": 1,
+          "w": 3,
+          "why": "Yes expands where city/town court judges may reside (county of the court or closest bordering Indiana county) instead of requiring residence inside the municipality."
+        },
+        {
+          "dim": "constitutional_caution",
+          "yes": 1,
+          "w": 1,
+          "why": "Amends Article 6, Section 6 residency rule for a narrow class of judges."
+        }
+      ],
+      "stances": [],
+      "quality": [
+        {
+          "type": "recruitment_vs_connection",
+          "detail": "Supporters (including some legislators and the Chief Justice) cite attorney shortages in rural areas; opponents argue judges should live in the communities they serve. The 'closest bordering county' calculation is defined by shortest distance from city/town limits to county line.",
+          "source": "https://ballotpedia.org/Indiana_Public_Question_2,_Residency_Requirements_for_City_and_Town_Court_Judges_Amendment_(2026)"
+        }
+      ],
+      "note": ""
+    }
+  ],
+  "specific": [
+    {
+      "id": "q_school_board_focus",
+      "for": ["concord-sb1"],
+      "q": "For Concord Community Schools board, which focus matters most to you right now?",
+      "options": [
+        {
+          "l": "Stronger academic standards and core curriculum focus",
+          "fx": {"concord-sb1": 1}
+        },
+        {
+          "l": "More support services, inclusion, and student well-being programs",
+          "fx": {"concord-sb1": -1}
+        },
+        {
+          "l": "Fiscal restraint and lower property-tax pressure on the district",
+          "fx": {"concord-sb1": 1}
+        },
+        {
+          "l": "No strong preference / need more candidate info",
+          "fx": {"concord-sb1": 0}
+        }
+      ]
+    },
+    {
+      "id": "q_local_gov_priority",
+      "for": ["comm1", "council4", "trustee", "twpboard"],
+      "q": "For county and township offices, what is your top local priority?",
+      "options": [
+        {
+          "l": "Lower taxes and tighter spending control",
+          "fx": {"comm1": 1, "council4": 1, "trustee": 1, "twpboard": 1}
+        },
+        {
+          "l": "More investment in services, infrastructure, or community programs",
+          "fx": {"comm1": -1, "council4": -1, "trustee": -1, "twpboard": -1}
+        },
+        {
+          "l": "Stronger public-safety and law-enforcement support",
+          "fx": {"comm1": 1, "council4": 1, "trustee": 0, "twpboard": 0}
+        },
+        {
+          "l": "No strong preference among these",
+          "fx": {"comm1": 0, "council4": 0, "trustee": 0, "twpboard": 0}
+        }
+      ]
+    }
+  ],
+  "quickPicks": [
+    {
+      "rank": 1,
+      "id": "pretrial_detention",
+      "why": "Directly decides Public Question 1, the highest-stakes statewide measure on the ballot."
+    },
+    {
+      "rank": 2,
+      "id": "election_integrity_priority",
+      "why": "Best single sorter for the competitive Secretary of State race and related statewide offices."
+    },
+    {
+      "rank": 3,
+      "id": "party_governance",
+      "why": "Efficiently sorts the many unopposed or lightly contested local Republican/Democratic races and the congressional/state house contests."
+    }
+  ]
+}
+```

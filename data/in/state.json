@@ -60,7 +60,9 @@
  "parties": {
   "D": "Democratic",
   "R": "Republican",
-  "L": "Libertarian"
+  "L": "Libertarian",
+  "Lincoln": "Lincoln Party",
+  "I": "Independent"
  },
  "endorsers": [],
  "lookup": {

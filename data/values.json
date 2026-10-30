@@ -21,13 +21,16 @@
         "grok"
       ],
       "from": {
-        "grok": "government_size"
+        "grok": [
+          "government_size",
+          "fiscal_restraint"
+        ]
       }
     },
     {
       "id": "tax_wealthy",
       "label": "Taxing high earners and the very wealthy",
-      "q": "How should California treat its highest earners and wealthiest residents?",
+      "q": "How should your state treat its highest earners and wealthiest residents?",
       "a": "They should pay a larger share, including new or higher taxes",
       "b": "Don't single them out; high taxes on them drive people and jobs away",
       "by": [
@@ -125,7 +128,7 @@
     {
       "id": "voting",
       "label": "Voting rules",
-      "q": "How should California balance easy voting and verification?",
+      "q": "How should your state balance easy voting and verification?",
       "a": "Make voting as easy as possible, including mail ballots for everyone",
       "b": "Require ID and stricter verification, even if it adds steps",
       "by": [
@@ -133,7 +136,10 @@
         "grok"
       ],
       "from": {
-        "grok": "voting_id"
+        "grok": [
+          "voting_id",
+          "election_integrity_priority"
+        ]
       }
     },
     {
@@ -162,7 +168,17 @@
       "label": "Crime and justice",
       "q": "What's the better approach to public safety?",
       "a": "Prevention, treatment and criminal-justice reform",
-      "b": "More enforcement and tougher penalties"
+      "b": "More enforcement and tougher penalties",
+      "by": [
+        "claude",
+        "grok"
+      ],
+      "from": {
+        "grok": [
+          "pretrial_detention",
+          "criminal_justice_orientation"
+        ]
+      }
     },
     {
       "id": "social",
@@ -174,7 +190,7 @@
     {
       "id": "school_choice",
       "label": "School choice",
-      "q": "How should California approach charter schools and school choice?",
+      "q": "How should your state approach charter schools and school choice?",
       "a": "Focus on traditional public schools",
       "b": "Expand charters and family choice"
     },
@@ -182,8 +198,15 @@
       "id": "federal",
       "label": "Your state and the federal government",
       "q": "How should your state's officials deal with the current federal administration?",
-      "a": "Challenge federal policies in court when they hurt California",
+      "a": "Challenge federal policies in court when they hurt your state",
       "b": "Cooperate more and sue less"
+    },
+    {
+      "id": "abortion",
+      "label": "Abortion law",
+      "q": "How should state law treat abortion?",
+      "a": "Protect access to abortion",
+      "b": "Restrict abortion, with few or no exceptions"
     },
     {
       "id": "party",
@@ -196,7 +219,10 @@
         "grok"
       ],
       "from": {
-        "grok": "party_lean"
+        "grok": [
+          "party_lean",
+          "party_governance"
+        ]
       }
     },
     {
@@ -226,6 +252,32 @@
       ],
       "from": {
         "grok": "housing_supply"
+      }
+    },
+    {
+      "id": "immigration",
+      "label": "Immigration",
+      "q": "How should the federal government handle immigration?",
+      "a": "Emphasize legal pathways and humane processing, with enforcement targeted at serious offenders",
+      "b": "Emphasize border control, broad enforcement and limits on illegal entry",
+      "by": [
+        "grok"
+      ],
+      "from": {
+        "grok": "border_immigration_enforcement"
+      }
+    },
+    {
+      "id": "constitution",
+      "label": "Changing the state constitution",
+      "q": "How readily should voters amend the state constitution?",
+      "a": "Very cautiously, only for clear and narrow needs",
+      "b": "Willingly, when lawmakers and voters see a practical problem",
+      "by": [
+        "grok"
+      ],
+      "from": {
+        "grok": "constitutional_caution"
       }
     }
   ]

@@ -61,6 +61,22 @@ ok(read('data/values.json').general.some(d => d.id === 'housing_approach'), 'mer
 const merged = E.mergeLogic({ items: [{ id: 'p1', tags: [] }, { id: 'p2', tags: [] }] }, { items: [{ id: 'p2', tags: [{ dim: 'x', yes: 1, w: 1 }] }], changes: [{ id: 'p2' }] });
 ok(merged.items.length === 2 && merged.items[1].tags.length === 1 && merged.revisions.length === 1, 'mergeLogic replaces items by id and logs changes');
 
+// Indiana: Goshen (Elkhart County, Concord 33).
+{
+  const ist = read('data/in/state.json'), isw = read('data/in/statewide/2026-11-03.json'), iek = read('data/in/elkhart/2026-11-03.json');
+  const iv = { general: values.general, specific: [...ist.questions, ...isw.questions, ...iek.questions] };
+  const ic = [...isw.contests, ...iek.contests];
+  const inId = id => ic.find(c => c.id === id);
+  const rep = { general: { party: { pos: 2, imp: 2 } }, specific: {} };
+  const dem = { general: { party: { pos: -2, imp: 2 } }, specific: {} };
+  ok(E.score(inId('cd2'), rep, iv).pick === 'yakym' && E.score(inId('cd2'), dem, iv).pick === 'decio', 'IN: party lean picks the U.S. House candidate');
+  ok(E.score(inId('pq1'), { general: { public_safety: { pos: 2, imp: 2 } }, specific: {} }, iv).pick === 'yes', 'IN: tougher enforcement -> Yes on bail amendment');
+  ok(E.score(inId('hd21'), { general: { abortion: { pos: 2, imp: 3 } }, specific: {} }, iv).pick === 'wesco', 'IN: restrict abortion -> Wesco');
+  ok(E.score(inId('sos'), { general: {}, specific: { q_in_primaries: { v: 'closed' } } }, iv).pick === 'engling', 'IN: closed primaries -> Engling');
+  ok(E.score(inId('ret-tax'), { general: {}, specific: { q_judicial: { v: 'yes' } } }, iv).pick === 'yes', 'IN: state retention default applies');
+  ok(E.applies(inId('comm1'), { comm: '1' }) && !E.applies(inId('comm1'), { comm: 'other' }), 'IN: commissioner district filter');
+}
+
 // No place-specific logic in code.
 const code = readFileSync(new URL('../app.js', import.meta.url), 'utf8') + readFileSync(new URL('../engine.js', import.meta.url), 'utf8');
 const banned = ['slo-council', "'slo'", 'cadem', 'cagop', 'lwvc', 'Proposition ', "'Prop '", 'California', 'San Luis'];

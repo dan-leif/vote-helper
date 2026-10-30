@@ -89,7 +89,7 @@ A **claim** is `{ "t": "text", "s": ["sourceId", ...], "c": "h|m|l" }`.
 
 ## `data/values.json`
 - `author`: `{ id, label }` of whoever wrote Vote Helper's own logic (Claude).
-- `general[]`: `{ id, label, q, a, b, weight?, tiebreaker?, by?, from?, before? }`. `a` is side A (−2), `b` is side B (+2). `by` lists the models that asked it; `before` keeps the wording from before a merge reworded it.
+- `general[]`: `{ id, label, q, a, b, weight?, tiebreaker?, by?, from?, before? }`. `a` is side A (−2), `b` is side B (+2). `by` lists the models that asked it; `from` gives each model's own id for it (a list when the model named it differently on different ballots); `before` keeps the wording from before a merge reworded it.
 
 ## Part 2 questions (in election files and `state.json`)
 `{ id, for: [contestIds] | appliesToKind: "retention", q, options: [ { v, l, fx } ] }`. `fx` maps a contest id (or `"*<kind>"`, e.g. `"*retention"`) to a number −2…+2 (measures: + means Yes), or for races to `{ candidateId: number }`, or `"skip"`.
@@ -118,7 +118,8 @@ The app uses `questions` to carry over answers people gave to the model's own qu
     "education_funding": { "drop": true, "why": "..." } },
   "specific": { "q_p40_flight": { "keep": true, "why": "..." }, "q_p45_tradeoff": { "drop": true, "why": "..." } },
   "quality":  { "p38#0": { "same": "narrow-beneficiary", "why": "..." }, "p40#0": { "add": true, "sev": "med", "type": "...", "why": "..." } },
-  "stances":  { "skipEqual": true, "why": "..." } }
+  "stances":  { "skipEqual": true, "why": "...",
+                "skip": { "<contest>/<candidate>/<Vote Helper question>": "why this one stance is left out" } } }
 ```
 The model's own logic (`prompts/replies/.../<model>-logic.json`) is its reply to `prompts/own-logic.txt` with its follow-up corrections merged in; see `tools/add-model-logic.js`.
 

@@ -1,0 +1,33 @@
+{
+ "about": "How another model's own logic was merged into Vote Helper's single set of questions and mappings. These are judgment calls made when merging (by Claude, 2026-10-30), meant to be reviewed by the other model in the critique step. tools/merge-logic.js applies this file.",
+ "model": "grok",
+ "label": "Grok",
+ "logic": "prompts/replies/in-elkhart-2026-11-03/grok-logic.json",
+ "decided": { "by": "claude", "date": "2026-10-30" },
+ "questions": {
+  "pretrial_detention": { "to": "public_safety", "orient": 1, "why": "Holding more people before trial is one form of the broader enforcement-vs-reform split Vote Helper already asks about; Grok's side B (detain high-risk defendants) is Vote Helper's side B (more enforcement)." },
+  "criminal_justice_orientation": { "to": "public_safety", "orient": 1, "why": "Same question: alternatives and lower incarceration (A) vs. stronger detention and prosecution (B)." },
+  "local_judicial_residency": { "toSpecific": "q_in_judge_residency", "why": "Same question. Vote Helper asks it only as a follow-up for Public Question 2, since it concerns one measure; both point a Yes on PQ2 toward relaxing the residency rule." },
+  "election_integrity_priority": { "to": "voting", "orient": 1, "why": "Same core split: broad access and participation (A) vs. stricter verification and fraud prevention (B). Grok's side A also mentions independent oversight of the office, which Vote Helper asks as the audit follow-up." },
+  "fiscal_restraint": { "to": "tax_level", "orient": 1, "why": "Same trade-off: more services with higher taxes (A) vs. lower taxes and spending (B)." },
+  "party_governance": { "to": "party", "orient": 1, "why": "Same question, same sides. Vote Helper's wording is kept because Grok's side A groups independents with Democrats; Grok's score for the independent commissioner candidate followed that grouping and is left out (see stances.skip)." },
+  "border_immigration_enforcement": { "to": "immigration", "orient": 1, "why": "A disagreement Vote Helper doesn't ask about yet. Vote Helper had folded immigration enforcement into crime and justice; immigration is a separate split among voters and recurs in federal races.",
+   "new": { "label": "Immigration", "q": "How should the federal government handle immigration?", "a": "Emphasize legal pathways and humane processing, with enforcement targeted at serious offenders", "b": "Emphasize border control, broad enforcement and limits on illegal entry" } },
+  "constitutional_caution": { "to": "constitution", "orient": 1, "why": "A disagreement Vote Helper doesn't ask about: how readily to amend the state constitution. It applies to every legislatively referred amendment, so it carries over to later elections. Worded for any state.",
+   "new": { "label": "Changing the state constitution", "q": "How readily should voters amend the state constitution?", "a": "Very cautiously, only for clear and narrow needs", "b": "Willingly, when lawmakers and voters see a practical problem" } },
+  "government_transparency": { "toSpecific": "q_in_sos_audit", "why": "Same question as Vote Helper's Secretary of State audit follow-up: outside audit vs. internal state review. Grok no longer maps it to any candidate." },
+  "economic_intervention": { "drop": true, "why": "Grok maps only one candidate to it, and its side B bundles lower taxes and less regulation, which the taxes and regulation questions already ask. The tariff point is kept in that candidate's notes." },
+  "law_enforcement_support": { "drop": true, "why": "Grok removed every mapping to it in its corrections." },
+  "experience_vs_newcomers": { "drop": true, "why": "Grok removed it in its corrections; Vote Helper's experience question remains." },
+  "education_local_control": { "drop": true, "why": "Grok removed it in its corrections." }
+ },
+ "specific": {},
+ "quality": {
+  "pq1#0": { "same": "vague-terms", "why": "Same concern: the amendment isn't limited to violent offenses." },
+  "pq1#1": { "add": true, "sev": "low", "type": "implementation-timing", "why": "New: the amendment would take effect on Election Day, but the law setting hearing procedures doesn't start until January 2027." }
+ },
+ "stances": { "skipEqual": true, "why": "Where a model gives every candidate in a race the same value on a question, it has no effect and is left out.",
+  "skip": {
+   "comm1/green/party": "Left out after the critique: the party question is Democratic vs. Republican, and Green is an independent with no stated party lean. Grok's critique agreed she should score 0."
+  } }
+}

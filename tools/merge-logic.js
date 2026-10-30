@@ -37,7 +37,9 @@ Object.entries(M.questions).forEach(([from, q]) => {
   if (!d) throw new Error('Merge record maps ' + from + ' to unknown question ' + q.to);
   if (q.reword && !d.reworded) { d.before = { label: d.label, q: d.q, a: d.a, b: d.b }; Object.assign(d, q.reword); d.reworded = true; log.questions.push('reworded ' + q.to); }
   d.by = Array.from(new Set([...(d.by || ['claude']), model]));
-  d.from = Object.assign(d.from || {}, { [model]: from });
+  // A model can name the same question differently on different ballots; keep every name.
+  const prev = (d.from || {})[model], names = Array.from(new Set([].concat(prev || [], from)));
+  d.from = Object.assign(d.from || {}, { [model]: names.length === 1 ? names[0] : names });
 });
 fs.writeFileSync(valuesPath, JSON.stringify(values, null, 2));
 
@@ -124,6 +126,8 @@ b.files.forEach(f => {
         if (M.stances && M.stances.skipEqual && c.candidates.length > 1 && list.length === c.candidates.length && new Set(list.map(s => s.stance)).size === 1) { log.dropped.push(c.id + ' ' + dim + ': same value for every candidate'); return; }
         list.forEach(s => {
           const k = c.candidates.find(x => x.id === s.candidate); if (!k) return;
+          const skip = ((M.stances || {}).skip || {})[c.id + '/' + k.id + '/' + dim];
+          if (skip) { log.dropped.push(c.id + '/' + k.id + ' ' + dim + ': ' + skip); return; }
           k.positions = k.positions || [];
           mergeMapping(f, k.positions, null, { dim, stance: s.stance, t: s.why, source: s.source, view: { stance: s.stance, t: s.why, question: s.dim, source: s.source } }, ['stance', null, 't'], c.id + '/' + k.id);
         });

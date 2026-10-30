@@ -10,6 +10,15 @@
    "date": "2026-11-03",
    "districts": { "city": "slo", "cd": "24", "ad": "30" },
    "note": "Matches San Luis Obispo County Ballot Type 26: City of San Luis Obispo, U.S. House District 24, State Assembly District 30. Check that the header of your own sample ballot matches."
+  },
+  {
+   "id": "in-elkhart-concord33-2026-11-03",
+   "label": "Goshen, IN (Concord 33) · Nov 3, 2026",
+   "state": "in",
+   "locality": "elkhart",
+   "date": "2026-11-03",
+   "districts": { "cd": "2", "hd": "21", "comm": "1", "council": "4", "township": "concord", "school": "concord-1" },
+   "note": "Matches Elkhart County precinct Concord 33: U.S. House District 2, State House District 21, Commissioner District 1, Council District 4, Concord Township, Concord Community Schools District 1. Check the precinct on the Indiana Voters portal."
   }
  ]
 }
