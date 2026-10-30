@@ -126,6 +126,8 @@ b.files.forEach(f => {
         if (M.stances && M.stances.skipEqual && c.candidates.length > 1 && list.length === c.candidates.length && new Set(list.map(s => s.stance)).size === 1) { log.dropped.push(c.id + ' ' + dim + ': same value for every candidate'); return; }
         list.forEach(s => {
           const k = c.candidates.find(x => x.id === s.candidate); if (!k) return;
+          const skip = ((M.stances || {}).skip || {})[c.id + '/' + k.id + '/' + dim];
+          if (skip) { log.dropped.push(c.id + '/' + k.id + ' ' + dim + ': ' + skip); return; }
           k.positions = k.positions || [];
           mergeMapping(f, k.positions, null, { dim, stance: s.stance, t: s.why, source: s.source, view: { stance: s.stance, t: s.why, question: s.dim, source: s.source } }, ['stance', null, 't'], c.id + '/' + k.id);
         });

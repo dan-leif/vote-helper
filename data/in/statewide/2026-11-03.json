@@ -494,8 +494,8 @@
       },
       {
        "dim": "outsider",
-       "stance": 0.5,
-       "t": "Has never held elected office: a dozen years as a U.S. House Republican staffer (including for Speaker Kevin McCarthy), then regional director for Sen. Jim Banks; lost a 2024 congressional primary.",
+       "stance": 0.25,
+       "t": "Has never held elected office, but isn't a political newcomer: a dozen years as a U.S. House Republican staffer (including for Speaker Kevin McCarthy), then regional director for Sen. Jim Banks; lost a 2024 congressional primary.",
        "s": [
         "icc_vg_sos",
         "icc_engling_conv"

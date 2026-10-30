@@ -118,7 +118,8 @@ The app uses `questions` to carry over answers people gave to the model's own qu
     "education_funding": { "drop": true, "why": "..." } },
   "specific": { "q_p40_flight": { "keep": true, "why": "..." }, "q_p45_tradeoff": { "drop": true, "why": "..." } },
   "quality":  { "p38#0": { "same": "narrow-beneficiary", "why": "..." }, "p40#0": { "add": true, "sev": "med", "type": "...", "why": "..." } },
-  "stances":  { "skipEqual": true, "why": "..." } }
+  "stances":  { "skipEqual": true, "why": "...",
+                "skip": { "<contest>/<candidate>/<Vote Helper question>": "why this one stance is left out" } } }
 ```
 The model's own logic (`prompts/replies/.../<model>-logic.json`) is its reply to `prompts/own-logic.txt` with its follow-up corrections merged in; see `tools/add-model-logic.js`.
 

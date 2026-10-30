@@ -288,6 +288,20 @@
    "url": "https://www.wvpe.org/wvpe-news/2025-11-14/democrat-jamee-decio-announces-shell-challenge-yakym-next-year",
    "type": "news"
   },
+  "tu_decio": {
+   "title": "Jamee Decio files paperwork for congressional campaign (Jan. 29, 2026)",
+   "pub": "Times-Union",
+   "short": "Times-Union",
+   "url": "https://timesuniononline.com/stories/jamee-decio-files-paperwork-for-congressional-campaign,270347",
+   "type": "news"
+  },
+  "wfyi_cd2": {
+   "title": "2026 Voter Guide: Indiana's 2nd Congressional District",
+   "pub": "WFYI",
+   "short": "WFYI",
+   "url": "https://www.wfyi.org/statewide/2026-09-21/2026-voter-guide-indianas-2nd-congressional-district",
+   "type": "news"
+  },
   "mnc_henry": {
    "title": "Libertarian candidate William Henry to run for Congress",
    "pub": "95.3 MNC",
@@ -542,20 +556,6 @@
   },
   "model_grok_1": {
    "title": "Cited by Grok (not checked by Vote Helper)",
-   "pub": "predictionedge.com",
-   "short": "predictionedge",
-   "url": "https://www.predictionedge.com/elections/profile/rudy-yakym/",
-   "type": "via-model"
-  },
-  "model_grok_2": {
-   "title": "Cited by Grok (not checked by Vote Helper)",
-   "pub": "decioforcongress.com",
-   "short": "decioforcongress",
-   "url": "https://decioforcongress.com/faq/",
-   "type": "via-model"
-  },
-  "model_grok_3": {
-   "title": "Cited by Grok (not checked by Vote Helper)",
    "pub": "ballotpedia.org",
    "short": "ballotpedia",
    "url": "https://ballotpedia.org/Timothy_Wesco",
@@ -643,14 +643,30 @@
        ]
       },
       {
-       "dim": "public_safety",
-       "stance": 0.5,
+       "dim": "immigration",
+       "stance": 0.8,
        "t": "Named border security a top issue; touts a 2026 spending vote that defunds groups that 'facilitate illegal immigration'.",
        "s": [
         "wiki_yakym",
         "yakym_approps"
        ],
-       "c": "m"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": 0.75,
+         "t": "Named border security a top issue; touts a 2026 spending vote that defunds groups that 'facilitate illegal immigration'."
+        },
+        "grok": {
+         "stance": 0.9,
+         "t": "Emphasizes border security, enforcement, Laken Riley Act support, criticism of open-border approaches.",
+         "question": "immigration",
+         "source": "https://www.predictionedge.com/elections/profile/rudy-yakym/"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -661,19 +677,6 @@
         "wndu_yakym"
        ],
        "c": "h"
-      },
-      {
-       "dim": "immigration",
-       "stance": 0.9,
-       "t": "Emphasizes border security, enforcement, Laken Riley Act support, criticism of open-border approaches.",
-       "s": [
-        "model_grok",
-        "model_grok_1"
-       ],
-       "c": "l",
-       "by": [
-        "grok"
-       ]
       }
      ],
      "notes": [
@@ -759,13 +762,30 @@
        "c": "m"
       },
       {
-       "dim": "public_safety",
-       "stance": -0.5,
-       "t": "Lists defunding ICE among her top priorities.",
+       "dim": "immigration",
+       "stance": -0.7,
+       "t": "Lists 'defunding ICE' among her top priorities (a WFYI guide describes it as repealing and replacing ICE); her site opposes $1.71 billion for deportations while also backing full funding for immigration vetting.",
        "s": [
-        "wvpe_decio"
+        "tu_decio",
+        "wfyi_cd2"
        ],
-       "c": "l"
+       "c": "m",
+       "views": {
+        "claude": {
+         "stance": -0.75,
+         "t": "Lists 'defunding ICE' among her top priorities (a WFYI guide describes it as repealing and replacing ICE); her site opposes $1.71 billion for deportations while also backing full funding for immigration vetting."
+        },
+        "grok": {
+         "stance": -0.7,
+         "t": "Supports functional visa system, pathway to citizenship for tax-paying contributors without felonies; opposes aggressive deportation of non-criminal immigrants.",
+         "question": "immigration",
+         "source": "https://decioforcongress.com/faq/"
+        }
+       },
+       "by": [
+        "claude",
+        "grok"
+       ]
       },
       {
        "dim": "outsider",
@@ -776,19 +796,6 @@
         "wnin_cd2"
        ],
        "c": "m"
-      },
-      {
-       "dim": "immigration",
-       "stance": -0.7,
-       "t": "Supports functional visa system, pathway to citizenship for tax-paying contributors without felonies; opposes aggressive deportation of non-criminal immigrants.",
-       "s": [
-        "model_grok",
-        "model_grok_2"
-       ],
-       "c": "l",
-       "by": [
-        "grok"
-       ]
       }
      ],
      "notes": [
@@ -922,7 +929,7 @@
        "t": "Consistent low-tax, limited-government platform.",
        "s": [
         "model_grok",
-        "model_grok_3"
+        "model_grok_1"
        ],
        "c": "l",
        "by": [
@@ -1752,18 +1759,6 @@
         "fb_green"
        ],
        "c": "l"
-      },
-      {
-       "dim": "party",
-       "stance": -0.4,
-       "t": "Independent candidate (side A of party_governance includes preference for independent leadership).",
-       "s": [
-        "model_grok"
-       ],
-       "c": "m",
-       "by": [
-        "grok"
-       ]
       }
      ],
      "notes": [
