@@ -425,10 +425,11 @@
     }
     var canNext = item.type === 'general' ? (S.draft && typeof S.draft.pos === 'number') || !!S.beliefs.general[item.id] : (S.draft && S.draft.v) || !!S.beliefs.specific[item.id];
     return head + body +
-      '<div class="pager"><div class="row"><button type="button" class="btn ghost" data-act="q-back"' + (S.queuePos === 0 ? ' disabled' : '') + '>Back</button>' +
-      '<button type="button" class="btn ghost" data-act="q-skip">Skip</button></div>' +
-      '<div class="row"><button type="button" class="btn ghost" data-act="q-stop">Stop and see my ballot</button>' +
-      '<button type="button" class="btn" data-act="q-next"' + (canNext ? '' : ' disabled') + '>Next</button></div></div>';
+      // Row 1 moves through the questions (Next at the right); row 2 leaves them.
+      '<div class="qnav"><div class="row"><button type="button" class="btn ghost" data-act="q-back"' + (S.queuePos === 0 ? ' disabled' : '') + '>Back</button>' +
+      '<button type="button" class="btn ghost" data-act="q-skip">Skip</button>' +
+      '<button type="button" class="btn q-next" data-act="q-next"' + (canNext ? '' : ' disabled') + '>Next</button></div>' +
+      '<div class="row"><button type="button" class="btn ghost" data-act="q-stop">Stop and see my ballot</button></div></div>';
   }
   function commitDraft() {
     var item = S.queue[S.queuePos];
