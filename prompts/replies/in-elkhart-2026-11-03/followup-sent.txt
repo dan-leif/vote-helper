@@ -1,0 +1,19 @@
+Thanks. Before I use this, please fix a few places where the logic contradicts itself or breaks the rules in my original request. Don't change anything else.
+
+1. Follow-up answers for races must name candidates. My request said each option moves an item "a number from -2 to 2" for measures, "or for races, toward a named candidate id." Both of your follow-ups give plain numbers for races: q_school_board_focus uses {"concord-sb1": 1}, and q_local_gov_priority uses {"comm1": 1, "council4": 1, "trustee": 1, "twpboard": 1}. Please either point each option at specific candidate ids, with a reason from their record, or drop the follow-up.
+
+2. Party used for a non-party belief. My request said "Use party alone only for a party-lean belief." For prosecutor-c on law_enforcement_support (0.6) your reason is "Running as Republican for prosecuting attorney in a county with strong GOP lean," with no source. For wesco on criminal_justice_orientation (0.7) your reason is "strong pro-life, traditional marriage, and limited-government record; supported election-integrity and enforcement-related measures," and none of those is about detention, prosecution or incarceration. Please give a specific sourced record for each, or remove them.
+
+3. Same party, different party scores. On party_governance you give Republicans 1 in some races (engling, nieshalla, elliott, yakym, wesco, pickens, barnes, weeber), 0.6 in twpboard (adkins, beck, davis-k), and 0.5 for unopposed Republicans (sup1-c, sup3-c, sup4-c, sup5-c, prosecutor-c, auditor-c, recorder-c, sheriff-c, assessor-c, council4-c). Democrats get -1 in most races but -0.6 for turner. Each reason is just the party label ("Republican." / "Republican nominee, unopposed." / "Democratic."). Please make same-party scores consistent, or explain what besides the label justifies the difference.
+
+4. Party scores that contradict your own wording. party_governance side A is "Prefer Democratic or independent leadership on balance." Yet green ("Independent candidate.") gets 0, and ballard gets 0.3 because he is "Running under Lincoln Party label as independent; former Republican mayor." That uses his past party rather than his ballot label. Please reconcile these with how you worded side A.
+
+5. Quick pick vs. tiebreaker. You marked party_governance "tiebreaker": true, meaning it counts only lightly, but chose it as quick pick 3 because it "efficiently sorts the many ... races." Please either make it a full-weight question or choose a different third quick pick.
+
+6. Two questions counting the same thing. For bayh, your reason on election_integrity_priority ("Centers campaign on independent audit of the SOS office") is the same fact as your reason on government_transparency ("Pledges independent external audit as first action"), so the audit pledge counts twice. Please base each stance on a different, sourced fact, or keep it on one question only.
+
+7. Unused questions. experience_vs_newcomers and education_local_control are defined but never mapped to any item, and concord-sb1 has no mappings at all. Please map them where you have a sourced record, or remove them.
+
+8. A pro/con listed as a drafting problem. Item 4 of my request asked for drafting or policy-quality problems such as vague terms, loopholes or a mismatched title. Your pq2 entry "recruitment_vs_connection" describes supporters' and opponents' arguments ("Supporters ... cite attorney shortages ...; opponents argue judges should live in the communities they serve"). Please move it to the item's note, or name a specific drafting problem with a source.
+
+Reply with only the items and questions that change, in the same JSON shape as before (include the "model" object, and "general", "specific" or "quickPicks" only if they change), plus a "changes" list: [{"id": "<item or question id>", "what": "<what you changed and why>"}].
