@@ -71,6 +71,45 @@
    ]
   },
   {
+   "id": "q_in_redistricting",
+   "for": [
+    "sos",
+    "cd2"
+   ],
+   "q": "Should Indiana redraw its congressional map before the 2030 census, as President Trump urged in 2025?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Yes, redraw it",
+     "fx": {
+      "cd2": {
+       "yakym": 2
+      }
+     }
+    },
+    {
+     "v": "no",
+     "l": "No, wait for the census",
+     "fx": {
+      "cd2": {
+       "decio": 1,
+       "henry": 1
+      },
+      "sos": {
+       "ballard": 1,
+       "bayh": 1,
+       "shillings": 1
+      }
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No view",
+     "fx": {}
+    }
+   ]
+  },
+  {
    "id": "q_in_sos_audit",
    "for": [
     "sos"
@@ -314,6 +353,20 @@
    "url": "https://www.in.gov/courts/news/2026/0827",
    "type": "official"
   },
+  "icc_vg_sos": {
+   "title": "Secretary of State (2026 voter guide)",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron guide",
+   "url": "https://indianacapitalchronicle.com/voter-guides/contests/secretary-of-state/",
+   "type": "news"
+  },
+  "icc_vg_treas": {
+   "title": "State Treasurer (2026 voter guide)",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron guide",
+   "url": "https://indianacapitalchronicle.com/voter-guides/contests/treasurer/",
+   "type": "news"
+  },
   "bp_deboer": {
    "title": "Mary DeBoer",
    "pub": "Ballotpedia",
@@ -358,7 +411,8 @@
    ],
    "specific": [
     "q_in_primaries",
-    "q_in_sos_audit"
+    "q_in_sos_audit",
+    "q_in_redistricting"
    ],
    "candidates": [
     {
@@ -387,10 +441,28 @@
       {
        "dim": "outsider",
        "stance": 0.5,
-       "t": "First run for office; senior adviser and regional director for U.S. Sen. Jim Banks, formerly on U.S. House Administration Committee staff.",
+       "t": "Has never held elected office: a dozen years as a U.S. House Republican staffer (including for Speaker Kevin McCarthy), then regional director for Sen. Jim Banks; lost a 2024 congressional primary.",
        "s": [
-        "wiki_sos",
+        "icc_vg_sos",
         "icc_engling_conv"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "tax_level",
+       "stance": 0.5,
+       "t": "Says property taxes should come down while local governments stay funded 'in a fiscally efficient' way.",
+       "s": [
+        "icc_vg_sos"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "regulation",
+       "stance": -0.5,
+       "t": "Wants to cut 'unnecessary red tape' for businesses while screening out fraudulent shell companies.",
+       "s": [
+        "icc_vg_sos"
        ],
        "c": "m"
       }
@@ -404,9 +476,10 @@
        "c": "m"
       },
       {
-       "t": "Proposes a state inspector general review of the office rather than an outside audit.",
+       "t": "Proposes a state inspector general review of the office rather than an outside audit, and a 'Transparency Portal' for reporting election concerns.",
        "s": [
-        "icc_sos_oct"
+        "icc_sos_oct",
+        "icc_vg_sos"
        ],
        "c": "m"
       }
@@ -438,9 +511,10 @@
       {
        "dim": "direct_dem",
        "stance": -1,
-       "t": "Wants to allow statewide ballot referenda, which Indiana voters can't start today.",
+       "t": "Wants citizen-led ballot initiatives, which Indiana doesn't allow today.",
        "s": [
-        "wthi_bayh"
+        "wthi_bayh",
+        "icc_vg_sos"
        ],
        "c": "m"
       },
@@ -464,10 +538,11 @@
        "c": "m"
       },
       {
-       "t": "Wants to end straight-ticket voting. Would work with county clerks to flag and remove ineligible voters, and criticized officials for prosecuting only one of 21 noncitizen voters identified.",
+       "t": "Opposes mid-decade redistricting. Wants to cut the gas tax and end the sales tax on utilities. Wants to end straight-ticket voting. Would work with county clerks to flag and remove ineligible voters, and criticized officials for prosecuting only one of 21 noncitizen voters identified.",
        "s": [
         "wthi_bayh",
-        "icc_sos_oct"
+        "icc_sos_oct",
+        "icc_vg_sos"
        ],
        "c": "m"
       }
@@ -490,9 +565,10 @@
      ],
      "notes": [
       {
-       "t": "Hamilton County Libertarian chair and small-business owner; runs on restoring trust in elections and protecting voter data and tax dollars. Polling in low single digits.",
+       "t": "Hamilton County Libertarian chair and University of Indianapolis creative director. Wants a modern state website and voter guide showing who funds every politician, and a neutral office. Opposes mid-decade redistricting. Polling in low single digits.",
        "s": [
         "icc_shillings",
+        "icc_vg_sos",
         "wiki_sos"
        ],
        "c": "m"
@@ -523,6 +599,13 @@
       }
      ],
      "notes": [
+      {
+       "t": "Pledges not to endorse, donate to or raise money for any candidate whose election his office oversees. Retired Marine lieutenant colonel.",
+       "s": [
+        "icc_vg_sos"
+       ],
+       "c": "m"
+      },
       {
        "t": "Promises a nonpartisan, low-key office and a nonpartisan state voter guide. Supports independent redistricting commissions and open primaries, and opposed the 2025 mid-decade redistricting push.",
        "s": [
@@ -709,9 +792,19 @@
       {
        "dim": "tax_level",
        "stance": 0.5,
-       "t": "Argues that earning more on public money eases pressure to raise taxes; touts about $1.8 billion in investment earnings.",
+       "t": "Argues that earning more on public money eases pressure to raise taxes; touts about $1.8 billion in investment earnings. Backed the governor's gas tax suspension.",
        "s": [
-        "icc_treas"
+        "icc_treas",
+        "icc_vg_treas"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "climate",
+       "stance": 0.5,
+       "t": "Opposes state investment decisions based on 'environmental or social agendas'; says returns should come first.",
+       "s": [
+        "icc_vg_treas"
        ],
        "c": "m"
       },
@@ -753,11 +846,12 @@
       {
        "dim": "tax_level",
        "stance": -0.5,
-       "t": "Says property tax changes need a fuller accounting of what they mean for schools, police and fire services.",
+       "t": "Calls eliminating property taxes without a plan to replace $10 billion in local revenue 'an empty political promise', citing schools, 911, fire and police.",
        "s": [
+        "icc_vg_treas",
         "icc_treas"
        ],
-       "c": "l"
+       "c": "m"
       },
       {
        "dim": "outsider",
@@ -772,9 +866,9 @@
      ],
      "notes": [
       {
-       "t": "Calls for more transparency in how Indiana manages public money.",
+       "t": "Calls for plain-language reporting on state finances and investments. Would use the state's bonding capacity for workforce housing and child care, and keep public deposits in local banks.",
        "s": [
-        "icc_treas"
+        "icc_vg_treas"
        ],
        "c": "m"
       }

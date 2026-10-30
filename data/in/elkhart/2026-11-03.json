@@ -157,7 +157,73 @@
    "Public questions"
   ]
  ],
- "questions": [],
+ "questions": [
+  {
+   "id": "q_elk_datacenters",
+   "for": [
+    "comm1"
+   ],
+   "q": "Should Elkhart County ban or pause new large data centers and battery storage sites?",
+   "options": [
+    {
+     "v": "limit",
+     "l": "Yes, ban or pause them",
+     "fx": {
+      "comm1": {
+       "green": 2
+      }
+     }
+    },
+    {
+     "v": "allow",
+     "l": "No, handle them through normal zoning",
+     "fx": {
+      "comm1": {
+       "green": -1
+      }
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No view",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_ccs_direction",
+   "for": [
+    "concord-sb1"
+   ],
+   "q": "What do you want from the Concord school board?",
+   "options": [
+    {
+     "v": "steady",
+     "l": "Keep the current board's direction",
+     "fx": {
+      "concord-sb1": {
+       "davis-j": 1,
+       "towner": 1
+      }
+     }
+    },
+    {
+     "v": "scrutiny",
+     "l": "More scrutiny of spending and curriculum",
+     "fx": {
+      "concord-sb1": {
+       "malooley": 2
+      }
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No view",
+     "fx": {}
+    }
+   ]
+  }
+ ],
  "sources": {
   "ballot": {
    "title": "Who's On My Ballot, 2026 General Election, Elkhart County precinct Concord 33",
@@ -411,6 +477,55 @@
    "url": "https://ballotpedia.org/Jerry_P._Adkins_(Concord_Township_Board_Member,_Elkhart_County,_Indiana,_candidate_2022)",
    "type": "reference"
   },
+  "icc_vg_cd2": {
+   "title": "Congressional District 2 (2026 voter guide)",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron guide",
+   "url": "https://indianacapitalchronicle.com/voter-guides/contests/congressional-district-2/",
+   "type": "news"
+  },
+  "gn_twp22": {
+   "title": "Ten candidates competing for Concord Township Board (Apr. 26, 2022)",
+   "pub": "Goshen News",
+   "short": "Goshen News",
+   "url": "https://www.goshennews.com/news/ten-candidates-competing-for-concord-township-board/article_a39d94ce-c5bb-11ec-bad3-7f95622935cf.html",
+   "type": "news"
+  },
+  "gn_ccs22": {
+   "title": "Elkhart, Concord school board candidates expand on views (Oct. 21, 2022)",
+   "pub": "Goshen News",
+   "short": "Goshen News",
+   "url": "https://www.goshennews.com/elkhart-concord-candidates-expand-on-views/article_ea6dd5c8-5191-11ed-964e-5b639a05d732.html",
+   "type": "news"
+  },
+  "ec_cands": {
+   "title": "2026 General Election candidate list by office, ballot order (Aug. 13, 2026)",
+   "pub": "Elkhart County Clerk",
+   "short": "County Clerk",
+   "url": "https://clerk.elkhartcounty.com/documents/13998/Candidate_List_By_Office_Ballot_Order_2026_Gen_8.13.26.pdf",
+   "type": "official"
+  },
+  "fb_green": {
+   "title": "Supporter's Facebook post with Amy Green and her campaign sign (Aug. 4, 2026; screenshot)",
+   "pub": "Facebook",
+   "short": "Facebook post",
+   "url": "https://www.facebook.com/",
+   "type": "campaign"
+  },
+  "wvpe_elk_dc": {
+   "title": "Elkhart city council passes data center, battery storage pause 9-0",
+   "pub": "WVPE",
+   "short": "WVPE",
+   "url": "https://www.wvpe.org/wvpe-news/2026-08-28/elkhart-city-council-passes-data-center-battery-storage-pause-9-0",
+   "type": "news"
+  },
+  "wvpe_bristol_dc": {
+   "title": "Elkhart County planners to consider proposed Bristol data center project July 9",
+   "pub": "WVPE",
+   "short": "WVPE",
+   "url": "https://www.wvpe.org/wvpe-news/2026-06-10/elkhart-county-planners-to-consider-proposed-bristol-data-center-project-july-9",
+   "type": "news"
+  },
   "bp_beck22": {
    "title": "James D. Beck (Concord Township Board Member, candidate 2022)",
    "pub": "Ballotpedia",
@@ -490,10 +605,17 @@
      ],
      "notes": [
       {
-       "t": "Former commercial real estate and logistics executive. Didn't answer the Capital Chronicle's candidate survey.",
+       "t": "Supported President Trump's 2025 call to redraw Indiana's congressional map. Introduced a bipartisan bill to update mortgage-bond and tax-credit programs for low- and moderate-income homebuyers. Campaign site calls for cutting regulations and giving states and local communities more control.",
+       "s": [
+        "icc_vg_cd2"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "Former commercial real estate and logistics executive. Didn't return the Capital Chronicle's questionnaire.",
        "s": [
         "wiki_yakym",
-        "icc_cd2"
+        "icc_vg_cd2"
        ],
        "c": "m"
       }
@@ -515,11 +637,19 @@
       },
       {
        "dim": "tax_level",
-       "stance": -0.5,
-       "t": "Says the federal government should 'refocus on the basic needs of all Americans'; runs on lowering grocery, health care and housing costs.",
+       "stance": -0.75,
+       "t": "Would 'restore Medicaid, rural hospitals and lower cost of prescription drugs'; says 'healthcare should be a right'. Wants a living minimum wage.",
        "s": [
-        "wnin_cd2",
-        "icc_cd2"
+        "icc_vg_cd2"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "tax_wealthy",
+       "stance": -1,
+       "t": "Top priority includes 'much higher taxes on billionaires' and a middle-class tax cut.",
+       "s": [
+        "icc_vg_cd2"
        ],
        "c": "m"
       },
@@ -545,10 +675,10 @@
      ],
      "notes": [
       {
-       "t": "Says Yakym votes with President Trump nearly 95% of the time. Didn't answer the Capital Chronicle's candidate survey.",
+       "t": "Wants to eliminate tariffs. Calls mid-decade redistricting 'cheating'. Says Yakym votes with President Trump nearly 95% of the time.",
        "s": [
-        "wnin_cd2",
-        "icc_cd2"
+        "icc_vg_cd2",
+        "wnin_cd2"
        ],
        "c": "m"
       }
@@ -558,16 +688,31 @@
      "id": "henry",
      "name": "William Eric Henry",
      "party": "L",
+     "positions": [
+      {
+       "dim": "tax_level",
+       "stance": 1,
+       "t": "Supports 'any reduction in taxes at all levels of government' and downsizing government rather than shifting funds.",
+       "s": [
+        "icc_vg_cd2"
+       ],
+       "c": "m"
+      }
+     ],
      "notes": [
       {
-       "t": "Elkhart Army and Indiana National Guard veteran; third run for this seat after 2022 and 2024.",
+       "t": "Elkhart communications professional and Army veteran (military journalist, deployed to Afghanistan); third run for this seat. Priorities: federal fiscal stability, veterans' care, national defense, 'medical freedom and privacy'. Opposes redistricting before 2031.",
        "s": [
+        "icc_vg_cd2",
         "mnc_henry"
        ],
        "c": "m"
       }
      ]
     }
+   ],
+   "specific": [
+    "q_in_redistricting"
    ],
    "conf": "m"
   },
@@ -1136,7 +1281,18 @@
       "ec_comm"
      ],
      "c": "m"
+    },
+    {
+     "t": "Data centers are a live local issue: the city of Elkhart paused new data center and battery storage applications 9-0 in August, a data center is proposed near Bristol, and residents have asked the county for similar limits. No county-wide rule was found.",
+     "s": [
+      "wvpe_elk_dc",
+      "wvpe_bristol_dc"
+     ],
+     "c": "m"
     }
+   ],
+   "specific": [
+    "q_elk_datacenters"
    ],
    "candidates": [
     {
@@ -1204,9 +1360,27 @@
      "id": "green",
      "name": "Amy Green",
      "party": "I",
+     "positions": [
+      {
+       "dim": "savings",
+       "stance": 0.5,
+       "t": "Campaign sign promises a balanced budget and fiscal accountability.",
+       "s": [
+        "fb_green"
+       ],
+       "c": "l"
+      }
+     ],
      "notes": [
       {
-       "t": "Running as an independent. No campaign website, biography or public statements were found.",
+       "t": "Campaigns against data centers and battery storage sites in the county; her sign also lists 'strong property rights'. Meets voters regularly at a local market.",
+       "s": [
+        "fb_green"
+       ],
+       "c": "l"
+      },
+      {
+       "t": "No campaign website or biography was found.",
        "s": [
         "ballotbrief"
        ],
@@ -1217,7 +1391,7 @@
    ],
    "flags": [
     {
-     "t": "None of the three candidates has published positions on county issues that could be found.",
+     "t": "Barnes's and Spelbring's views on data centers weren't found; Green's come from a supporter's social media post.",
      "c": "l"
     }
    ],
@@ -1383,12 +1557,22 @@
         "ballot"
        ],
        "c": "h"
+      },
+      {
+       "dim": "tax_level",
+       "stance": 0.5,
+       "t": "In 2022 praised the board for having 'managed to keep taxes down' and wanted to 'continue in the path that we are on'.",
+       "s": [
+        "gn_twp22"
+       ],
+       "c": "l"
       }
      ],
      "notes": [
       {
-       "t": "Also ran for this board in 2022.",
+       "t": "Retired after 38 years with the Concord Township Fire Department. Also ran in 2022.",
        "s": [
+        "gn_twp22",
         "bp_adkins22"
        ],
        "c": "m"
@@ -1434,6 +1618,15 @@
        ],
        "c": "h"
       }
+     ],
+     "notes": [
+      {
+       "t": "Truck driver; retired in 2021 after 16 years as a Concord Township firefighter-paramedic. In 2022 wanted help for seniors and veterans facing ambulance bills and more fire and ambulance equipment.",
+       "s": [
+        "gn_twp22"
+       ],
+       "c": "m"
+      }
      ]
     },
     {
@@ -1455,7 +1648,7 @@
    ],
    "flags": [
     {
-     "t": "Profiles of Adkins and Davis ran in the Goshen News print primary section (April 18) but couldn't be found online; nothing was found on Beck's or Turner's views.",
+     "t": "Adkins's and Davis's views are from 2022. Nothing was found on Beck's or Turner's views.",
      "c": "l"
     }
    ],
@@ -1484,15 +1677,19 @@
      "c": "m"
     },
     {
-     "t": "Davis and Towner hold the District 1 seats, both ending in 2026. The same three candidates faced off in 2022, when a vote-counting glitch delayed the final result.",
+     "t": "In 2022 three seats were open and these same three ran in District 1. Concord's site now lists all three as board members, so this may be three seats for three candidates; the county list doesn't say.",
      "s": [
+      "gn_ccs22",
       "ccs_davis",
       "ccs_towner",
-      "yahoo_ccs",
-      "wsbt_ccs22"
+      "ccs_malooley",
+      "ec_cands"
      ],
      "c": "l"
     }
+   ],
+   "specific": [
+    "q_ccs_direction"
    ],
    "candidates": [
     {
@@ -1518,8 +1715,9 @@
        "c": "m"
       },
       {
-       "t": "At a 2022 League of Women Voters forum: 'I'm an accountant. I feel it gives me a solid background for understanding the finances and fiscal responsibilities.'",
+       "t": "At a 2022 League of Women Voters forum: the board must provide the best staff, programs and facilities 'in a fiscally responsible way', and the failed school referendum showed taxpayers' views on spending. Sees the board as 'partners with our administration'.",
        "s": [
+        "gn_ccs22",
         "yahoo_ccs_forum22"
        ],
        "c": "m"
@@ -1549,9 +1747,9 @@
        "c": "m"
       },
       {
-       "t": "At the 2022 forum he stressed board accountability and showing up regularly: 'We're not just there to read objectionable passages in school books.'",
+       "t": "At the 2022 forum he welcomed closer public scrutiny of school boards, citing parents' pushback on critical race theory in Virginia ('and rightfully so'), and noted that voters who defeated the referendum asked the board to stop 'wasteful spending'. Urged residents to attend board meetings.",
        "s": [
-        "yahoo_ccs_forum22"
+        "gn_ccs22"
        ],
        "c": "m"
       }
@@ -1580,9 +1778,9 @@
        "c": "m"
       },
       {
-       "t": "At the 2022 forum: students should be 'challenged' and leave with problem-solving and teamwork skills, 'not just academic masters'.",
+       "t": "At the 2022 forum: students should be 'challenged' and leave with problem-solving and teamwork skills, 'not just academic masters'; wants teachers to have the resources they need and is 'proud to be a part of the team' in place.",
        "s": [
-        "yahoo_ccs_forum22"
+        "gn_ccs22"
        ],
        "c": "m"
       }
@@ -1600,7 +1798,7 @@
    ],
    "flags": [
     {
-     "t": "No candidate statements on school issues were found, and the number of seats isn't confirmed.",
+     "t": "Candidate views are from 2022, and the number of seats isn't confirmed.",
      "c": "l"
     }
    ],
