@@ -1,6 +1,6 @@
 # Vote Helper
 
-A personal ballot advisor for California elections. It explains every item on your ballot, shows how your own beliefs map onto it, lets you agree or disagree, learns from your disagreements, and ends with a ballot cheat sheet.
+A personal, nonpartisan ballot advisor (California and Indiana ballots so far). It explains every item on your ballot, shows how your own beliefs map onto it, lets you agree or disagree, learns from your disagreements, and ends with a ballot cheat sheet.
 
 It's a static page plus JSON data files. Host it anywhere (GitHub Pages works). **Your beliefs stay in your browser** (localStorage). You can export them to a `beliefs.json` file and keep that file somewhere private; it never belongs in a public repo.
 

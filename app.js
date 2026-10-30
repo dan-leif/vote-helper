@@ -272,6 +272,7 @@
   function render() {
     renderTabs();
     var app = $('#app');
+    if (!S.election) S.view = 'home';
     var fn = { home: viewHome, ask: viewAsk, slate: viewSlate, item: viewItem, sheet: viewSheet, profile: viewProfile, about: viewAbout, ai: viewAI, data: viewData }[S.view] || viewHome;
     app.innerHTML = fn();
     if (S.view === 'ai' || S.view === 'data') { var ta = $('#app textarea[readonly]'); if (ta) ta.scrollTop = 0; }
@@ -285,6 +286,7 @@
     return { ans: ans, total: dims.length };
   }
   function viewHome() {
+    if (!S.election) return viewChooseBallot();
     var st = eState(), cnt = countAnswered();
     var efforts = [
       ['quick', 'Quick', 'About 3 questions, the ones that move the most votes on this ballot. Then your full ballot, with the 2–3 items worth a closer look.'],
@@ -308,6 +310,18 @@
         '<div class="row"><button type="button" class="btn" data-act="start">Start</button>' +
         (Object.keys(S.beliefs.general).length ? '<button type="button" class="btn ghost" data-nav="slate">Go to my ballot</button>' : '') +
         '<button type="button" class="btn ghost" data-nav="data">Import beliefs</button></div>' +
+      '</div></section>';
+  }
+
+  function viewChooseBallot() {
+    var opts = '<option value="" selected disabled>Choose your ballot…</option>' + S.places.ballots.map(function (b) {
+      return '<option value="' + esc(b.id) + '">' + esc(b.label) + '</option>';
+    }).join('');
+    return '' +
+      '<section class="panel"><div class="band"><h2>Your ballot</h2></div><div class="panel-body">' +
+        '<p>Vote Helper explains each item on your ballot, shows how your beliefs map onto it, and lets you agree or disagree. It learns from your disagreements. Everything you enter stays in this browser.</p>' +
+        '<label class="field" for="pick-ballot">Your ballot<select id="pick-ballot" data-pick="ballot">' + opts + '</select></label>' +
+        '<p class="small muted">Pick the place and election that match your sample ballot. Don\'t see yours? It hasn\'t been added yet.</p>' +
       '</div></section>';
   }
 
@@ -1030,6 +1044,7 @@
     var t = ev.target;
     if (t.dataset && t.dataset.pick === 'ballot') {
       var ballot = S.places.ballots.filter(function (b) { return b.id === t.value; })[0];
+      if (!ballot) return;
       $('#app').innerHTML = '<div class="loading">Loading…</div>';
       return loadElection(ballot).then(function () { setView('home'); }).catch(showLoadError);
     }
@@ -1046,16 +1061,24 @@
   function pickInitial() {
     var saved = S.beliefs.place || {}, list = S.places.ballots;
     var key = function (b) { return b.state + '/' + b.locality + '/' + b.date; };
-    return list.filter(function (b) { return b.id === saved.ballot; })[0] ||
+    // A shared link can name the ballot: ?ballot=<id>.
+    var linked = (location.search.match(/[?&]ballot=([^&]+)/) || [])[1];
+    linked = linked && decodeURIComponent(linked);
+    return list.filter(function (b) { return b.id === linked; })[0] ||
+      list.filter(function (b) { return b.id === saved.ballot; })[0] ||
       list.filter(function (b) { return saved.key && key(b) === saved.key + '/' + saved.date; })[0] ||
       // No saved choice (e.g. beliefs from an older version): a ballot this person already has answers for.
       list.filter(function (b) { return S.beliefs.elections[key(b)]; })[0] ||
-      list[0];
+      // Otherwise nothing: the voter picks, so no one lands on someone else's ballot.
+      null;
   }
   S.beliefs = load();
   Promise.all([fetchJSON(DATA + 'values.json'), fetchJSON(DATA + 'places.json')]).then(function (res) {
     S.baseValues = res[0]; S.places = res[1];
-    return loadElection(pickInitial());
+    var first = pickInitial();
+    // The link did its job; drop ?ballot= so a later reload keeps the voter's own choice.
+    if (/[?&]ballot=/.test(location.search) && history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
+    return first ? loadElection(first) : null;
   }).then(function () {
     var hasAny = Object.keys(S.beliefs.general).length > 0;
     setView(hasAny ? 'slate' : 'home');
