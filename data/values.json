@@ -182,8 +182,15 @@
       "id": "federal",
       "label": "Your state and the federal government",
       "q": "How should your state's officials deal with the current federal administration?",
-      "a": "Challenge federal policies in court when they hurt California",
+      "a": "Challenge federal policies in court when they hurt your state",
       "b": "Cooperate more and sue less"
+    },
+    {
+      "id": "abortion",
+      "label": "Abortion law",
+      "q": "How should state law treat abortion?",
+      "a": "Protect access to abortion",
+      "b": "Restrict abortion, with few or no exceptions"
     },
     {
       "id": "party",

@@ -7,7 +7,7 @@
  "name": "November 3, 2026 General Election",
  "area": "Indiana (statewide)",
  "researched": "2026-10-30",
- "method": "Contests, candidate names, parties and public question text transcribed from the Indiana Voters portal's \"Who's On My Ballot\" page for precinct Concord 33 (viewed 2026-10-30). Background via web search summaries; most news pages were not opened in full (several returned 403).",
+ "method": "Contests, candidate names, parties and public question text transcribed from the Indiana Voters portal's \"Who's On My Ballot\" page for precinct Concord 33 (viewed 2026-10-30). Background from web search summaries of the cited pages plus a few pages opened in full (Wikipedia, Concord Community Schools board bios, Indiana courts release); several news sites blocked direct reading (403).",
  "questions": [
   {
    "id": "q_in_judge_residency",
@@ -28,6 +28,71 @@
      "l": "No, judges should live where they serve",
      "fx": {
       "pq2": -2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No view",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_in_primaries",
+   "for": [
+    "sos"
+   ],
+   "q": "Indiana voters can pick either party's primary ballot. Should primaries be closed to registered party members?",
+   "options": [
+    {
+     "v": "closed",
+     "l": "Yes, close them",
+     "fx": {
+      "sos": {
+       "engling": 2
+      }
+     }
+    },
+    {
+     "v": "open",
+     "l": "No, keep them open",
+     "fx": {
+      "sos": {
+       "ballard": 1,
+       "engling": -1
+      }
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No view",
+     "fx": {}
+    }
+   ]
+  },
+  {
+   "id": "q_in_sos_audit",
+   "for": [
+    "sos"
+   ],
+   "q": "How should the next Secretary of State look into the outgoing office's spending?",
+   "options": [
+    {
+     "v": "outside",
+     "l": "Independent outside audit",
+     "fx": {
+      "sos": {
+       "bayh": 1
+      }
+     }
+    },
+    {
+     "v": "ig",
+     "l": "State inspector general review",
+     "fx": {
+      "sos": {
+       "engling": 1
+      }
      }
     },
     {
@@ -60,12 +125,47 @@
    "url": "https://indianacapitalchronicle.com/2026/10/05/right-to-bail-amendment-asks-voters-to-rewrite-pretrial-detention-rules/",
    "type": "news"
   },
+  "icc_bail_jan": {
+   "title": "Indiana bail amendment advances toward November ballot",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/01/23/indiana-bail-amendment-advances-toward-november-ballot/",
+   "type": "news"
+  },
   "nfts_pq1": {
    "title": "Public Question 1: what Indiana's ballot doesn't tell you",
-   "pub": "States Newsroom (Indiana Capital Chronicle)",
+   "pub": "Indiana Capital Chronicle (commentary)",
    "short": "Capital Chron commentary",
    "url": "https://www.newsfromthestates.com/article/public-question-1-what-indianas-ballot-doesnt-tell-you",
    "type": "opinion"
+  },
+  "aclu_pq1": {
+   "title": "Welcome to the Era of Presumed Guilt: Public Question 1",
+   "pub": "ACLU of Indiana",
+   "short": "ACLU of IN",
+   "url": "https://www.aclu-in.org/campaigns-initiatives/presumption-of-innocence-is-on-the-ballot-this-november-public-question-1/",
+   "type": "advocacy"
+  },
+  "wane_pq1": {
+   "title": "Does Public Question #1 pose a necessary safeguard or infringement of constitutional rights?",
+   "pub": "WANE 15",
+   "short": "WANE",
+   "url": "https://www.wane.com/top-stories/does-public-question-1-pose-a-necessary-safeguard-or-infringement-of-constitutional-rights/",
+   "type": "news"
+  },
+  "lwv_pq1": {
+   "title": "Two perspectives on Public Question 1: Constitutional Amendment on Pre-trial Bail",
+   "pub": "Journal Review (League of Women Voters)",
+   "short": "LWV / Journal Review",
+   "url": "https://www.journalreview.com/stories/two-perspectives-on-public-question-1-constitutional-amendment-on-pre-trial-bail,411765",
+   "type": "analysis"
+  },
+  "wfyi_pq1": {
+   "title": "Indiana voters face decision on bail rights in 2026 election",
+   "pub": "WFYI",
+   "short": "WFYI",
+   "url": "https://www.wfyi.org/statewide/2026-10-28/indiana-voters-face-decision-on-bail-rights-in-2026-election",
+   "type": "news"
   },
   "courts_pq2": {
    "title": "Constitutional amendment ballot question 2",
@@ -80,6 +180,13 @@
    "short": "Ballotpedia",
    "url": "https://ballotpedia.org/Indiana_Residency_Requirements_for_City_and_Town_Court_Judges_Amendment_(2026)",
    "type": "reference"
+  },
+  "aylesworth": {
+   "title": "Rep. Aylesworth authors legislation to help Indiana's rural judicial shortage",
+   "pub": "Indiana House Republicans",
+   "short": "IN House GOP",
+   "url": "https://www.indianahouserepublicans.com/news/press-releases/rep.-aylesworth-authors-legislation-to-help-indiana-s-rural-judicial-shortage/",
+   "type": "campaign"
   },
   "wiki_sos": {
    "title": "2026 Indiana Secretary of State election",
@@ -102,6 +209,69 @@
    "url": "https://www.ipm.org/news/2026-08-27/indiana-secretary-of-state-hopefuls-clash-over-voting-rules-office-audit",
    "type": "news"
   },
+  "icc_engling_conv": {
+   "title": "Engling captures Republican bid for Indiana secretary of state",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/06/20/republican/",
+   "type": "news"
+  },
+  "bp_engling": {
+   "title": "Banks-endorsed adviser wins Republican nomination for Indiana secretary of state at party convention",
+   "pub": "Ballotpedia News",
+   "short": "Ballotpedia",
+   "url": "https://news.ballotpedia.org/2026/06/23/banks-endorsed-adviser-wins-republican-nomination-for-indiana-secretary-of-state-at-party-convention/",
+   "type": "news"
+  },
+  "wthi_bayh": {
+   "title": "Beau Bayh outlines campaign platform for Indiana secretary of state race",
+   "pub": "WTHI",
+   "short": "WTHI",
+   "url": "https://www.wthitv.com/2026/06/16/beau-bayh-outlines-campaign-platform-indiana-secretary-state-race/",
+   "type": "news"
+  },
+  "indypol_bayh": {
+   "title": "Bayh wins Democratic SOS nod, pledges day-one audit",
+   "pub": "IndyPolitics",
+   "short": "IndyPolitics",
+   "url": "https://indypolitics.org/bayh-wins-democratic-sos-nod-pledges-day-one-audit-and-swings-at-same-broken-system/",
+   "type": "news"
+  },
+  "ipm_ballard": {
+   "title": "Greg Ballard vying for Indiana secretary of state, but not with GOP",
+   "pub": "Indiana Public Media",
+   "short": "IPM",
+   "url": "https://www.ipm.org/news/2026-06-29/greg-ballard-vying-for-indiana-secretary-of-state-but-not-with-gop",
+   "type": "news"
+  },
+  "ipm_ballard_guide": {
+   "title": "Secretary of State candidate Greg Ballard promises voter guide if elected",
+   "pub": "Indiana Public Media",
+   "short": "IPM",
+   "url": "https://www.ipm.org/news/2026-08-26/secretary-of-state-candidate-greg-ballard-promises-voter-guide-if-elected",
+   "type": "news"
+  },
+  "icc_ballard_ltgov": {
+   "title": "Former GOP lieutenant governor endorses Ballard in secretary of state race",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/10/05/former-gop-lieutenant-governor-endorses-ballard-in-secretary-of-state-race/",
+   "type": "news"
+  },
+  "icc_lincoln": {
+   "title": "What's the Lincoln Party? Ballard's secretary of state run could expand Indiana ballot access",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/09/08/whats-the-lincoln-party-ballards-secretary-of-state-run-could-expand-indiana-ballot-access/",
+   "type": "news"
+  },
+  "icc_shillings": {
+   "title": "Indiana Libertarians nominate Lauri Shillings for secretary of state",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/03/23/indiana-libertarians-nominate-lauri-shillings-for-secretary-of-state/",
+   "type": "news"
+  },
   "icc_comp": {
    "title": "Get to know Indiana's comptroller candidates",
    "pub": "Indiana Capital Chronicle",
@@ -116,11 +286,39 @@
    "url": "https://indianacapitalchronicle.com/2026/05/27/indiana-dems-announce-treasurer-comptroller-candidates/",
    "type": "news"
   },
+  "icc_treas": {
+   "title": "Indiana treasurer race draws competing visions for managing state funds",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/?p=27553",
+   "type": "news"
+  },
   "bp_treas": {
    "title": "Indiana Treasurer election, 2026",
    "pub": "Ballotpedia",
    "short": "Ballotpedia",
    "url": "https://ballotpedia.org/Indiana_Treasurer_election,_2026",
+   "type": "reference"
+  },
+  "icc_ret": {
+   "title": "Court of Appeals and Tax Court judges are on the ballot for retention",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/10/13/court-of-appeals-and-tax-court-judges-are-on-the-ballot-for-retention/",
+   "type": "news"
+  },
+  "courts_ret26": {
+   "title": "Appellate judges on the November 2026 retention ballot",
+   "pub": "Indiana Judicial Branch",
+   "short": "IN Courts",
+   "url": "https://www.in.gov/courts/news/2026/0827",
+   "type": "official"
+  },
+  "bp_deboer": {
+   "title": "Mary DeBoer",
+   "pub": "Ballotpedia",
+   "short": "Ballotpedia",
+   "url": "https://ballotpedia.org/Mary_DeBoer",
    "type": "reference"
   }
  },
@@ -134,26 +332,33 @@
    "voteFor": 1,
    "about": [
     {
-     "t": "Runs Indiana's election administration, business filings and securities regulation.",
+     "t": "Runs Indiana's election administration, business filings and securities regulation. The top two finishers also set which parties get major-party ballot access.",
      "s": [
-      "wiki_sos"
+      "wiki_sos",
+      "icc_shillings"
      ],
      "c": "m"
     },
     {
-     "t": "Outgoing Republican Secretary of State Diego Morales lost his party's nomination to Max Engling at the June 2026 convention.",
+     "t": "Outgoing Republican Secretary of State Diego Morales, criticized for travel spending and other conduct, lost his party's nomination to Max Engling at the June 2026 convention.",
      "s": [
-      "wiki_sos"
+      "wiki_sos",
+      "indypol_bayh"
      ],
      "c": "m"
     },
     {
-     "t": "Engling and Bayh both back Indiana's voter ID law and longer early-voting hours, and both say the next secretary should look into Morales's office. Bayh promises an independent audit on day one; Engling proposes a state inspector general review.",
+     "t": "Engling and Bayh both back Indiana's voter ID law and longer early-voting hours, and both say the next secretary should look into Morales's office. Rated a tossup.",
      "s": [
-      "icc_sos_oct"
+      "icc_sos_oct",
+      "wiki_sos"
      ],
      "c": "m"
     }
+   ],
+   "specific": [
+    "q_in_primaries",
+    "q_in_sos_audit"
    ],
    "candidates": [
     {
@@ -182,9 +387,26 @@
       {
        "dim": "outsider",
        "stance": 0.5,
-       "t": "First run for office; senior adviser to U.S. Sen. Jim Banks.",
+       "t": "First run for office; senior adviser and regional director for U.S. Sen. Jim Banks, formerly on U.S. House Administration Committee staff.",
        "s": [
-        "wiki_sos"
+        "wiki_sos",
+        "icc_engling_conv"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Top stated priority: close Indiana's open primaries so voters can't cross over to the other party's ballot.",
+       "s": [
+        "icc_engling_conv"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "Proposes a state inspector general review of the office rather than an outside audit.",
+       "s": [
+        "icc_sos_oct"
        ],
        "c": "m"
       }
@@ -205,9 +427,27 @@
        "c": "h"
       },
       {
+       "dim": "voting",
+       "stance": -0.5,
+       "t": "Wants more early-voting access to raise turnout.",
+       "s": [
+        "wthi_bayh"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "direct_dem",
+       "stance": -1,
+       "t": "Wants to allow statewide ballot referenda, which Indiana voters can't start today.",
+       "s": [
+        "wthi_bayh"
+       ],
+       "c": "m"
+      },
+      {
        "dim": "outsider",
        "stance": 0.5,
-       "t": "First run for office; son of former Gov. and Sen. Evan Bayh.",
+       "t": "First run for office; son of former Gov. and Sen. Evan Bayh. Republicans criticized his years voting in Indiana while living elsewhere.",
        "s": [
         "wiki_sos"
        ],
@@ -216,8 +456,17 @@
      ],
      "notes": [
       {
-       "t": "Says he would work with county clerks to flag and remove ineligible voters from the rolls, and criticized officials for prosecuting only one of 21 noncitizen voters they identified.",
+       "t": "Pledges an independent audit of the office on day one, with any illegality sent to prosecutors.",
        "s": [
+        "indypol_bayh",
+        "icc_sos_oct"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "Wants to end straight-ticket voting. Would work with county clerks to flag and remove ineligible voters, and criticized officials for prosecuting only one of 21 noncitizen voters identified.",
+       "s": [
+        "wthi_bayh",
         "icc_sos_oct"
        ],
        "c": "m"
@@ -228,7 +477,26 @@
      "id": "shillings",
      "name": "Lauri A. Shillings",
      "party": "L",
+     "positions": [
+      {
+       "dim": "federal",
+       "stance": -0.5,
+       "t": "Criticized Morales for handing Indiana's voter rolls to the federal administration, citing voters' privacy.",
+       "s": [
+        "icc_shillings"
+       ],
+       "c": "l"
+      }
+     ],
      "notes": [
+      {
+       "t": "Hamilton County Libertarian chair and small-business owner; runs on restoring trust in elections and protecting voter data and tax dollars. Polling in low single digits.",
+       "s": [
+        "icc_shillings",
+        "wiki_sos"
+       ],
+       "c": "m"
+      },
       {
        "t": "At the August debate, said voter intent should come first when counting ballots.",
        "s": [
@@ -248,16 +516,34 @@
        "stance": -0.5,
        "t": "Former two-term Republican mayor of Indianapolis, now running on the new Lincoln Party line.",
        "s": [
-        "wiki_sos"
+        "wiki_sos",
+        "ipm_ballard"
        ],
        "c": "m"
       }
      ],
      "notes": [
       {
-       "t": "At the August debate, said voter intent should come first when counting ballots.",
+       "t": "Promises a nonpartisan, low-key office and a nonpartisan state voter guide. Supports independent redistricting commissions and open primaries, and opposed the 2025 mid-decade redistricting push.",
        "s": [
-        "ipm_sos_aug"
+        "ipm_ballard",
+        "ipm_ballard_guide"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "The Lincoln Party has no detailed platform yet; Engling has criticized it for that.",
+       "s": [
+        "icc_lincoln"
+       ],
+       "c": "m"
+      }
+     ],
+     "endorse": [
+      {
+       "who": "A former Republican lieutenant governor",
+       "s": [
+        "icc_ballard_ltgov"
        ],
        "c": "m"
       }
@@ -275,7 +561,7 @@
    "voteFor": 1,
    "about": [
     {
-     "t": "Keeps the state's books, pays its bills and distributes money to local governments.",
+     "t": "Keeps the state's books, pays its 30,000 employees, sends money to agencies and local governments, and runs the deferred compensation fund.",
      "s": [
       "icc_comp"
      ],
@@ -298,9 +584,27 @@
        "c": "h"
       },
       {
+       "dim": "savings",
+       "stance": 0.5,
+       "t": "With the treasurer, leads a coalition of state financial officers urging Congress to adopt a balanced-budget amendment like Indiana's.",
+       "s": [
+        "icc_comp"
+       ],
+       "c": "m"
+      },
+      {
        "dim": "outsider",
        "stance": -1,
        "t": "Incumbent; appointed by Gov. Eric Holcomb in December 2023.",
+       "s": [
+        "icc_comp"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Priorities: training government finance staff through university partnerships, and the state's transparency portal and federal-funds dashboard.",
        "s": [
         "icc_comp"
        ],
@@ -331,12 +635,41 @@
        ],
        "c": "m"
       }
+     ],
+     "notes": [
+      {
+       "t": "Wants the transparency portal easier to use so residents can find contracts, vendor payments and salaries, and wants spending on housing, child care and affordability programs to carry clear accountability.",
+       "s": [
+        "icc_comp"
+       ],
+       "c": "m"
+      }
      ]
     },
     {
      "id": "schick",
      "name": "John Schick",
-     "party": "L"
+     "party": "L",
+     "positions": [
+      {
+       "dim": "tax_level",
+       "stance": 0.5,
+       "t": "Has called for reducing government spending.",
+       "s": [
+        "icc_comp"
+       ],
+       "c": "l"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Wants the office run independently of the governor and legislature. Has run for comptroller before; didn't answer the Capital Chronicle survey.",
+       "s": [
+        "icc_comp"
+       ],
+       "c": "m"
+      }
+     ]
     }
    ],
    "conf": "m"
@@ -350,11 +683,12 @@
    "voteFor": 1,
    "about": [
     {
-     "t": "Invests state funds and manages programs such as the state's college savings plan.",
+     "t": "Invests state money and runs programs such as the college savings plan. The office doesn't write the budget or set tax rates.",
      "s": [
+      "icc_treas",
       "bp_treas"
      ],
-     "c": "l"
+     "c": "m"
     }
    ],
    "candidates": [
@@ -373,11 +707,30 @@
        "c": "h"
       },
       {
+       "dim": "tax_level",
+       "stance": 0.5,
+       "t": "Argues that earning more on public money eases pressure to raise taxes; touts about $1.8 billion in investment earnings.",
+       "s": [
+        "icc_treas"
+       ],
+       "c": "m"
+      },
+      {
        "dim": "outsider",
        "stance": -1,
-       "t": "Incumbent, seeking a second four-year term.",
+       "t": "Incumbent seeking a second term; formerly on the Morgan County Council.",
        "s": [
-        "bp_treas"
+        "bp_treas",
+        "icc_treas"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Has drawn attention for putting more state money into Israeli bonds, which he calls a good investment.",
+       "s": [
+        "icc_treas"
        ],
        "c": "m"
       }
@@ -398,11 +751,30 @@
        "c": "h"
       },
       {
+       "dim": "tax_level",
+       "stance": -0.5,
+       "t": "Says property tax changes need a fuller accounting of what they mean for schools, police and fire services.",
+       "s": [
+        "icc_treas"
+       ],
+       "c": "l"
+      },
+      {
        "dim": "outsider",
        "stance": 1,
-       "t": "Hamilton County health executive; first run for statewide office.",
+       "t": "Founder of Scope Consulting and a health executive; first statewide run after losing a 2026 House primary.",
        "s": [
-        "icc_dems_fiscal"
+        "icc_dems_fiscal",
+        "icc_treas"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Calls for more transparency in how Indiana manages public money.",
+       "s": [
+        "icc_treas"
        ],
        "c": "m"
       }
@@ -419,11 +791,18 @@
    "office": "Court of Appeals, Fourth District",
    "about": [
     {
-     "t": "Yes/no vote on keeping the judge. Judges run unopposed; if a judge loses, the governor appoints a replacement through merit selection.",
+     "t": "Yes/no vote on keeping the judge. Indiana appellate judges are chosen by merit selection and face retention after two years, then every 10 years.",
      "s": [
-      "in_courts"
+      "courts_ret26"
      ],
-     "c": "m"
+     "c": "h"
+    },
+    {
+     "t": "No organized campaign against any of this year's appellate judges was found.",
+     "s": [
+      "icc_ret"
+     ],
+     "c": "l"
     }
    ],
    "specific": [
@@ -433,7 +812,23 @@
     {
      "id": "deboer",
      "name": "Mary A. DeBoer",
-     "role": "Judge, Court of Appeals"
+     "role": "Judge, Court of Appeals",
+     "notes": [
+      {
+       "t": "Appointed by Gov. Eric Holcomb in September 2024, replacing Judge Patricia Riley.",
+       "s": [
+        "bp_deboer"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "Indiana State Bar Association member survey: 89.5% yes, 10.5% no.",
+       "s": [
+        "icc_ret"
+       ],
+       "c": "m"
+      }
+     ]
     }
    ]
   },
@@ -447,9 +842,9 @@
     {
      "t": "Yes/no vote on keeping the judge.",
      "s": [
-      "in_courts"
+      "courts_ret26"
      ],
-     "c": "m"
+     "c": "h"
     }
    ],
    "specific": [
@@ -459,7 +854,23 @@
     {
      "id": "felix",
      "name": "Paul A. Felix",
-     "role": "Judge, Court of Appeals"
+     "role": "Judge, Court of Appeals",
+     "notes": [
+      {
+       "t": "Appointed by Gov. Eric Holcomb in 2023, replacing Judge Margret Robb.",
+       "s": [
+        "icc_ret"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "Indiana State Bar Association member survey: 86.5% yes, 13.5% no.",
+       "s": [
+        "icc_ret"
+       ],
+       "c": "m"
+      }
+     ]
     }
    ]
   },
@@ -473,9 +884,9 @@
     {
      "t": "Yes/no vote on keeping the judge.",
      "s": [
-      "in_courts"
+      "courts_ret26"
      ],
-     "c": "m"
+     "c": "h"
     }
    ],
    "specific": [
@@ -485,7 +896,23 @@
     {
      "id": "mcadam",
      "name": "Justin L. McAdam",
-     "role": "Judge, Indiana Tax Court"
+     "role": "Judge, Indiana Tax Court",
+     "notes": [
+      {
+       "t": "Appointed by Gov. Eric Holcomb in 2023; previously deputy director and chief legal counsel of the state Office of Management and Budget.",
+       "s": [
+        "icc_ret"
+       ],
+       "c": "m"
+      },
+      {
+       "t": "Indiana State Bar Association member survey: 88% yes, 12% no.",
+       "s": [
+        "icc_ret"
+       ],
+       "c": "m"
+      }
+     ]
     }
    ]
   },
@@ -513,24 +940,43 @@
       "bp_pq1"
      ],
      "c": "h"
+    },
+    {
+     "t": "It doesn't list which offenses qualify. Prosecutors' council research says 22 other states have narrowed the right to bail in some way.",
+     "s": [
+      "aclu_pq1",
+      "icc_bail_jan"
+     ],
+     "c": "m"
     }
    ],
    "yes": "Judges can hold people charged with any offense without bail if the court finds no release conditions would keep others safe.",
    "no": "Bail stays guaranteed for every charge except murder and treason.",
+   "fiscal": [
+    {
+     "t": "No official cost estimate was found. Public defenders warn that more people held before trial would add to crowded county jails, which can lead to new jail construction.",
+     "s": [
+      "lwv_pq1"
+     ],
+     "c": "l"
+    }
+   ],
    "pro": [
     {
-     "t": "Supporters, led by sponsor Rep. Chris Jeter, say judges are now forced to release people who pose clear risks, including people who commit violent crimes while out on bail.",
+     "t": "Prosecutors and sponsors say judges are now forced to release people who pose clear risks, including people who commit violent crimes while out on bail, and that the clear-and-convincing standard is a high bar. An Allen County prosecutor says it's aimed at holding people charged with crimes like attempted murder.",
      "s": [
       "bp_pq1",
-      "icc_bail"
+      "icc_bail_jan",
+      "wane_pq1"
      ],
      "c": "m"
     }
    ],
    "con": [
     {
-     "t": "Critics say it lets people sit in jail for months without a conviction and could fall hardest on marginalized communities.",
+     "t": "The ACLU of Indiana says judges already have tools (bail amounts, supervision, no-contact orders, electronic monitoring), that the wording is too broad, and that people could spend months in jail without a conviction, with the burden falling hardest on marginalized communities.",
      "s": [
+      "aclu_pq1",
       "bp_pq1"
      ],
      "c": "m"
@@ -538,14 +984,34 @@
    ],
    "supporters": [
     {
-     "t": "Passed the Senate 43-2 and the House 75-11. Every Republican voted yes; Democrats split.",
+     "t": "Passed the Senate 43-2 and the House 75-11. Every Republican voted yes; Democrats split. Supporters: county prosecutors. Opponents: ACLU of Indiana, public defenders.",
      "s": [
       "icc_bail",
-      "bp_pq1"
+      "bp_pq1",
+      "aclu_pq1",
+      "lwv_pq1"
      ],
      "c": "h"
     }
    ],
+   "endorse": {
+    "positions": {},
+    "other": [
+     {
+      "who": "ACLU of Indiana: No",
+      "s": [
+       "aclu_pq1"
+      ]
+     },
+     {
+      "who": "County prosecutors (Daviess, Allen): Yes",
+      "s": [
+       "icc_bail_jan",
+       "wane_pq1"
+      ]
+     }
+    ]
+   },
    "tags": [
     {
      "dim": "public_safety",
@@ -568,6 +1034,16 @@
       "nfts_pq1"
      ],
      "c": "m"
+    },
+    {
+     "type": "fiscal-uncertainty",
+     "sev": "low",
+     "t": "No official estimate of extra jail costs was published for voters.",
+     "s": [
+      "lwv_pq1",
+      "aclu_pq1"
+     ],
+     "c": "l"
     }
    ],
    "conf": "m"
@@ -590,28 +1066,36 @@
    },
    "summary": [
     {
-     "t": "City and town court judges would be allowed to live anywhere in the court's county, or in the bordering county closest to the city or town, instead of meeting the current residency rule.",
+     "t": "City and town court judges could live anywhere in the court's county, or in the bordering county closest to the city or town.",
      "s": [
       "ballot",
       "courts_pq2"
      ],
      "c": "h"
+    },
+    {
+     "t": "Sources differ on today's rule: Ballotpedia says judges must live in the city or town they serve; the courts' legislative update describes a county requirement.",
+     "s": [
+      "bp_pq2",
+      "courts_pq2"
+     ],
+     "c": "m"
     }
    ],
    "yes": "City and town court judges may live in the court's county or the closest bordering county.",
    "no": "The current residency rule for city and town court judges stays.",
    "pro": [
     {
-     "t": "Widens the pool of lawyers who can serve on small city and town courts.",
+     "t": "Sponsor Rep. Michael Aylesworth says it eases a rural judge shortage; Indiana has about 2.3 lawyers per 1,000 residents.",
      "s": [
-      "bp_pq2"
+      "aylesworth"
      ],
      "c": "l"
     }
    ],
    "con": [
     {
-     "t": "Judges could live outside the community and county they serve.",
+     "t": "Judges could live outside the community, and even the county, whose cases they hear. No organized opposition was found.",
      "s": [
       "bp_pq2"
      ],
@@ -620,8 +1104,9 @@
    ],
    "supporters": [
     {
-     "t": "Passed by the General Assembly as HB 1019; the House vote was 66-25.",
+     "t": "Approved by two separately elected General Assemblies (2023 and 2025) and placed on the 2026 ballot.",
      "s": [
+      "courts_pq2",
       "bp_pq2"
      ],
      "c": "m"
