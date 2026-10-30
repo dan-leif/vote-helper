@@ -1,0 +1,637 @@
+{
+ "schema": 2,
+ "state": "in",
+ "locality": "statewide",
+ "date": "2026-11-03",
+ "cycle": "general",
+ "name": "November 3, 2026 General Election",
+ "area": "Indiana (statewide)",
+ "researched": "2026-10-30",
+ "method": "Contests, candidate names, parties and public question text transcribed from the Indiana Voters portal's \"Who's On My Ballot\" page for precinct Concord 33 (viewed 2026-10-30). Background via web search summaries; most news pages were not opened in full (several returned 403).",
+ "questions": [
+  {
+   "id": "q_in_judge_residency",
+   "for": [
+    "pq2"
+   ],
+   "q": "Should city and town court judges be allowed to live in the next county over, instead of only where they serve?",
+   "options": [
+    {
+     "v": "yes",
+     "l": "Yes, a wider pool of judges is worth it",
+     "fx": {
+      "pq2": 2
+     }
+    },
+    {
+     "v": "no",
+     "l": "No, judges should live where they serve",
+     "fx": {
+      "pq2": -2
+     }
+    },
+    {
+     "v": "unsure",
+     "l": "No view",
+     "fx": {}
+    }
+   ]
+  }
+ ],
+ "sources": {
+  "ballot": {
+   "title": "Who's On My Ballot, 2026 General Election, Elkhart County precinct Concord 33",
+   "pub": "Indiana Secretary of State (Indiana Voters portal)",
+   "short": "Ballot",
+   "url": "https://indianavoters.in.gov/",
+   "type": "official"
+  },
+  "bp_pq1": {
+   "title": "Indiana Public Question 1, Bailable Offenses and Substantial Risk Standard Amendment (2026)",
+   "pub": "Ballotpedia",
+   "short": "Ballotpedia",
+   "url": "https://ballotpedia.org/Indiana_Public_Question_1,_Bailable_Offenses_and_Substantial_Risk_Standard_Amendment_(2026)",
+   "type": "reference"
+  },
+  "icc_bail_oct": {
+   "title": "Right to bail: Amendment asks voters to rewrite pretrial detention rules",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/10/05/right-to-bail-amendment-asks-voters-to-rewrite-pretrial-detention-rules/",
+   "type": "news"
+  },
+  "nfts_pq1": {
+   "title": "Public Question 1: what Indiana's ballot doesn't tell you",
+   "pub": "States Newsroom (Indiana Capital Chronicle)",
+   "short": "Capital Chron commentary",
+   "url": "https://www.newsfromthestates.com/article/public-question-1-what-indianas-ballot-doesnt-tell-you",
+   "type": "opinion"
+  },
+  "courts_pq2": {
+   "title": "Constitutional amendment ballot question 2",
+   "pub": "Indiana Judicial Branch legislative update",
+   "short": "IN Courts",
+   "url": "https://legislativeupdate.courts.in.gov/2026/02/13/constitutional-amendment-ballot-question-2",
+   "type": "official"
+  },
+  "bp_pq2": {
+   "title": "Indiana Residency Requirements for City and Town Court Judges Amendment (2026)",
+   "pub": "Ballotpedia",
+   "short": "Ballotpedia",
+   "url": "https://ballotpedia.org/Indiana_Residency_Requirements_for_City_and_Town_Court_Judges_Amendment_(2026)",
+   "type": "reference"
+  },
+  "wiki_sos": {
+   "title": "2026 Indiana Secretary of State election",
+   "pub": "Wikipedia",
+   "short": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_Indiana_Secretary_of_State_election",
+   "type": "reference"
+  },
+  "icc_sos_oct": {
+   "title": "Sharp divides in Indiana secretary of state debate over noncitizen vote, spending audit",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/10/07/sharp-divides-in-indiana-secretary-of-state-debate-over-noncitizen-vote-spending-audit/",
+   "type": "news"
+  },
+  "ipm_sos_aug": {
+   "title": "Indiana secretary of state hopefuls clash over voting rules, office audit",
+   "pub": "Indiana Public Media",
+   "short": "IPM",
+   "url": "https://www.ipm.org/news/2026-08-27/indiana-secretary-of-state-hopefuls-clash-over-voting-rules-office-audit",
+   "type": "news"
+  },
+  "icc_comp": {
+   "title": "Get to know Indiana's comptroller candidates",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/10/13/get-to-know-indianas-comptroller-candidates/",
+   "type": "news"
+  },
+  "icc_dems_fiscal": {
+   "title": "Indiana Dems announce treasurer, comptroller candidates",
+   "pub": "Indiana Capital Chronicle",
+   "short": "IN Capital Chron",
+   "url": "https://indianacapitalchronicle.com/2026/05/27/indiana-dems-announce-treasurer-comptroller-candidates/",
+   "type": "news"
+  },
+  "bp_treas": {
+   "title": "Indiana Treasurer election, 2026",
+   "pub": "Ballotpedia",
+   "short": "Ballotpedia",
+   "url": "https://ballotpedia.org/Indiana_Treasurer_election,_2026",
+   "type": "reference"
+  }
+ },
+ "contests": [
+  {
+   "id": "sos",
+   "kind": "race",
+   "order": 10,
+   "level": "State",
+   "office": "Secretary of State",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Runs Indiana's election administration, business filings and securities regulation.",
+     "s": [
+      "wiki_sos"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Outgoing Republican Secretary of State Diego Morales lost his party's nomination to Max Engling at the June 2026 convention.",
+     "s": [
+      "wiki_sos"
+     ],
+     "c": "m"
+    },
+    {
+     "t": "Engling and Bayh both back Indiana's voter ID law and longer early-voting hours, and both say the next secretary should look into Morales's office. Bayh promises an independent audit on day one; Engling proposes a state inspector general review.",
+     "s": [
+      "icc_sos_oct"
+     ],
+     "c": "m"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "engling",
+     "name": "Max Engling",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "voting",
+       "stance": 0.5,
+       "t": "Backs the federal SAVE Act to verify voters' citizenship and color-coded state IDs so legal noncitizens can't use them to vote.",
+       "s": [
+        "icc_sos_oct"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": 0.5,
+       "t": "First run for office; senior adviser to U.S. Sen. Jim Banks.",
+       "s": [
+        "wiki_sos"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "bayh",
+     "name": "Beau Bayh",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 0.5,
+       "t": "First run for office; son of former Gov. and Sen. Evan Bayh.",
+       "s": [
+        "wiki_sos"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Says he would work with county clerks to flag and remove ineligible voters from the rolls, and criticized officials for prosecuting only one of 21 noncitizen voters they identified.",
+       "s": [
+        "icc_sos_oct"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "shillings",
+     "name": "Lauri A. Shillings",
+     "party": "L",
+     "notes": [
+      {
+       "t": "At the August debate, said voter intent should come first when counting ballots.",
+       "s": [
+        "ipm_sos_aug"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "ballard",
+     "name": "Greg Ballard",
+     "party": "Lincoln",
+     "positions": [
+      {
+       "dim": "outsider",
+       "stance": -0.5,
+       "t": "Former two-term Republican mayor of Indianapolis, now running on the new Lincoln Party line.",
+       "s": [
+        "wiki_sos"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "At the August debate, said voter intent should come first when counting ballots.",
+       "s": [
+        "ipm_sos_aug"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "comptroller",
+   "kind": "race",
+   "order": 11,
+   "level": "State",
+   "office": "State Comptroller (Auditor of State)",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Keeps the state's books, pays its bills and distributes money to local governments.",
+     "s": [
+      "icc_comp"
+     ],
+     "c": "m"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "nieshalla",
+     "name": "Elise Nieshalla",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent; appointed by Gov. Eric Holcomb in December 2023.",
+       "s": [
+        "icc_comp"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "bailey",
+     "name": "Jessica Bailey",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 0.5,
+       "t": "Porter County Clerk; first statewide run.",
+       "s": [
+        "icc_dems_fiscal"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "schick",
+     "name": "John Schick",
+     "party": "L"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "treasurer",
+   "kind": "race",
+   "order": 12,
+   "level": "State",
+   "office": "Treasurer of State",
+   "voteFor": 1,
+   "about": [
+    {
+     "t": "Invests state funds and manages programs such as the state's college savings plan.",
+     "s": [
+      "bp_treas"
+     ],
+     "c": "l"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "elliott",
+     "name": "Daniel Elliott",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent, seeking a second four-year term.",
+       "s": [
+        "bp_treas"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "kebe",
+     "name": "Coumba Kebe",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 1,
+       "t": "Hamilton County health executive; first run for statewide office.",
+       "s": [
+        "icc_dems_fiscal"
+       ],
+       "c": "m"
+      }
+     ]
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "ret-coa4",
+   "kind": "retention",
+   "order": 40,
+   "level": "Judicial",
+   "office": "Court of Appeals, Fourth District",
+   "about": [
+    {
+     "t": "Yes/no vote on keeping the judge. Judges run unopposed; if a judge loses, the governor appoints a replacement through merit selection.",
+     "s": [
+      "in_courts"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_judicial"
+   ],
+   "judges": [
+    {
+     "id": "deboer",
+     "name": "Mary A. DeBoer",
+     "role": "Judge, Court of Appeals"
+    }
+   ]
+  },
+  {
+   "id": "ret-coa5",
+   "kind": "retention",
+   "order": 41,
+   "level": "Judicial",
+   "office": "Court of Appeals, Fifth District",
+   "about": [
+    {
+     "t": "Yes/no vote on keeping the judge.",
+     "s": [
+      "in_courts"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_judicial"
+   ],
+   "judges": [
+    {
+     "id": "felix",
+     "name": "Paul A. Felix",
+     "role": "Judge, Court of Appeals"
+    }
+   ]
+  },
+  {
+   "id": "ret-tax",
+   "kind": "retention",
+   "order": 42,
+   "level": "Judicial",
+   "office": "Indiana Tax Court",
+   "about": [
+    {
+     "t": "Yes/no vote on keeping the judge.",
+     "s": [
+      "in_courts"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_judicial"
+   ],
+   "judges": [
+    {
+     "id": "mcadam",
+     "name": "Justin L. McAdam",
+     "role": "Judge, Indiana Tax Court"
+    }
+   ]
+  },
+  {
+   "id": "pq1",
+   "kind": "measure",
+   "order": 101,
+   "num": "1",
+   "title": "Allow judges to deny bail in more cases",
+   "label": "Public Question #1: Ratification of State Constitutional Amendment (Article 1, Section 17)",
+   "type": "Legislatively referred constitutional amendment",
+   "constitutional": true,
+   "ballotText": {
+    "t": "Currently, under the Constitution of the State of Indiana, a person charged with murder or treason is not entitled to be released on bail if the proof is evident or the presumption strong. Shall the Constitution of the State of Indiana be amended to provide that a person charged with an offense other than murder or treason is not entitled to bail if: (1) the proof is evident or the presumption strong; and (2) the state proves by clear and convincing evidence that no release conditions will reasonably protect the safety of any other person or the community. (This question concerns Article 1, Section 17 of the Constitution of the State of Indiana.)",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   },
+   "summary": [
+    {
+     "t": "Today Indiana's constitution lets judges hold someone without bail only for murder or treason. A Yes vote lets judges also deny bail for any other charge when the proof is strong and prosecutors show by clear and convincing evidence that no release conditions would keep others safe.",
+     "s": [
+      "ballot",
+      "bp_pq1"
+     ],
+     "c": "h"
+    }
+   ],
+   "yes": "Judges can hold people charged with any offense without bail if the court finds no release conditions would keep others safe.",
+   "no": "Bail stays guaranteed for every charge except murder and treason.",
+   "pro": [
+    {
+     "t": "Supporters, led by sponsor Rep. Chris Jeter, say judges are now forced to release people who pose clear risks, including people who commit violent crimes while out on bail.",
+     "s": [
+      "bp_pq1",
+      "icc_bail"
+     ],
+     "c": "m"
+    }
+   ],
+   "con": [
+    {
+     "t": "Critics say it lets people sit in jail for months without a conviction and could fall hardest on marginalized communities.",
+     "s": [
+      "bp_pq1"
+     ],
+     "c": "m"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "Passed the Senate 43-2 and the House 75-11. Every Republican voted yes; Democrats split.",
+     "s": [
+      "icc_bail",
+      "bp_pq1"
+     ],
+     "c": "h"
+    }
+   ],
+   "tags": [
+    {
+     "dim": "public_safety",
+     "yes": 1,
+     "w": 3,
+     "why": "Yes widens pretrial detention, a tougher-enforcement step.",
+     "s": [
+      "icc_bail",
+      "bp_pq1"
+     ]
+    }
+   ],
+   "quality": [
+    {
+     "type": "vague-terms",
+     "sev": "med",
+     "t": "The amendment covers every offense, not a list of violent crimes as some states use. Lawmakers rejected a change that would have excluded misdemeanors and Level 6 felonies, and Sen. Rodney Pol questioned whether the ballot wording shows how broadly it could apply.",
+     "s": [
+      "bp_pq1",
+      "nfts_pq1"
+     ],
+     "c": "m"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "pq2",
+   "kind": "measure",
+   "order": 102,
+   "num": "2",
+   "title": "Let city and town court judges live in a neighboring county",
+   "label": "Public Question #2: Ratification of State Constitutional Amendment (Article 6, Section 6)",
+   "type": "Legislatively referred constitutional amendment",
+   "constitutional": true,
+   "ballotText": {
+    "t": "Shall the Constitution of the State of Indiana be amended to permit the judge of a city or town court to reside in: (1) the county in which the court is located; or (2) the bordering county closest to the city or town in which the court is located? (This question concerns Article 6, Section 6 of the Constitution of the State of Indiana.)",
+    "s": [
+     "ballot"
+    ],
+    "c": "h"
+   },
+   "summary": [
+    {
+     "t": "City and town court judges would be allowed to live anywhere in the court's county, or in the bordering county closest to the city or town, instead of meeting the current residency rule.",
+     "s": [
+      "ballot",
+      "courts_pq2"
+     ],
+     "c": "h"
+    }
+   ],
+   "yes": "City and town court judges may live in the court's county or the closest bordering county.",
+   "no": "The current residency rule for city and town court judges stays.",
+   "pro": [
+    {
+     "t": "Widens the pool of lawyers who can serve on small city and town courts.",
+     "s": [
+      "bp_pq2"
+     ],
+     "c": "l"
+    }
+   ],
+   "con": [
+    {
+     "t": "Judges could live outside the community and county they serve.",
+     "s": [
+      "bp_pq2"
+     ],
+     "c": "l"
+    }
+   ],
+   "supporters": [
+    {
+     "t": "Passed by the General Assembly as HB 1019; the House vote was 66-25.",
+     "s": [
+      "bp_pq2"
+     ],
+     "c": "m"
+    }
+   ],
+   "specific": [
+    "q_in_judge_residency"
+   ],
+   "qualityNote": "No drafting problems found.",
+   "conf": "m"
+  }
+ ]
+}

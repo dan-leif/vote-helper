@@ -1,0 +1,1042 @@
+{
+ "schema": 2,
+ "state": "in",
+ "locality": "elkhart",
+ "date": "2026-11-03",
+ "cycle": "general",
+ "name": "November 3, 2026 General Election",
+ "area": "Elkhart County, Indiana",
+ "researched": "2026-10-30",
+ "method": "Contests, candidate names, parties and public question text transcribed from the Indiana Voters portal's \"Who's On My Ballot\" page for precinct Concord 33 (viewed 2026-10-30). Background via web search summaries; most news pages were not opened in full (several returned 403).",
+ "include": [
+  "statewide"
+ ],
+ "districts": [
+  {
+   "id": "cd",
+   "label": "U.S. House district",
+   "default": "2",
+   "options": [
+    {
+     "v": "2",
+     "l": "District 2",
+     "covered": true
+    },
+    {
+     "v": "other",
+     "l": "Another district",
+     "covered": false,
+     "missing": "other U.S. House districts"
+    }
+   ]
+  },
+  {
+   "id": "hd",
+   "label": "State House district",
+   "default": "21",
+   "options": [
+    {
+     "v": "21",
+     "l": "District 21",
+     "covered": true
+    },
+    {
+     "v": "other",
+     "l": "Another district",
+     "covered": false,
+     "missing": "other State House districts"
+    }
+   ]
+  },
+  {
+   "id": "comm",
+   "label": "County commissioner district",
+   "default": "1",
+   "options": [
+    {
+     "v": "1",
+     "l": "District 1",
+     "covered": true
+    },
+    {
+     "v": "other",
+     "l": "Another district",
+     "covered": false,
+     "missing": "other commissioner districts"
+    }
+   ]
+  },
+  {
+   "id": "council",
+   "label": "County council district",
+   "default": "4",
+   "options": [
+    {
+     "v": "4",
+     "l": "District 4",
+     "covered": true
+    },
+    {
+     "v": "other",
+     "l": "Another district",
+     "covered": false,
+     "missing": "other county council districts"
+    }
+   ]
+  },
+  {
+   "id": "township",
+   "label": "Township",
+   "default": "concord",
+   "options": [
+    {
+     "v": "concord",
+     "l": "Concord Township",
+     "covered": true
+    },
+    {
+     "v": "other",
+     "l": "Another district",
+     "covered": false,
+     "missing": "other townships' races"
+    }
+   ]
+  },
+  {
+   "id": "school",
+   "label": "School board district",
+   "default": "concord-1",
+   "options": [
+    {
+     "v": "concord-1",
+     "l": "Concord Community Schools, District 1",
+     "covered": true
+    },
+    {
+     "v": "other",
+     "l": "Another district",
+     "covered": false,
+     "missing": "other school board races"
+    }
+   ]
+  }
+ ],
+ "districtHint": "The Indiana Voters portal (\"Election Districts\") lists your precinct and districts.",
+ "coverageNote": "Covered: Elkhart County precinct Concord 33 (Goshen), including statewide offices, both public questions, judicial retention, U.S. House District 2, State House District 21, county offices, Commissioner District 1, Council District 4, Concord Township and Concord Community Schools District 1. Other precincts' local races aren't covered. Always check your own ballot.",
+ "sections": [
+  [
+   "State",
+   "State offices"
+  ],
+  [
+   "Federal",
+   "Federal"
+  ],
+  [
+   "Legislature",
+   "State Legislature"
+  ],
+  [
+   "Judicial",
+   "Courts"
+  ],
+  [
+   "County",
+   "Elkhart County"
+  ],
+  [
+   "Township",
+   "Concord Township"
+  ],
+  [
+   "School",
+   "School board"
+  ],
+  [
+   "measure",
+   "Public questions"
+  ]
+ ],
+ "questions": [],
+ "sources": {
+  "ballot": {
+   "title": "Who's On My Ballot, 2026 General Election, Elkhart County precinct Concord 33",
+   "pub": "Indiana Secretary of State (Indiana Voters portal)",
+   "short": "Ballot",
+   "url": "https://indianavoters.in.gov/",
+   "type": "official"
+  },
+  "wndu_yakym": {
+   "title": "Rudy Yakym files for re-election in Indiana's 2nd District",
+   "pub": "WNDU",
+   "short": "WNDU",
+   "url": "https://www.wndu.com/2026/01/28/rudy-yakym-files-re-election-indianas-2nd-district",
+   "type": "news"
+  },
+  "wnin_cd2": {
+   "title": "Two Democrats are vying to challenge Republican Rudy Yakym in Indiana's 2nd Congressional District",
+   "pub": "Lakeshore Public Media / WNIN",
+   "short": "Lakeshore PM",
+   "url": "https://www.lakeshorepublicmedia.org/2026-04-21/two-democrats-are-vying-to-challenge-republican-rudy-yakym-to-represent-michiana-in-indianas-2nd-congressional-district",
+   "type": "news"
+  },
+  "wndu_decio": {
+   "title": "Jamee Decio wins Democratic nomination for Indiana's 2nd Congressional District",
+   "pub": "WNDU",
+   "short": "WNDU",
+   "url": "https://www.wndu.com/2026/05/06/jamee-decio-wins-democratic-nomination-indianas-2nd-congressional-district/",
+   "type": "news"
+  },
+  "wiki_wesco": {
+   "title": "Timothy Wesco",
+   "pub": "Wikipedia",
+   "short": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Timothy_Wesco",
+   "type": "reference"
+  },
+  "br_barnes": {
+   "title": "Bob Barnes",
+   "pub": "BallotReady",
+   "short": "BallotReady",
+   "url": "https://www.ballotready.org/people/bob-barnes",
+   "type": "reference"
+  },
+  "census": {
+   "title": "Census Geocoder (2026 state legislative and 120th Congress districts)",
+   "pub": "U.S. Census Bureau",
+   "short": "Census",
+   "url": "https://geocoding.geo.census.gov/geocoder/",
+   "type": "official"
+  }
+ },
+ "contests": [
+  {
+   "id": "cd2",
+   "kind": "race",
+   "order": 20,
+   "level": "Federal",
+   "office": "U.S. Representative, Second District",
+   "voteFor": 1,
+   "appliesTo": {
+    "cd": [
+     "2"
+    ]
+   },
+   "about": [
+    {
+     "t": "Coverage lists federal spending, public benefits, affordability and immigration enforcement as the main issues.",
+     "s": [
+      "wnin_cd2"
+     ],
+     "c": "m"
+    }
+   ],
+   "candidates": [
+    {
+     "id": "yakym",
+     "name": "Rudy Yakym",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "tax_level",
+       "stance": 0.5,
+       "t": "Campaigns on shrinking the federal bureaucracy and restoring fiscal responsibility.",
+       "s": [
+        "wnin_cd2"
+       ],
+       "c": "m"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent since 2022, seeking re-election.",
+       "s": [
+        "wndu_yakym"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "decio",
+     "name": "Jamee Decio",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": 0.5,
+       "t": "First run for Congress; former Elkhart County deputy prosecutor.",
+       "s": [
+        "wndu_decio"
+       ],
+       "c": "m"
+      }
+     ],
+     "notes": [
+      {
+       "t": "Runs on affordability, local industry and protecting democracy; says Yakym votes with President Trump nearly 95% of the time.",
+       "s": [
+        "wnin_cd2"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "henry",
+     "name": "William Eric Henry",
+     "party": "L"
+    }
+   ],
+   "conf": "m"
+  },
+  {
+   "id": "hd21",
+   "kind": "race",
+   "order": 21,
+   "level": "Legislature",
+   "office": "State Representative, District 21",
+   "voteFor": 1,
+   "appliesTo": {
+    "hd": [
+     "21"
+    ]
+   },
+   "candidates": [
+    {
+     "id": "wesco",
+     "name": "Timothy Wesco",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "In the Indiana House since 2010; re-elected with 79% in 2024.",
+       "s": [
+        "wiki_wesco"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "burkley",
+     "name": "Charles Burkley",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "t": "Little information was found on Burkley's positions.",
+     "c": "l"
+    }
+   ],
+   "conf": "l"
+  },
+  {
+   "id": "sup1",
+   "kind": "race",
+   "order": 30,
+   "level": "Judicial",
+   "office": "Judge of the Elkhart Superior Court, No. 1",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "sup1-c",
+     "name": "Kristine A. Osterday",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "sup3",
+   "kind": "race",
+   "order": 31,
+   "level": "Judicial",
+   "office": "Judge of the Elkhart Superior Court, No. 3",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "sup3-c",
+     "name": "Teresa L. Cataldo",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "sup4",
+   "kind": "race",
+   "order": 32,
+   "level": "Judicial",
+   "office": "Judge of the Elkhart Superior Court, No. 4",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "sup4-c",
+     "name": "Elizabeth A. Bellin",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "sup5",
+   "kind": "race",
+   "order": 33,
+   "level": "Judicial",
+   "office": "Judge of the Elkhart Superior Court, No. 5",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "sup5-c",
+     "name": "Christopher J. (Chris) Spataro",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "prosecutor",
+   "kind": "race",
+   "order": 49,
+   "level": "County",
+   "office": "Prosecuting Attorney, 34th Judicial Circuit",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "prosecutor-c",
+     "name": "Vicki Elaine Becker",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "clerk",
+   "kind": "race",
+   "order": 50,
+   "level": "County",
+   "office": "Elkhart County Circuit Court Clerk",
+   "voteFor": 1,
+   "candidates": [
+    {
+     "id": "pickens",
+     "name": "Patty Pickens",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "graham",
+     "name": "Megan A Graham",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "t": "No research beyond party yet.",
+     "c": "l"
+    }
+   ],
+   "conf": "l"
+  },
+  {
+   "id": "auditor",
+   "kind": "race",
+   "order": 51,
+   "level": "County",
+   "office": "Elkhart County Auditor",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "auditor-c",
+     "name": "Tiara Jackson",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "recorder",
+   "kind": "race",
+   "order": 52,
+   "level": "County",
+   "office": "Elkhart County Recorder",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "recorder-c",
+     "name": "Kaala Baker",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "sheriff",
+   "kind": "race",
+   "order": 53,
+   "level": "County",
+   "office": "Elkhart County Sheriff",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "sheriff-c",
+     "name": "Michael D Culp",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "assessor",
+   "kind": "race",
+   "order": 54,
+   "level": "County",
+   "office": "Elkhart County Assessor",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "assessor-c",
+     "name": "Tylan Miller",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ]
+  },
+  {
+   "id": "comm1",
+   "kind": "race",
+   "order": 55,
+   "level": "County",
+   "office": "Elkhart County Commissioner, District 1",
+   "voteFor": 1,
+   "appliesTo": {
+    "comm": [
+     "1"
+    ]
+   },
+   "candidates": [
+    {
+     "id": "barnes",
+     "name": "Bob Barnes",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      },
+      {
+       "dim": "outsider",
+       "stance": -1,
+       "t": "Incumbent District 1 commissioner.",
+       "s": [
+        "br_barnes"
+       ],
+       "c": "m"
+      }
+     ]
+    },
+    {
+     "id": "spelbring",
+     "name": "Ralph Spelbring",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "green",
+     "name": "Amy Green",
+     "party": "I"
+    }
+   ],
+   "flags": [
+    {
+     "t": "Little information was found on Spelbring's or Green's positions.",
+     "c": "l"
+    }
+   ],
+   "conf": "l"
+  },
+  {
+   "id": "council4",
+   "kind": "race",
+   "order": 56,
+   "level": "County",
+   "office": "Elkhart County Council, District 4",
+   "voteFor": 1,
+   "unopposed": true,
+   "candidates": [
+    {
+     "id": "council4-c",
+     "name": "Brian Clayton",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    {
+     "t": "Only one name is on the ballot; you can vote for this candidate, write in someone else, or leave it blank.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "appliesTo": {
+    "council": [
+     "4"
+    ]
+   }
+  },
+  {
+   "id": "trustee",
+   "kind": "race",
+   "order": 60,
+   "level": "Township",
+   "office": "Concord Township Trustee",
+   "voteFor": 1,
+   "appliesTo": {
+    "township": [
+     "concord"
+    ]
+   },
+   "candidates": [
+    {
+     "id": "weeber",
+     "name": "James E Weeber",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "hines",
+     "name": "Cynthia S Hines",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "t": "No research beyond party yet.",
+     "c": "l"
+    }
+   ],
+   "conf": "l"
+  },
+  {
+   "id": "twpboard",
+   "kind": "race",
+   "order": 61,
+   "level": "Township",
+   "office": "Concord Township Board Member",
+   "voteFor": 3,
+   "appliesTo": {
+    "township": [
+     "concord"
+    ]
+   },
+   "instructions": "Vote for up to three. The top three win.",
+   "candidates": [
+    {
+     "id": "adkins",
+     "name": "Jerry Adkins",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "beck",
+     "name": "James D Beck",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "davis-k",
+     "name": "Kenneth Davis",
+     "party": "R",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": 1,
+       "t": "Republican.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    },
+    {
+     "id": "turner",
+     "name": "Howard L Turner",
+     "party": "D",
+     "positions": [
+      {
+       "dim": "party",
+       "stance": -1,
+       "t": "Democrat.",
+       "s": [
+        "ballot"
+       ],
+       "c": "h"
+      }
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "t": "No research beyond party yet.",
+     "c": "l"
+    }
+   ],
+   "conf": "l"
+  },
+  {
+   "id": "concord-sb1",
+   "kind": "race",
+   "order": 70,
+   "level": "School",
+   "office": "Concord Community Schools Board, District 1",
+   "voteFor": 1,
+   "nonpartisan": true,
+   "appliesTo": {
+    "school": [
+     "concord-1"
+    ]
+   },
+   "candidates": [
+    {
+     "id": "davis-j",
+     "name": "Jennifer Davis"
+    },
+    {
+     "id": "malooley",
+     "name": "Michael T (Mike) Malooley"
+    },
+    {
+     "id": "towner",
+     "name": "Tara Towner"
+    }
+   ],
+   "notes": [
+    {
+     "t": "School board races are nonpartisan; none of these candidates declared a party.",
+     "s": [
+      "ballot"
+     ],
+     "c": "h"
+    }
+   ],
+   "flags": [
+    {
+     "t": "No information on these candidates was found yet; the app can't suggest a pick.",
+     "c": "l"
+    }
+   ],
+   "conf": "l"
+  }
+ ]
+}
